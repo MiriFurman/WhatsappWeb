@@ -1,0 +1,62 @@
+{
+  "private": true,
+  "name": "shilo-miri-salaverry-sms",
+  "version": "1.0.0",
+  "homepage": "",
+  "author": {
+    "name": "Michael Salaverry",
+    "email": "michaels@wix.com",
+    "url": ""
+  },
+  "scripts": {
+    "start": "yoshi start",
+    "build": ":",
+    "precommit": "yoshi lint",
+    "pretest": "yoshi build",
+    "test": "yoshi test",
+    "posttest": "yoshi lint",
+    "release": "yoshi release"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-3": "^6.5.0",
+    "react-test-renderer": "^15.5.4",
+    "chai": "^3.5.0",
+    "enzyme": "^2.3.0",
+    "jsdom-global": "^2.1.0",
+    "nock": "^8.0.0",
+    "wix-bootstrap-testkit": "latest",
+    "wix-config-emitter": "latest",
+    "husky": "^0.13.4",
+    "yoshi": "latest"
+  },
+  "dependencies": {
+    "axios": "^0.15.2",
+    "babel-polyfill": "^6.9.1",
+    "express": "^4.13.4",
+    "i18next": "^7.2.1",
+    "i18next-xhr-backend": "^1.2.0",
+    "prop-types": "^15.5.4",
+    "react": "^15.5.0",
+    "react-dom": "^15.5.0",
+    "react-i18next": "^3.1.0",
+    "wix-axios-config": "latest",
+    "wix-bootstrap-ng": "latest",
+    "wix-express-csrf": "latest",
+    "wix-express-rendering-model": "latest",
+    "wix-express-require-https": "latest",
+    "wix-renderer": "latest",
+    "wix-run-mode": "latest"
+  },
+  "babel": {
+    "presets": ["react", "stage-3"],
+    "env": {
+      "test": {"presets": [["env", {"targets": {"node": "current"}}]]},
+      "development": {"presets": ["env"]}
+    }
+  },
+  "eslintConfig": {
+    "extends": "wix/react"
+  }
+}

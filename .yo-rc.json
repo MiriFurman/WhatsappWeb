@@ -1,0 +1,9 @@
+{
+  "generator-wix-js": {
+    "promptValues": {
+      "authorName": "Michael Salaverry",
+      "authorEmail": "michaels@wix.com",
+      "groupId": "com.wixpress.ks-17"
+    }
+  }
+}
