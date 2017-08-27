@@ -1,7 +1,11 @@
 import 'babel-polyfill';
 import {expect} from 'chai';
-import {beforeAndAfter, app} from './../environment';
-import {inputTestkitFactory, buttonTestkitFactory, waitForVisibilityOf} from 'wix-style-react/dist/testkit/protractor';
+import {beforeAndAfter} from './../environment';
+import {
+  inputTestkitFactory,
+  buttonTestkitFactory,
+  waitForVisibilityOf
+} from 'wix-style-react/dist/testkit/protractor';
 import * as driver from './e2e.driver';
 
 describe('Wazzap E2E tests', () => {
@@ -10,7 +14,7 @@ describe('Wazzap E2E tests', () => {
   const user1 = 'Donald';
 
   it('should login to app', async () => {
-    await browser.get(app.getUrl('/'));
+    await driver.navigate();
     const userInput = inputTestkitFactory({dataHook: 'login-username'});
     await waitForVisibilityOf(userInput.element(), 'Cannot find Input');
     expect(await userInput.element().isDisplayed()).to.equal(true);
@@ -23,6 +27,15 @@ describe('Wazzap E2E tests', () => {
     await loginButton.click();
     expect(await driver.getUserNameElement().getText()).to.equal(user1);
     expect(await driver.isLoginScreenPresent()).to.be.false;
+  });
+
+  it('should user2 appear on user1 contact list', async () => {
+    await driver.navigate();
+    const userInput = inputTestkitFactory({dataHook: 'login-username'});
+    const loginButton = buttonTestkitFactory({dataHook: 'login-btn'});
+    await userInput.enterText(user1);
+    await loginButton.click();
+    expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(true);
   });
 
 
