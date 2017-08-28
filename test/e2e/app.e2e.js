@@ -12,6 +12,7 @@ describe('Wazzap E2E tests', () => {
 
   beforeAndAfter();
   const user1 = 'Donald';
+  const user2 = 'Ivanka';
 
   it('should login to app', async () => {
     await driver.navigate();
@@ -29,13 +30,12 @@ describe('Wazzap E2E tests', () => {
     expect(await driver.isLoginScreenPresent()).to.be.false;
   });
 
-  it('should contact list appear', async () => {
-    await driver.navigate();
-    const userInput = inputTestkitFactory({dataHook: 'login-username'});
-    const loginButton = buttonTestkitFactory({dataHook: 'login-btn'});
-    await userInput.enterText(user1);
-    await loginButton.click();
-    expect(await $('[data-hook="contact-list"]').isPresent()).to.equal(true);
+  it('should show contacts list on login', async () => {
+    await driver.login(user1);
+    expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(false);
+    await driver.login(user2);
+    expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(true);
+    expect(await $$('[data-hook="contact-item"]').map(el => el.getText())).to.eql([user1]);
   });
 
 

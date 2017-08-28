@@ -36,6 +36,7 @@
   "dependencies": {
     "axios": "^0.15.2",
     "babel-polyfill": "^6.9.1",
+    "body-parser": "^1.17.2",
     "express": "^4.13.4",
     "i18next": "^7.2.1",
     "i18next-xhr-backend": "^1.2.0",
@@ -43,6 +44,7 @@
     "react": "^15.5.0",
     "react-dom": "^15.5.0",
     "react-i18next": "^3.1.0",
+    "uuid": "^3.1.0",
     "wix-axios-config": "latest",
     "wix-bootstrap-ng": "latest",
     "wix-express-csrf": "latest",
