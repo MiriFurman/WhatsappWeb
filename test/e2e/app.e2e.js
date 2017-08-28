@@ -37,8 +37,4 @@ describe('Wazzap E2E tests', () => {
     expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(true);
     expect(await $$('[data-hook="contact-item"]').map(el => el.getText())).to.eql([user1]);
   });
-
-
 });
-
-

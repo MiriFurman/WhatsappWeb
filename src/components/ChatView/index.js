@@ -1,1 +1,1 @@
-export {default} from './ChatApp';
+export {default} from './ChatView';
