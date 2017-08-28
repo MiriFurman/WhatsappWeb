@@ -7,6 +7,7 @@ import {
   waitForVisibilityOf
 } from 'wix-style-react/dist/testkit/protractor';
 import * as driver from './e2e.driver';
+import {ExpectedConditions as EC} from 'protractor';
 
 describe('Wazzap E2E tests', () => {
 
@@ -42,6 +43,7 @@ describe('Wazzap E2E tests', () => {
   it('should move item from contacts to conversions on first message', async () => {
     await driver.startNewConversation(user1, user2, msg);
     await driver.login(user2);
+    await browser.wait(EC.presenceOf($('[data-hook="conversation-item"]')));
     expect(await $$('[data-hook="conversation-item"]').map(el => el.getText())).to.eql([user1]);
   });
 });

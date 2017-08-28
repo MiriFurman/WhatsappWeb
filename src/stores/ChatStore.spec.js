@@ -24,13 +24,14 @@ describe('Chat Store unit tests', () => {
     expect(store.currentUser).to.eql({});
     expect(store.isLoggedIn).to.equal(false);
     expect(store.contacts.toJS()).to.eql([]);
+    expect(store.conversations.toJS()).to.eql([]);
     expect(store.activeRelationId).to.equal(null);
   });
 
   it('should store correct username and isLoggedIn values', async () => {
     const exampleUser = {id: '1a2b', name: username1};
     nock(baseURL).post(endpoints.LOGIN, {username: username1}).reply(200, exampleUser);
-    nock(baseURL).get(endpoints.CONTACTS).reply(200, []);
+    nock(baseURL).get(`${endpoints.GET_RELATIONS}?userId=${exampleUser.id}`).reply(200, []);
     await store.login(username1);
     expect(store.currentUser).to.eql(exampleUser);
     expect(store.isLoggedIn).to.equal(true);
@@ -45,5 +46,15 @@ describe('Chat Store unit tests', () => {
   it('should store active relation', () => {
     store.startConversation('777');
     expect(store.activeRelationId).to.equal('777');
+  });
+  it('should store user relations', async () => {
+    const conversations = ['a'];
+    const contacts = ['b'];
+    const userId = 'userId';
+    nock(baseURL).get(`${endpoints.GET_RELATIONS}?userId=${userId}`)
+      .reply(200, {conversations, contacts});
+    await store.getRelations(userId);
+    expect(store.contacts.toJS()).to.eql(contacts);
+    expect(store.conversations.toJS()).to.eql(conversations);
   });
 });

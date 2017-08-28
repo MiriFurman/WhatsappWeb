@@ -1,4 +1,4 @@
-import {SEND_MESSAGE} from './endpoints';
+import {SEND_MESSAGE, GET_RELATIONS} from './endpoints';
 
 export default class RestClient {
   constructor(axios, getUrl = str => str) {
@@ -21,6 +21,12 @@ export default class RestClient {
   async sendMessage(from, members, messageBody) {
     const url = this.getUrl(SEND_MESSAGE);
     const {data} = await this.axios.post(url, {from, members, messageBody});
+    return data;
+  }
+
+  async getRelations(userId) {
+    const url = this.getUrl(GET_RELATIONS);
+    const {data} = await this.axios.get(`${url}?userId=${userId}`);
     return data;
   }
 }

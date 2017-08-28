@@ -50,4 +50,16 @@ describe('Chat App Server', () => {
     expect(conversationId).to.be.a.string;
   });
 
+  it('should get relations from server', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage = 'Bend the knee';
+    const conversationId = await restClient
+      .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+
+    const relations = await restClient.getRelations(user1Obj.id);
+    expect(relations.conversations[0].id).to.equal(conversationId);
+    expect(relations.contacts.length).to.equal(2);
+  });
+
 });
