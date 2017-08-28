@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Login from '../Login';
 import ChatView from '../ChatView';
 import s from './App.scss';
@@ -22,7 +21,7 @@ class App extends React.Component {
   }
 
   onLoginClick(username) {
-    axios.post('/api/login', {username});
+    this.props.restClient.login(username);
     this.setState({isLoggedIn: true, userName: username});
     this.getContacts();
   }

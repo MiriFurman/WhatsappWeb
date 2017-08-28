@@ -5,7 +5,14 @@ export default class RestClient {
   }
 
   async getContacts() {
-    const {data: contacts} = await this.axios.get(this.getUrl('/api/contacts'));
+    const url = this.getUrl('/api/contacts');
+    const {data: contacts} = await this.axios.get(url);
     return contacts;
+  }
+
+  async login(username) {
+    const url = this.getUrl('/api/login');
+    const {status} = await this.axios.post(url, {username});
+    return status;
   }
 }
