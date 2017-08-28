@@ -15,7 +15,8 @@
     "pretest": "yoshi build",
     "test": "yoshi test",
     "posttest": "yoshi lint",
-    "release": "yoshi release"
+    "release": "yoshi release",
+    "lint": "yoshi lint"
   },
   "devDependencies": {
     "babel-preset-env": "^1.5.2",
@@ -26,6 +27,7 @@
     "husky": "^0.13.4",
     "jsdom-global": "^2.1.0",
     "nock": "^8.0.0",
+    "protractor": "^5.1.2",
     "react-test-renderer": "^15.5.4",
     "wix-bootstrap-testkit": "latest",
     "wix-config-emitter": "latest",

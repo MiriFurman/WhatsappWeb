@@ -9,3 +9,4 @@ maven
 *.iml
 test/e2e/screenshots
 package-lock.json
+yarn.lock
