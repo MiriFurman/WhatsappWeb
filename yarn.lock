@@ -4296,13 +4296,9 @@ iconv-lite@0.4.13:
   version "0.4.13"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/iconv-lite/-/iconv-lite-0.4.13.tgz#1f88aba4ab0b1508e8312acc39345f36e992e2f2"
 
-iconv-lite@0.4.15:
+iconv-lite@0.4.15, iconv-lite@~0.4.13:
   version "0.4.15"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/iconv-lite/-/iconv-lite-0.4.15.tgz#fe265a218ac6a57cfe854927e9d04c19825eddeb"
-
-iconv-lite@~0.4.13:
-  version "0.4.18"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
 
 icss-replace-symbols@^1.0.2, icss-replace-symbols@^1.1.0:
   version "1.1.0"

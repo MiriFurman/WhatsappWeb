@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import Login from '../Login';
 import ChatView from '../ChatView';
 import s from './App.scss';
 
+@inject('chatStore')
 @observer class App extends React.Component {
   onLoginClick(username) {
     const {chatStore} = this.props;
