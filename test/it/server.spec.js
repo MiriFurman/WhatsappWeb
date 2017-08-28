@@ -9,8 +9,13 @@ const axiosInstance = wixAxiosInstanceConfig(axios, {
   adapter: require('axios/lib/adapters/http'),
 });
 
+import RestClient from '../../src/common/restClient';
+
 describe('Chat App Server', () => {
   beforeAndAfter();
+
+  const restClient = new RestClient(axiosInstance, url => app.getUrl(url));
+
   const user1 = 'Danny';
   const user2 = 'Jon';
 
@@ -36,7 +41,7 @@ describe('Chat App Server', () => {
     expect(response.status).to.equal(200);
     response = await axiosInstance.post(url, {username: user2});
     expect(response.status).to.equal(200);
-    response = await axiosInstance.get(app.getUrl('/api/contacts'));
-    expect(response.data.map(x => x.name)).to.eql([user1, user2]);
+    const contacts = await restClient.getContacts();
+    expect(contacts.map(x => x.name)).to.eql([user1, user2]);
   });
 });

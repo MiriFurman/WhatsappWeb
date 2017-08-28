@@ -17,7 +17,7 @@ class App extends React.Component {
   }
 
   async getContacts() {
-    const {data: contacts} = await axios.get('/api/contacts');
+    const contacts = await this.props.restClient.getContacts();
     this.setState({contacts});
   }
 
@@ -39,7 +39,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  t: PropTypes.func
+  restClient: PropTypes.func.isRequired
 };
 
 export default App;
