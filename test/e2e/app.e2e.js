@@ -32,9 +32,9 @@ describe('Wazzap E2E tests', () => {
 
   it('should show contacts list on login', async () => {
     await driver.login(user1);
-    expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(false);
+    expect(await $('[data-hook="contact-list"]').isDisplayed(), 'Contact list invisible').to.equal(false);
     await driver.login(user2);
-    expect(await $('[data-hook="contact-list"]').isDisplayed()).to.equal(true);
+    expect(await $('[data-hook="contact-list"]').isDisplayed(), 'Contact list visible').to.equal(true);
     expect(await $$('[data-hook="contact-item"]').map(el => el.getText())).to.eql([user1]);
   });
 });

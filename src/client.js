@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {wixAxiosConfig} from 'wix-axios-config';
 import App from './components/App';
 import RestClient from './common/restClient';
+import ChatStore from './stores/ChatStore';
 
 const baseUrl = window.__BASEURL__;
 // was for translation; possible to delete later
@@ -14,8 +15,9 @@ const baseUrl = window.__BASEURL__;
 wixAxiosConfig(axios, {baseURL: baseUrl});
 
 const restClient = new RestClient(axios);
+const chatStore = new ChatStore(restClient);
 
 ReactDOM.render(
-  <App restClient={restClient}/>,
+  <App chatStore={chatStore} username={chatStore.username}/>,
   document.getElementById('root')
 );

@@ -7,13 +7,13 @@ class Login extends React.Component {
   constructor() {
     super();
 
-    this.state = {userName: ''};
+    this.state = {username: ''};
   }
 
   render() {
     return (<div data-hook="login-screen">
-      <Input dataHook="login-username" onChange={evt => this.setState({userName: evt.target.value})}/>
-      <Button dataHook="login-btn" onClick={() => this.props.onLoginClick(this.state.userName)}/>
+      <Input dataHook="login-username" onChange={evt => this.setState({username: evt.target.value})}/>
+      <Button dataHook="login-btn" onClick={() => this.props.onLoginClick(this.state.username)}/>
     </div>);
   }
 }

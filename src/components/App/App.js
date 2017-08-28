@@ -1,44 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {observer} from 'mobx-react';
 import Login from '../Login';
 import ChatView from '../ChatView';
 import s from './App.scss';
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      userName: null,
-      isLoggedIn: false,
-      contacts: null
-    };
-    this.getContacts = this.getContacts.bind(this);
-  }
-
-  async getContacts() {
-    const contacts = await this.props.restClient.getContacts();
-    this.setState({contacts});
-  }
-
+@observer class App extends React.Component {
   onLoginClick(username) {
-    this.props.restClient.login(username);
-    this.setState({isLoggedIn: true, userName: username});
-    this.getContacts();
+    const {chatStore} = this.props;
+    chatStore.login(username);
   }
 
   render() {
-    const {userName, isLoggedIn, contacts} = this.state;
+    const {chatStore} = this.props;
+    const {username, isLoggedIn, contacts} = chatStore;
     return (
       <div className={s.root}>
-        {!isLoggedIn && <Login onLoginClick={userName => this.onLoginClick(userName)}/>}
-        {isLoggedIn && <ChatView userName={userName} contacts={contacts}/>}
+        {!isLoggedIn && <Login onLoginClick={username => this.onLoginClick(username)}/>}
+        {isLoggedIn && <ChatView username={username} contacts={contacts.toJS()}/>}
       </div>
     );
   }
 }
 
 App.propTypes = {
-  restClient: PropTypes.func.isRequired
+  chatStore: PropTypes.object.isRequired
 };
 
 export default App;
