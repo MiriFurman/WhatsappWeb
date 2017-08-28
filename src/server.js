@@ -5,7 +5,9 @@ import wixExpressRenderingModel from 'wix-express-rendering-model';
 import wixExpressCsrf from 'wix-express-csrf';
 import wixExpressRequireHttps from 'wix-express-require-https';
 import {contactsService} from './server/services/ContactsService';
+import {conversationsService} from './server/services/ConversationsService';
 import bodyParser from 'body-parser';
+import {SEND_MESSAGE} from './common/endpoints';
 
 module.exports = (app, context) => {
   const config = context.config.load('shilo-miri-salaverry-sms');
@@ -25,8 +27,8 @@ module.exports = (app, context) => {
   }));
 
   app.post('/api/login', wrapAsync(async (req, res) => {
-    contactsService.create({name: req.body.username});
-    res.end();
+    const userObj = contactsService.create({name: req.body.username});
+    res.json(userObj);
   }));
 
   app.get('/api/contacts', wrapAsync(async (req, res) => {
@@ -36,6 +38,12 @@ module.exports = (app, context) => {
   app.post('/api/flush', wrapAsync(async (req, res) => {
     contactsService.reset();
     res.end();
+  }));
+
+  app.post(SEND_MESSAGE, wrapAsync(async (req, res) => {
+    const {from, members, messageBody} = req.body;
+    const conversationId = conversationsService.addMessage({from, members, messageBody});
+    res.json(conversationId);
   }));
 
   return app;

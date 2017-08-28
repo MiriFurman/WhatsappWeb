@@ -14,11 +14,16 @@ import s from './App.scss';
 
   render() {
     const {chatStore} = this.props;
-    const {username, isLoggedIn, contacts} = chatStore;
+    const {username, isLoggedIn, contacts, currentUser, activeRelationId} = chatStore;
     return (
       <div className={s.root}>
         {!isLoggedIn && <Login onLoginClick={username => this.onLoginClick(username)}/>}
-        {isLoggedIn && <ChatView username={username} contacts={contacts.toJS()}/>}
+        {isLoggedIn && <ChatView
+          username={username}
+          contacts={contacts.toJS()}
+          startConversation={relationId => chatStore.startConversation(relationId)}
+          sendMessage={messageBody => chatStore.sendMessage(currentUser.id, [currentUser.id, activeRelationId], messageBody)}
+          />}
       </div>
     );
   }

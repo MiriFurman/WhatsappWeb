@@ -24,8 +24,8 @@ describe('Chat App Server', () => {
   });
 
   it('should login', async () => {
-    const status = await restClient.login(user1);
-    expect(status).to.equal(200);
+    const userObj = await restClient.login(user1);
+    expect(userObj.name).to.equal(user1);
   });
 
   it('should get empty contacts list on login', async () => {
@@ -39,4 +39,15 @@ describe('Chat App Server', () => {
     const contacts = await restClient.getContacts();
     expect(contacts.map(x => x.name)).to.eql([user1, user2]);
   });
+
+  it('should create conversation on first message', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    //setup above
+    const exampleMessage = 'Bend the knee';
+    const conversationId = await restClient
+      .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+    expect(conversationId).to.be.a.string;
+  });
+
 });

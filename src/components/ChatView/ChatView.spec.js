@@ -25,7 +25,7 @@ describe('Chat View Component', () => {
   });
 
   it('should not show welcome screen when there is conversation selected', () => {
-    wrapper.setProps({activeRelation: contacts[1].id});
+    wrapper.setProps({activeRelationId: contacts[1].id});
     expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
   });
 
