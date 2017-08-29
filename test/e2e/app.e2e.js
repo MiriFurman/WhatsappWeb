@@ -26,6 +26,7 @@ describe('Wazzap E2E tests', () => {
   const user1 = 'Donald';
   const user2 = 'Ivanka';
   const msg = 'lets make America great again!';
+  const msg2 = 'Winning!!!';
   let firstWindowDriver, secondWindowDriver;
 
   beforeEach(async () => {
@@ -72,6 +73,21 @@ describe('Wazzap E2E tests', () => {
     await secondWindowDriver.login(user2);
     await secondWindowDriver.waitForElement('conversation-item');
     await secondWindowDriver.clickConversationAtIndex(0);
-    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.eql(msg);
+    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.equal(msg);
+  });
+
+  it.skip('should send message to existing conversation', async () => {
+    await firstWindowDriver.startNewConversation(user1, user2, msg);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await secondWindowDriver.waitForElement('conversation-item');
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await secondWindowDriver.sendMessage(msg2);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await browser.sleep(1000);
+    expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
+
   });
 });

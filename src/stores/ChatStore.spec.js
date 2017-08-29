@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import ChatStore from './ChatStore';
+import ChatStore, {RELATION_STATE} from './ChatStore';
 import RestClient from '../common/restClient';
 import {beforeAndAfter} from '../../test/environment';
 import {baseURL} from '../../test/test-common';
@@ -28,6 +28,7 @@ describe('Chat Store unit tests', () => {
     expect(store.conversations.toJS()).to.eql([]);
     expect(store.activeRelationId).to.equal(null);
     expect(store.activeRelationConversation).to.eql({});
+    expect(store.relationState).to.equal('');
   });
 
   it('should store correct username and isLoggedIn values', async () => {
@@ -62,20 +63,48 @@ describe('Chat Store unit tests', () => {
   });
 
   it('should store fetched messages in store.activeRelationMessages', async () => {
-    const generatedResponse = {id: '39d2a309-4430-4850-883a-0e22a03ad06d',
-      members:
-      ['a65bd338-aba1-42e9-ae2b-322b090e069e',
+    const generatedResponse = {
+      id: '39d2a309-4430-4850-883a-0e22a03ad06d',
+      members: ['a65bd338-aba1-42e9-ae2b-322b090e069e',
         'a98fb470-f2ec-45fd-b56c-1fecca7bda92'],
-      messages:
-      [{id: 'd0cca645-d462-477e-8c1b-9a39226cf408',
+      messages: [{
+        id: 'd0cca645-d462-477e-8c1b-9a39226cf408',
         body: 'Bend the knee',
         conversationId: '39d2a309-4430-4850-883a-0e22a03ad06d',
         created: '2017-08-29T13:47:37.295Z',
-        createdBy: 'a65bd338-aba1-42e9-ae2b-322b090e069e'}]};
+        createdBy: 'a65bd338-aba1-42e9-ae2b-322b090e069e'
+      }]
+    };
     const {id} = generatedResponse;
     nock(baseURL).get(`${endpoints.GET_CONVERSATION_BY_ID}?conversationId=${id}`)
       .reply(200, generatedResponse);
     await store.getConversationById(id);
     expect(mobx.toJS(store.activeRelationConversation)).to.eql(generatedResponse);
+  });
+
+  // it('should store and fetch multiple messages', async () => {
+  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '1', members: ['1', '2'], messageBody: 'bla'}).reply(200, '1');
+  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '2', members: ['1', '2'], messageBody: 'bli'}).reply(200, '1');
+  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '1', members: ['1', '2'], messageBody: 'blu'}).reply(200, '1');
+  //
+  //   const conversationId = await store.sendMessage('1', ['1', '2'], 'bla');
+  //   const conversationId2 = await store.sendMessage('2', ['1', '2'], 'bli');
+  //   const conversationId3 = await store.sendMessage('1', ['1', '2'], 'blu');
+  //   expect(conversationId).to.equal(conversationId2);
+  //   expect(conversationId).to.equal(conversationId3);
+  //   await store.getConversationById(conversationId);
+  // });
+  it('should store relation state to contact state', async () => {
+    const relationId = 'd0cca645-d462-477e-8c1b-9a39226cf408';
+    store.startConversation(relationId);
+    expect(store.relationState).to.equal(RELATION_STATE.CONTACT);
+  });
+
+  it('should store relation state to conversation state', async () => {
+    const relationId = 'd0cca645-d462-477e-8c1b-9a39226cf408';
+    nock(baseURL).get(`${endpoints.GET_CONVERSATION_BY_ID}?conversationId=${relationId}`)
+      .reply(200, {});
+    store.startConversation(relationId, false);
+    expect(store.relationState).to.equal(RELATION_STATE.CONVERSATION);
   });
 });

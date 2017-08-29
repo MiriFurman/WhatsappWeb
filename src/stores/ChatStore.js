@@ -1,5 +1,10 @@
 import {observable, action} from 'mobx';
 
+export const RELATION_STATE = {
+  CONTACT: 'contact',
+  CONVERSATION: 'conversation'
+};
+
 class ChatStore {
   constructor(restClient) {
     this.restClient = restClient;
@@ -12,6 +17,7 @@ class ChatStore {
   @observable conversations = [];
   @observable activeRelationId = null;
   @observable activeRelationConversation = {};
+  @observable relationState = '';
 
   @action
   async login(username) {
@@ -31,7 +37,10 @@ class ChatStore {
   async startConversation(relation, newConversation = true) {
     this.activeRelationId = relation;
     if (!newConversation) {
+      this.relationState = RELATION_STATE.CONVERSATION;
       await this.getConversationById(relation);
+    } else {
+      this.relationState = RELATION_STATE.CONTACT;
     }
   }
 

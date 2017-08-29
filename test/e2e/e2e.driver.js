@@ -71,17 +71,25 @@ export default class AppDriver {
     await this.navigate();
     await this.login(user2);
     await this.clickContactAtIndex(0);
-    const loginInput = await this.getInput('input-msg');
-    await loginInput.enterText(msg);
-    const loginButton = await this.getButton('send-msg');
-    await loginButton.click();
+    const inputMsg = await this.getInput('input-msg');
+    await inputMsg.enterText(msg);
+    const sendBtn = await this.getButton('send-msg');
+    await sendBtn.click();
   }
 
   getMessagesFromSelectedConversation() {
     return $$('[data-hook="msg-item"]').map(msg => msg.getText());
+
   }
 
   getMessageFromSelectedConversation(index) {
     return $$('[data-hook="msg-item"]').get(index).getText();
+  }
+
+  async sendMessage(msg) {
+    const msgInput = await this.getInput('input-msg');
+    await msgInput.enterText(msg);
+    const msgButton = await this.getButton('send-msg');
+    await msgButton.click();
   }
 }

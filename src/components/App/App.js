@@ -4,17 +4,31 @@ import {observer, inject} from 'mobx-react';
 import Login from '../Login';
 import ChatView from '../ChatView';
 import s from './App.scss';
+import {RELATION_STATE} from '../../stores/ChatStore';
 
 @inject('chatStore')
-@observer class App extends React.Component {
+@observer
+class App extends React.Component {
   onLoginClick(username) {
     const {chatStore} = this.props;
     chatStore.login(username);
   }
 
+  sendMessage(messageBody) {
+    const {chatStore} = this.props;
+    const {currentUser, activeRelationId, activeRelationConversation} = chatStore;
+    if (chatStore.relationState === RELATION_STATE.CONTACT) {
+      chatStore.sendMessage(currentUser.id, [currentUser.id, activeRelationId], messageBody);
+    } else {
+      const {members} = activeRelationConversation;
+      chatStore.sendMessage(currentUser.id, members, messageBody);
+    }
+
+  }
+
   render() {
     const {chatStore} = this.props;
-    const {username, isLoggedIn, contacts, currentUser, activeRelationId, conversations} = chatStore;
+    const {username, isLoggedIn, contacts, activeRelationId, conversations} = chatStore;
     return (
       <div className={s.root}>
         {!isLoggedIn && <Login onLoginClick={username => this.onLoginClick(username)}/>}
@@ -24,7 +38,7 @@ import s from './App.scss';
           contacts={contacts.toJS()}
           conversations={conversations.toJS()}
           startConversation={(relationId, isNewConversation) => chatStore.startConversation(relationId, isNewConversation)}
-          sendMessage={messageBody => chatStore.sendMessage(currentUser.id, [currentUser.id, activeRelationId], messageBody)}
+          sendMessage={messageBody => this.sendMessage(messageBody)}
           />}
       </div>
     );
@@ -34,7 +48,6 @@ import s from './App.scss';
 App.propTypes = {
   chatStore: PropTypes.object
 };
-
 
 
 export default App;

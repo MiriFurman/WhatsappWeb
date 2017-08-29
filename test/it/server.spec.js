@@ -60,14 +60,33 @@ describe('Chat App Server', () => {
     expect(relations.conversations[0].id).to.equal(conversationId);
     expect(relations.contacts.length).to.equal(2);
   });
-  it('should get messages from conversation by its conversation uuid', async () => {
+
+  it('should get messages from conversation by its conversation id', async () => {
     const user1Obj = await restClient.login(user1);
     const user2Obj = await restClient.login(user2);
     const exampleMessage = 'Bend the knee';
     const conversationId = await restClient
       .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
     const receivedConversation = await restClient.getConversationById(conversationId);
-    expect(receivedConversation.messages[0].body).to.eql(exampleMessage);
+    expect(receivedConversation.messages[0].body).to.equal(exampleMessage);
+  });
+
+  it('should send and receive multiple messages', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage1 = 'Bend the knee';
+    const exampleMessage2 = 'You are my queen!';
+    const exampleMessage3 = 'Do you like dragons?';
+    const conversationId1 = await restClient
+      .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage1);
+    const conversationId2 = await restClient
+      .sendMessage(user2Obj.id, [user2Obj.id, user1Obj.id], exampleMessage2);
+    const conversationId3 = await restClient
+      .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage3);
+    expect(conversationId1).to.equal(conversationId2);
+    expect(conversationId1).to.equal(conversationId3);
+    const receivedConversation = await restClient.getConversationById(conversationId1);
+    expect(receivedConversation.messages.map(msg => msg.body)).to.eql([exampleMessage1, exampleMessage2, exampleMessage3]);
   });
 
 });
