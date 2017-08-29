@@ -25,16 +25,10 @@
         <developer>
             <name>Miri Furman</name>
             <email>mirif@wix.com</email>
-            <roles>
-                <role>owner</role>
-            </roles>
         </developer>
         <developer>
             <name>Shilo Mangam</name>
             <email>shilom@wix.com</email>
-            <roles>
-                <role>owner</role>
-            </roles>
         </developer>
     </developers>
 
