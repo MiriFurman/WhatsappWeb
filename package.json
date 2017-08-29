@@ -14,6 +14,7 @@
     "precommit": "yoshi lint",
     "pretest": "yoshi build",
     "test": "yoshi test",
+    "test:e2e": "yoshi test --protractor",
     "posttest": "yoshi lint",
     "release": "yoshi release",
     "lint": "yoshi lint"

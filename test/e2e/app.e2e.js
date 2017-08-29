@@ -1,8 +1,24 @@
 import 'babel-polyfill';
 import {expect} from 'chai';
-import {beforeAndAfter} from './../environment';
-import * as driver from './e2e.driver';
-import {ExpectedConditions as EC} from 'protractor';
+import {beforeAndAfter, app} from './../environment';
+import AppDriver from './e2e.driver';
+import wrap from 'lodash/wrap';
+
+
+const createWindowDriver = windowHandle => {
+  const driver = new AppDriver();
+  const allMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(driver));
+  allMethods.forEach(m => {
+    if (typeof (driver[m]) === 'function') {
+      driver[m] = wrap(driver[m], async (func, ...rest) => {
+        await browser.switchTo().window(windowHandle);
+        return func.apply(driver, rest);
+      });
+    }
+  });
+
+  return driver;
+};
 
 describe('Wazzap E2E tests', () => {
 
@@ -10,31 +26,47 @@ describe('Wazzap E2E tests', () => {
   const user1 = 'Donald';
   const user2 = 'Ivanka';
   const msg = 'lets make America great again!';
+  let firstWindowDriver, secondWindowDriver;
+
+  beforeEach(async () => {
+    await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
+    const [firstWindow, secondWindow] = await browser.getAllWindowHandles();
+    firstWindowDriver = createWindowDriver(firstWindow);
+    secondWindowDriver = createWindowDriver(secondWindow);
+  });
 
   it('should login to app', async () => {
-    await driver.navigate();
-    expect(await driver.isLoginScreenPresent()).to.equal(true);
-    expect(await driver.getUserNameElement().isPresent()).to.equal(false);
-    await driver.login(user1);
-    expect(await driver.getUserNameElement().getText()).to.equal(user1);
-    expect(await driver.isLoginScreenPresent()).to.equal(false);
+    await firstWindowDriver.navigate();
+    expect(await firstWindowDriver.isLoginScreenPresent()).to.equal(true);
+    expect(await firstWindowDriver.isUserNameElementPresent()).to.equal(false);
+
+    await firstWindowDriver.login(user1);
+
+    expect(await firstWindowDriver.getUserNameElementText()).to.equal(user1);
+    expect(await firstWindowDriver.isLoginScreenPresent()).to.equal(false);
   });
 
   it('should show contacts list on login', async () => {
-    await driver.navigate();
-    await driver.login(user1);
-    expect(await driver.getContactListCnt().isDisplayed(), 'Contact list invisible').to.equal(false);
-    await driver.navigate();
-    await driver.login(user2);
-    expect(await driver.getContactListCnt().isDisplayed(), 'Contact list visible').to.equal(true);
-    expect(await driver.getContactListItems().map(el => el.getText())).to.eql([user1]);
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user1);
+    expect(await firstWindowDriver.isContactListCntDisplayed(), 'Contact list invisible').to.equal(false);
+
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user2);
+
+    expect(await firstWindowDriver.isContactListCntDisplayed(), 'Contact list visible').to.equal(true);
+    expect(await firstWindowDriver.getContactListItemTextAtIndex(0)).to.equal(user1);
   });
 
   it('should move item from contacts to conversions on first message', async () => {
-    await driver.startNewConversation(user1, user2, msg);
-    await driver.navigate();
-    await driver.login(user2);
-    await browser.wait(EC.presenceOf(driver.getConversationListItem()));
-    expect(await driver.getAllConversationListItems().map(el => el.getText())).to.eql([user1]);
+    await firstWindowDriver.startNewConversation(user1, user2, msg);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await secondWindowDriver.waitForElement('conversation-item');
+    expect(await secondWindowDriver.getConversationListItemTextAtIndex(0)).to.equal(user1);
+  });
+
+  it('should display a message that was send from user1 to user2', async () => {
+    await firstWindowDriver.startNewConversation(user1, user2, msg);
   });
 });
