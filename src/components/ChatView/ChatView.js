@@ -1,37 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ConversationWindow from '../ConversationWindow/ConversationWindow';
+import ConversationWindow from '../ConversationWindow';
+import ContactList from '../ContactList';
+import ConversationList from '../ConversationList';
 
-export default function ChatView(props) {
-  return (<div>
-    <ul data-hook="contact-list">{props.contacts
-        .filter(contact => contact.name !== props.username)
-        .map(contact =>
-          (<li
-            data-hook="contact-item" key={contact.id}
-            onClick={() => props.startConversation(contact.id)}
-            >{contact.name}</li>)
-        )}
-    </ul>
-    <ul data-hook="conversation-list">{props.conversations
-        .map(conversation =>
-          (<li
-            data-hook="conversation-item" key={conversation.id}
-                                          >{conversation.displayName}</li>)
-        )}
-    </ul>
-    {!props.activeRelationId && <div data-hook="welcome-screen">Welcome to Wazzappppp</div>}
-    {props.activeRelationId &&
-      <ConversationWindow
-        onSendMessage={messageBody => {
-          props.sendMessage(messageBody);
-        }}
-        />
-      }
+const ChatView = props => (
+  <div>
     <div data-hook="username">{props.username}</div>
+    <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
+    <ConversationList conversations={props.conversations}/>
+    {!props.activeRelationId && <div data-hook="welcome-screen">Welcome to Wazzappppp</div>}
+    {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
   </div>
-  );
-}
+);
 
 ChatView.propTypes = {
   username: PropTypes.string.isRequired,
@@ -47,3 +28,6 @@ ChatView.defaultProps = {
   contacts: [],
   conversations: [],
 };
+
+export default ChatView;
+

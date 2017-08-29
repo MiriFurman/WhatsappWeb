@@ -6,7 +6,6 @@ import Button from 'wix-style-react/dist/src/Button';
 class ConversationWindow extends React.Component {
   constructor() {
     super();
-
     this.state = {newMessage: ''};
   }
 

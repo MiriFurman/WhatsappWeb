@@ -22,11 +22,13 @@ describe('Chat View Component', () => {
 
   it('should show welcome screen when there is no conversation selected', () => {
     expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(true);
+    expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(false);
   });
 
   it('should not show welcome screen when there is conversation selected', () => {
     wrapper.setProps({activeRelationId: contacts[1].id});
     expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
+    expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
   });
 
   it('should invoke start conversation on relation click', () => {
