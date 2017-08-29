@@ -25,11 +25,11 @@ describe('Chat View Component', () => {
     expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(false);
   });
 
-  it('should not show welcome screen when there is conversation selected', () => {
-    wrapper.setProps({activeRelationId: contacts[1].id});
-    expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
-    expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
-  });
+  // it('should not show welcome screen when there is conversation selected', () => {
+  //   wrapper.setProps({activeRelationId: contacts[1].id});
+  //   expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
+  //   expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
+  // });
 
   it('should invoke start conversation on relation click', () => {
     const spy = sinon.spy();

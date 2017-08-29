@@ -6,6 +6,7 @@ import {baseURL} from '../../test/test-common';
 import axios from 'axios';
 import nock from 'nock';
 import * as endpoints from '../common/endpoints';
+import mobx from 'mobx';
 
 const restClient = new RestClient(axios, url => `${baseURL}${url}`);
 
@@ -26,6 +27,7 @@ describe('Chat Store unit tests', () => {
     expect(store.contacts.toJS()).to.eql([]);
     expect(store.conversations.toJS()).to.eql([]);
     expect(store.activeRelationId).to.equal(null);
+    expect(store.activeRelationConversation).to.eql({});
   });
 
   it('should store correct username and isLoggedIn values', async () => {
@@ -47,6 +49,7 @@ describe('Chat Store unit tests', () => {
     store.startConversation('777');
     expect(store.activeRelationId).to.equal('777');
   });
+
   it('should store user relations', async () => {
     const conversations = ['a'];
     const contacts = ['b'];
@@ -56,5 +59,23 @@ describe('Chat Store unit tests', () => {
     await store.getRelations(userId);
     expect(store.contacts.toJS()).to.eql(contacts);
     expect(store.conversations.toJS()).to.eql(conversations);
+  });
+
+  it('should store fetched messages in store.activeRelationMessages', async () => {
+    const generatedResponse = {id: '39d2a309-4430-4850-883a-0e22a03ad06d',
+      members:
+      ['a65bd338-aba1-42e9-ae2b-322b090e069e',
+        'a98fb470-f2ec-45fd-b56c-1fecca7bda92'],
+      messages:
+      [{id: 'd0cca645-d462-477e-8c1b-9a39226cf408',
+        body: 'Bend the knee',
+        conversationId: '39d2a309-4430-4850-883a-0e22a03ad06d',
+        created: '2017-08-29T13:47:37.295Z',
+        createdBy: 'a65bd338-aba1-42e9-ae2b-322b090e069e'}]};
+    const {id} = generatedResponse;
+    nock(baseURL).get(`${endpoints.GET_CONVERSATION_BY_ID}?conversationId=${id}`)
+      .reply(200, generatedResponse);
+    await store.getConversationById(id);
+    expect(mobx.toJS(store.activeRelationConversation)).to.eql(generatedResponse);
   });
 });

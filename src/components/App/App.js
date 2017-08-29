@@ -23,7 +23,7 @@ import s from './App.scss';
           activeRelationId={activeRelationId}
           contacts={contacts.toJS()}
           conversations={conversations.toJS()}
-          startConversation={relationId => chatStore.startConversation(relationId)}
+          startConversation={(relationId, isNewConversation) => chatStore.startConversation(relationId, isNewConversation)}
           sendMessage={messageBody => chatStore.sendMessage(currentUser.id, [currentUser.id, activeRelationId], messageBody)}
           />}
       </div>
@@ -32,7 +32,9 @@ import s from './App.scss';
 }
 
 App.propTypes = {
-  chatStore: PropTypes.object.isRequired
+  chatStore: PropTypes.object
 };
+
+
 
 export default App;

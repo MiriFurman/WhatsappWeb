@@ -11,6 +11,7 @@ class ChatStore {
   @observable contacts = [];
   @observable conversations = [];
   @observable activeRelationId = null;
+  @observable activeRelationConversation = {};
 
   @action
   async login(username) {
@@ -27,13 +28,17 @@ class ChatStore {
   }
 
   @action
-  startConversation(relation) {
+  async startConversation(relation, newConversation = true) {
     this.activeRelationId = relation;
+    if (!newConversation) {
+      await this.getConversationById(relation);
+    }
   }
 
   @action
   async sendMessage(from, members, messageBody) {
-    await this.restClient.sendMessage(from, members, messageBody);
+    const conversationId = await this.restClient.sendMessage(from, members, messageBody);
+    await this.getConversationById(conversationId);
   }
 
   @action
@@ -43,7 +48,11 @@ class ChatStore {
     this.contacts = relations.contacts;
   }
 
-
+  @action
+  async getConversationById(id) {
+    const conversation = await this.restClient.getConversationById(id);
+    this.activeRelationConversation = conversation;
+  }
 }
 
 export default ChatStore;

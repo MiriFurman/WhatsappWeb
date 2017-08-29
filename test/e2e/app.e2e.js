@@ -68,5 +68,10 @@ describe('Wazzap E2E tests', () => {
 
   it('should display a message that was send from user1 to user2', async () => {
     await firstWindowDriver.startNewConversation(user1, user2, msg);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await secondWindowDriver.waitForElement('conversation-item');
+    await secondWindowDriver.clickConversationAtIndex(0);
+    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.eql(msg);
   });
 });

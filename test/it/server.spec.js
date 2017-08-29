@@ -43,7 +43,6 @@ describe('Chat App Server', () => {
   it('should create conversation on first message', async () => {
     const user1Obj = await restClient.login(user1);
     const user2Obj = await restClient.login(user2);
-    //setup above
     const exampleMessage = 'Bend the knee';
     const conversationId = await restClient
       .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
@@ -60,6 +59,15 @@ describe('Chat App Server', () => {
     const relations = await restClient.getRelations(user1Obj.id);
     expect(relations.conversations[0].id).to.equal(conversationId);
     expect(relations.contacts.length).to.equal(2);
+  });
+  it('should get messages from conversation by its conversation uuid', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage = 'Bend the knee';
+    const conversationId = await restClient
+      .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+    const receivedConversation = await restClient.getConversationById(conversationId);
+    expect(receivedConversation.messages[0].body).to.eql(exampleMessage);
   });
 
 });

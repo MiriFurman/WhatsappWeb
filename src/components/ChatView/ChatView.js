@@ -7,8 +7,8 @@ import ConversationList from '../ConversationList';
 const ChatView = props => (
   <div>
     <div data-hook="username">{props.username}</div>
+    <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
     <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
-    <ConversationList conversations={props.conversations}/>
     {!props.activeRelationId && <div data-hook="welcome-screen">Welcome to Wazzappppp</div>}
     {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
   </div>

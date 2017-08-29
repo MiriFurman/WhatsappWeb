@@ -47,6 +47,10 @@ export default class AppDriver {
     return $$('[data-hook="contact-item"]').get(index).click();
   }
 
+  clickConversationAtIndex(index) {
+    return $$('[data-hook="conversation-item"]').get(index).click();
+  }
+
   async waitForElement(datahook) {
     await browser.wait(EC.presenceOf($(`[data-hook=${datahook}]`)));
   }
@@ -73,4 +77,11 @@ export default class AppDriver {
     await loginButton.click();
   }
 
+  getMessagesFromSelectedConversation() {
+    return $$('[data-hook="msg-item"]').map(msg => msg.getText());
+  }
+
+  getMessageFromSelectedConversation(index) {
+    return $$('[data-hook="msg-item"]').get(index).getText();
+  }
 }
