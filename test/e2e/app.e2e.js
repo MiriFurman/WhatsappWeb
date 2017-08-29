@@ -1,11 +1,6 @@
 import 'babel-polyfill';
 import {expect} from 'chai';
 import {beforeAndAfter} from './../environment';
-import {
-  inputTestkitFactory,
-  buttonTestkitFactory,
-  waitForVisibilityOf
-} from 'wix-style-react/dist/testkit/protractor';
 import * as driver from './e2e.driver';
 import {ExpectedConditions as EC} from 'protractor';
 
@@ -18,32 +13,28 @@ describe('Wazzap E2E tests', () => {
 
   it('should login to app', async () => {
     await driver.navigate();
-    const userInput = inputTestkitFactory({dataHook: 'login-username'});
-    await waitForVisibilityOf(userInput.element(), 'Cannot find Input');
-    expect(await userInput.element().isDisplayed()).to.equal(true);
-    expect(await driver.isLoginScreenPresent()).to.be.true;
-
-    await userInput.enterText(user1);
-    const loginButton = buttonTestkitFactory({dataHook: 'login-btn'});
-    expect(await driver.getUserNameElement().isPresent()).to.be.false;
-
-    await loginButton.click();
+    expect(await driver.isLoginScreenPresent()).to.equal(true);
+    expect(await driver.getUserNameElement().isPresent()).to.equal(false);
+    await driver.login(user1);
     expect(await driver.getUserNameElement().getText()).to.equal(user1);
-    expect(await driver.isLoginScreenPresent()).to.be.false;
+    expect(await driver.isLoginScreenPresent()).to.equal(false);
   });
 
   it('should show contacts list on login', async () => {
+    await driver.navigate();
     await driver.login(user1);
-    expect(await $('[data-hook="contact-list"]').isDisplayed(), 'Contact list invisible').to.equal(false);
+    expect(await driver.getContactListCnt().isDisplayed(), 'Contact list invisible').to.equal(false);
+    await driver.navigate();
     await driver.login(user2);
-    expect(await $('[data-hook="contact-list"]').isDisplayed(), 'Contact list visible').to.equal(true);
-    expect(await $$('[data-hook="contact-item"]').map(el => el.getText())).to.eql([user1]);
+    expect(await driver.getContactListCnt().isDisplayed(), 'Contact list visible').to.equal(true);
+    expect(await driver.getContactListItems().map(el => el.getText())).to.eql([user1]);
   });
 
   it('should move item from contacts to conversions on first message', async () => {
     await driver.startNewConversation(user1, user2, msg);
+    await driver.navigate();
     await driver.login(user2);
-    await browser.wait(EC.presenceOf($('[data-hook="conversation-item"]')));
-    expect(await $$('[data-hook="conversation-item"]').map(el => el.getText())).to.eql([user1]);
+    await browser.wait(EC.presenceOf(driver.getConversationListItem()));
+    expect(await driver.getAllConversationListItems().map(el => el.getText())).to.eql([user1]);
   });
 });
