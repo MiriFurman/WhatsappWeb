@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import ConversationWindow from '../ConversationWindow';
 import ContactList from '../ContactList';
 import ConversationList from '../ConversationList';
+import Welcome from '../Welcome';
 
 const ChatView = props => (
   <div>
     <div data-hook="username">{props.username}</div>
     <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
     <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
-    {!props.activeRelationId && <div data-hook="welcome-screen">Welcome to Wazzappppp</div>}
+    {!props.activeRelationId && <Welcome/>}
     {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
   </div>
 );
