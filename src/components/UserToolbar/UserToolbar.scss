@@ -1,0 +1,33 @@
+.toolbar-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .user-mgmt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f4f7;
+    padding: 10px;
+
+    .user-details {
+      height: 80px;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+    }
+
+    .user-actions {
+
+    }
+  }
+
+  .search-container {
+    border-bottom: 1px solid #f0f4f7;
+  }
+}

@@ -4,13 +4,14 @@ import ConversationWindow from '../ConversationWindow';
 import ContactList from '../ContactList';
 import ConversationList from '../ConversationList';
 import Welcome from '../Welcome';
+import UserToolbar from '../UserToolbar';
 import s from './ChatView.scss';
 
 const ChatView = props => (
   <div className={s.viewContainer}>
     <div className={s.chatViewContainer}>
       <div className={s.sidebar}>
-        <div data-hook="username">{props.username}</div>
+        <UserToolbar username={props.username}/>
         <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
         <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
       </div>
