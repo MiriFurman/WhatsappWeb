@@ -19,7 +19,8 @@ describe('Chat View Component', () => {
     wrapper = mount(
       <Provider {...configureStores(axios)}>
         <ChatView username={username} contacts={contacts} startConversation={() => {}} {...props}/>
-      </Provider>
+      </Provider>,
+      {attachTo: document.createElement('div')}
     );
   };
 
