@@ -3,6 +3,7 @@ import axios from 'axios';
 import {beforeAndAfter, app} from '../environment';
 import {baseURL} from '../test-common';
 import {wixAxiosInstanceConfig} from 'wix-axios-config';
+import {FLUSH} from '../../src/common/endpoints';
 
 const axiosInstance = wixAxiosInstanceConfig(axios, {
   baseURL,
@@ -20,7 +21,7 @@ describe('Chat App Server', () => {
   const user2 = 'Jon';
 
   beforeEach(() => {
-    return axiosInstance.post(app.getUrl('/api/flush'));
+    return axiosInstance.post(app.getUrl(FLUSH));
   });
 
   it('should login', async () => {

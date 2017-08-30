@@ -92,4 +92,8 @@ export default class AppDriver {
     const msgButton = await this.getButton('send-msg');
     await msgButton.click();
   }
+
+  flushConversations() {
+
+  }
 }

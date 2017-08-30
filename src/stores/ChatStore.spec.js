@@ -82,18 +82,6 @@ describe('Chat Store unit tests', () => {
     expect(mobx.toJS(store.activeRelationConversation)).to.eql(generatedResponse);
   });
 
-  // it('should store and fetch multiple messages', async () => {
-  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '1', members: ['1', '2'], messageBody: 'bla'}).reply(200, '1');
-  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '2', members: ['1', '2'], messageBody: 'bli'}).reply(200, '1');
-  //   nock(baseURL).post(endpoints.SEND_MESSAGE, {from: '1', members: ['1', '2'], messageBody: 'blu'}).reply(200, '1');
-  //
-  //   const conversationId = await store.sendMessage('1', ['1', '2'], 'bla');
-  //   const conversationId2 = await store.sendMessage('2', ['1', '2'], 'bli');
-  //   const conversationId3 = await store.sendMessage('1', ['1', '2'], 'blu');
-  //   expect(conversationId).to.equal(conversationId2);
-  //   expect(conversationId).to.equal(conversationId3);
-  //   await store.getConversationById(conversationId);
-  // });
   it('should store relation state to contact state', async () => {
     const relationId = 'd0cca645-d462-477e-8c1b-9a39226cf408';
     store.startConversation(relationId);

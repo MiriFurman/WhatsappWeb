@@ -3,7 +3,8 @@ import {expect} from 'chai';
 import {beforeAndAfter, app} from './../environment';
 import AppDriver from './e2e.driver';
 import wrap from 'lodash/wrap';
-
+import {FLUSH} from '../../src/common/endpoints';
+import axios from 'axios';
 
 const createWindowDriver = windowHandle => {
   const driver = new AppDriver();
@@ -20,6 +21,7 @@ const createWindowDriver = windowHandle => {
   return driver;
 };
 
+
 describe('Wazzap E2E tests', () => {
 
   beforeAndAfter();
@@ -34,6 +36,7 @@ describe('Wazzap E2E tests', () => {
     const [firstWindow, secondWindow] = await browser.getAllWindowHandles();
     firstWindowDriver = createWindowDriver(firstWindow);
     secondWindowDriver = createWindowDriver(secondWindow);
+    await axios.post(app.getUrl(FLUSH));
   });
 
   it('should login to app', async () => {
@@ -68,25 +71,24 @@ describe('Wazzap E2E tests', () => {
   });
 
   it('should display a message that was send from user1 to user2', async () => {
-    await firstWindowDriver.startNewConversation(user1, user2, msg);
+    await firstWindowDriver.startNewConversation(user1, user2, 'bla');
     await secondWindowDriver.navigate();
     await secondWindowDriver.login(user2);
     await secondWindowDriver.waitForElement('conversation-item');
     await secondWindowDriver.clickConversationAtIndex(0);
-    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.equal(msg);
+    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.equal('bla');
   });
 
-  it.skip('should send message to existing conversation', async () => {
+  it('should send message to existing conversation', async () => {
     await firstWindowDriver.startNewConversation(user1, user2, msg);
     await secondWindowDriver.navigate();
     await secondWindowDriver.login(user2);
     await secondWindowDriver.waitForElement('conversation-item');
     await secondWindowDriver.clickConversationAtIndex(0);
     await secondWindowDriver.sendMessage(msg2);
-    await secondWindowDriver.navigate();
-    await secondWindowDriver.login(user2);
-    await secondWindowDriver.clickConversationAtIndex(0);
-    await browser.sleep(1000);
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user1);
+    await firstWindowDriver.clickConversationAtIndex(0);
     expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
 
   });
