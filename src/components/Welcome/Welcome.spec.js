@@ -28,7 +28,7 @@ describe('Welcome Component', () => {
 
   it(`should contain welcome message`, () => {
     render();
-    expect(wrapper.html()).to.contain('Welcome to Wazzappppp');
+    expect(wrapper.html()).to.contain('Welcom to Wazzap!!!');
   });
 
   it(`should contain a logo image`, () => {
