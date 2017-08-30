@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ConversationItem from '../ConversationItem';
+import * as s from './ConversationList.scss';
 
 const ConversationList = props => (
-  <section>
+  <section className={s.conversationList}>
     <ul data-hook="conversation-list">{props.conversations.map(conversation => (
       <li key={conversation.id}>
         <ConversationItem
