@@ -31,8 +31,11 @@ describe('Wazzap E2E tests', () => {
   const msg2 = 'Winning!!!';
   let firstWindowDriver, secondWindowDriver;
 
-  beforeEach(async () => {
+  before(async () => {
     await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
+  });
+
+  beforeEach(async () => {
     const [firstWindow, secondWindow] = await browser.getAllWindowHandles();
     firstWindowDriver = createWindowDriver(firstWindow);
     secondWindowDriver = createWindowDriver(secondWindow);
