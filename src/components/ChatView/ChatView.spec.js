@@ -1,8 +1,4 @@
-/**
- * Created by mirif on 28/08/2017.
- */
 import {expect} from 'chai';
-import sinon from 'sinon';
 import {mount} from 'enzyme';
 import React from 'react';
 import ChatView from './ChatView';
@@ -42,10 +38,4 @@ describe('Chat View Component', () => {
     expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
   });
 
-  it('should invoke start conversation on relation click', () => {
-    const spy = sinon.spy();
-    render({startConversation: spy});
-    wrapper.find('[data-hook="contact-item"]').at(0).simulate('click');
-    expect(spy.getCall(0).args).to.eql([contacts[1].id]);
-  });
 });
