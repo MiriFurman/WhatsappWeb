@@ -20,7 +20,7 @@ class Login extends React.Component {
   render() {
     return (<div data-hook="login-screen" className={s.loginContainer}>
       <div className={s.loginBox}>
-        <Text appearance="H1">Welcome to Wazzap</Text>
+        <Text appearance="H1" dataHook="login-heading">Welcome to Wazzap</Text>
         <Text appearance="T1">Sign in to your account by filling the form bellow.</Text>
         <div className={s.loginForm}>
           <div className={s.inputField}>
