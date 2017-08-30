@@ -4,14 +4,17 @@ import ConversationWindow from '../ConversationWindow';
 import ContactList from '../ContactList';
 import ConversationList from '../ConversationList';
 import Welcome from '../Welcome';
+import s from './ChatView.scss';
 
 const ChatView = props => (
-  <div>
-    <div data-hook="username">{props.username}</div>
-    <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
-    <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
-    {!props.activeRelationId && <Welcome/>}
-    {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
+  <div className={s.viewContainer}>
+    <div className={s.chatViewContainer}>
+      <div data-hook="username">{props.username}</div>
+      <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
+      <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
+      {!props.activeRelationId && <Welcome/>}
+      {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
+    </div>
   </div>
 );
 
