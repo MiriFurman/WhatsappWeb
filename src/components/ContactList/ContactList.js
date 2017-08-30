@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContactItem from '../ContactItem';
 import * as s from './ContactList.scss';
+import {Text} from 'wix-style-react';
 
 const ContactList = props => (
   <section className={s.contactList}>
+    <div className={s.contactHeader}>
+      <Text>CONTACTS</Text>
+    </div>
     <ul data-hook="contact-list">{props.contacts
       .filter(contact => contact.name !== props.username)
       .map(contact =>

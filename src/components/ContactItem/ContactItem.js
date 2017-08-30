@@ -11,7 +11,6 @@ const ContactItem = ({id, name, imageUrl, onContactClick}) => (
     </div>
     <div className={s.textContainer}>
       <Text dataHook="contact-display-name">{name}</Text>
-
     </div>
   </div>
 );
