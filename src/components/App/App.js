@@ -4,6 +4,7 @@ import {observer, inject} from 'mobx-react';
 import Login from '../Login';
 import ChatView from '../ChatView';
 import s from './App.scss';
+import '../../main.scss';
 import {RELATION_STATE} from '../../stores/ChatStore';
 
 @inject('chatStore')
