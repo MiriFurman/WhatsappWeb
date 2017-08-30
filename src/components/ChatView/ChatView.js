@@ -9,11 +9,15 @@ import s from './ChatView.scss';
 const ChatView = props => (
   <div className={s.viewContainer}>
     <div className={s.chatViewContainer}>
-      <div data-hook="username">{props.username}</div>
-      <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
-      <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
-      {!props.activeRelationId && <Welcome/>}
-      {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
+      <div className={s.sidebar}>
+        <div data-hook="username">{props.username}</div>
+        <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
+        <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
+      </div>
+      <div className={s.mainContent}>
+        {!props.activeRelationId && <Welcome/>}
+        {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
+      </div>
     </div>
   </div>
 );

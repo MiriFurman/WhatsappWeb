@@ -11,4 +11,18 @@
   width: 90%;
   height: 90%;
   background: white;
+  display: flex;
+  border: 1px solid red;
+
+  .sidebar {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid blue;
+  }
+
+  .main-content {
+    flex: 1;
+    border: 1px solid green;
+  }
 }
