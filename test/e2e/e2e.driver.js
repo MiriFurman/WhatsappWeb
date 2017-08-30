@@ -77,6 +77,16 @@ export default class AppDriver {
     await sendBtn.click();
   }
 
+  async clickAtContactAndSendMsgAt(contactIdx, msg) {
+    await this.waitForElement('contact-item');
+    await this.clickContactAtIndex(contactIdx);
+    const inputMsg = await this.getInput('input-msg');
+    await inputMsg.enterText(msg);
+    const sendBtn = await this.getButton('send-msg');
+    await sendBtn.click();
+  }
+
+
   getMessagesFromSelectedConversation() {
     return $$('[data-hook="msg-item"]').map(msg => msg.getText());
 

@@ -5,9 +5,12 @@ export const RELATION_STATE = {
   CONVERSATION: 'conversation'
 };
 
+const POLL_INTERVAL = 500;
+
 class ChatStore {
   constructor(restClient) {
     this.restClient = restClient;
+    this.intervalId = '';
   }
 
   @observable username = '';
@@ -61,6 +64,18 @@ class ChatStore {
   async getConversationById(id) {
     const conversation = await this.restClient.getConversationById(id);
     this.activeRelationConversation = conversation;
+  }
+
+  @action
+  async dataPolling() {
+    this.intervalId = setInterval(() => {
+      if (this.currentUser) {
+        this.getRelations(this.currentUser.id);
+      }
+      if (this.activeRelationId && this.relationState === RELATION_STATE.CONVERSATION) {
+        this.getConversationById(this.activeRelationConversation.id);
+      }
+    }, POLL_INTERVAL);
   }
 }
 

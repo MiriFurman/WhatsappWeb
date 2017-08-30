@@ -64,32 +64,46 @@ describe('Wazzap E2E tests', () => {
 
   it('should move item from contacts to conversions on first message', async () => {
     await firstWindowDriver.startNewConversation(user1, user2, msg);
-    await secondWindowDriver.navigate();
-    await secondWindowDriver.login(user2);
-    await secondWindowDriver.waitForElement('conversation-item');
-    expect(await secondWindowDriver.getConversationListItemTextAtIndex(0)).to.equal(user1);
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user2);
+    await firstWindowDriver.waitForElement('conversation-item');
+    expect(await firstWindowDriver.getConversationListItemTextAtIndex(0)).to.equal(user1);
   });
 
   it('should display a message that was send from user1 to user2', async () => {
-    await firstWindowDriver.startNewConversation(user1, user2, 'bla');
-    await secondWindowDriver.navigate();
-    await secondWindowDriver.login(user2);
-    await secondWindowDriver.waitForElement('conversation-item');
-    await secondWindowDriver.clickConversationAtIndex(0);
-    expect(await secondWindowDriver.getMessageFromSelectedConversation(0)).to.equal('bla');
+    await firstWindowDriver.startNewConversation(user1, user2, msg);
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user2);
+    await firstWindowDriver.waitForElement('conversation-item');
+    await firstWindowDriver.clickConversationAtIndex(0);
+    expect(await firstWindowDriver.getMessageFromSelectedConversation(0)).to.equal(msg);
   });
 
   it('should send message to existing conversation', async () => {
     await firstWindowDriver.startNewConversation(user1, user2, msg);
-    await secondWindowDriver.navigate();
-    await secondWindowDriver.login(user2);
-    await secondWindowDriver.waitForElement('conversation-item');
-    await secondWindowDriver.clickConversationAtIndex(0);
-    await secondWindowDriver.sendMessage(msg2);
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user2);
+    await firstWindowDriver.waitForElement('conversation-item');
+    await firstWindowDriver.clickConversationAtIndex(0);
+    await firstWindowDriver.sendMessage(msg2);
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user1);
     await firstWindowDriver.clickConversationAtIndex(0);
     expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
+  });
 
+  it('should send a message and show it on both screen without refreshing', async () => {
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user1);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await firstWindowDriver.clickAtContactAndSendMsgAt(0, msg);
+    await secondWindowDriver.waitForElement('conversation-item');
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await secondWindowDriver.sendMessage(msg2);
+    await firstWindowDriver.waitForElement('conversation-item');
+    await firstWindowDriver.clickConversationAtIndex(0);
+    await firstWindowDriver.waitForElement('msg-item');
+    expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
   });
 });

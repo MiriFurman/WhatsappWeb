@@ -37,6 +37,7 @@ module.exports = (app, context) => {
 
   app.post(FLUSH, wrapAsync(async (req, res) => {
     contactsService.reset();
+    conversationsService.reset();
     res.end();
   }));
 

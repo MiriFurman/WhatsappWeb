@@ -6,7 +6,7 @@ import {baseURL} from '../../test/test-common';
 import axios from 'axios';
 import nock from 'nock';
 import * as endpoints from '../common/endpoints';
-import mobx from 'mobx';
+import * as mobx from 'mobx';
 
 const restClient = new RestClient(axios, url => `${baseURL}${url}`);
 

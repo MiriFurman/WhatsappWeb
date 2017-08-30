@@ -9,9 +9,10 @@ import {RELATION_STATE} from '../../stores/ChatStore';
 @inject('chatStore')
 @observer
 class App extends React.Component {
-  onLoginClick(username) {
+  async onLoginClick(username) {
     const {chatStore} = this.props;
-    chatStore.login(username);
+    await chatStore.login(username);
+    chatStore.dataPolling();
   }
 
   sendMessage(messageBody) {
@@ -23,7 +24,6 @@ class App extends React.Component {
       const {members} = activeRelationConversation;
       chatStore.sendMessage(currentUser.id, members, messageBody);
     }
-
   }
 
   render() {
