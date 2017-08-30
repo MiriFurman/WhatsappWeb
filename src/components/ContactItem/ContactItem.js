@@ -1,11 +1,18 @@
 import React from 'react';
 import {Text} from 'wix-style-react';
 import PropTypes from 'prop-types';
+import * as s from './ContactItem.scss';
+import noImg from './../../assets/no-image.png';
 
 const ContactItem = ({id, name, imageUrl, onContactClick}) => (
-  <div onClick={() => onContactClick(id)} data-hook="contact-item">
-    <img data-hook="contact-img" src={imageUrl ? imageUrl : ''} alt=""/>
-    <Text dataHook="contact-display-name">{name}</Text>
+  <div className={s.contactItem} onClick={() => onContactClick(id)} data-hook="contact-item">
+    <div className={s.imageContainer}>
+      <img data-hook="contact-img" src={imageUrl ? imageUrl : noImg} alt=""/>
+    </div>
+    <div className={s.textContainer}>
+      <Text dataHook="contact-display-name">{name}</Text>
+
+    </div>
   </div>
 );
 

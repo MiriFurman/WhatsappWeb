@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContactItem from '../ContactItem';
+import * as s from './ContactList.scss';
 
 const ContactList = props => (
-  <section>
+  <section className={s.contactList}>
     <ul data-hook="contact-list">{props.contacts
       .filter(contact => contact.name !== props.username)
       .map(contact =>

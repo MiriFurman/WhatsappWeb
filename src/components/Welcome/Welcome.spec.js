@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 
-import Welcome from './index';
+import Welcome from './Welcome';
 
 describe('Welcome Component', () => {
   let wrapper;

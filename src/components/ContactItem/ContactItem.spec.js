@@ -29,7 +29,7 @@ describe('ContactItem component tests', () => {
       onContactClick: () => {}
     };
     const wrapper = render(propObject);
-    expect(wrapper.find('[data-hook="contact-img"]').prop('src')).to.equal('');
+    expect(wrapper.find('[data-hook="contact-img"]').prop('src')).to.equal('no-image.png');
   });
   it('should invoke start conversation on relation click', () => {
     const spy = sinon.spy();
