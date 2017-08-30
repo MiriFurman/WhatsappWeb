@@ -32,7 +32,7 @@ class Login extends React.Component {
           <div className={s.inputField}>
             <TextField>
               <Label appearance="T1.1" for="password">Password</Label>
-              <Input disabled id="password" size="normal" maxLength={524288} textOverflow="clip" theme="normal" width="initial" dataHook="login-username" onChange={evt => this.setState({username: evt.target.value})}/>
+              <Input disabled id="password" size="normal" maxLength={524288} textOverflow="clip" theme="normal" width="initial" dataHook="login-password" onChange={evt => this.setState({password: evt.target.value})}/>
             </TextField>
           </div>
           <div className={s.inputField}>
