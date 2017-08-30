@@ -1,15 +1,15 @@
-/**
- * Created by mirif on 29/08/2017.
- */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ContactItem from '../ContactItem';
 
 const ContactList = props => (
   <section>
     <ul data-hook="contact-list">{props.contacts
       .filter(contact => contact.name !== props.username)
       .map(contact =>
-        (<li data-hook="contact-item" key={contact.id} onClick={() => props.startConversation(contact.id)}>{contact.name}</li>)
+        (<li key={contact.id}>
+          <ContactItem {...contact} onContactClick={contactId => props.startConversation(contactId)}/>
+        </li>)
       )}
     </ul>
   </section>
