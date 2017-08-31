@@ -1,4 +1,6 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
+import flatten from 'lodash/flatten';
+import xor from 'lodash/xor';
 
 export const RELATION_STATE = {
   CONTACT: 'contact',
@@ -21,6 +23,16 @@ class ChatStore {
   @observable activeRelationId = null;
   @observable activeRelationConversation = {};
   @observable relationState = '';
+
+  @computed
+  get displayContacts() {
+    const conversationsMembers = this.conversations.map(({members}) => members.toJS());
+    const flattenMembers = flatten(conversationsMembers);
+    const conversationUsers = flattenMembers.filter(userId => userId !== this.currentUser.id);
+    const jsContacts = this.contacts.map(({id}) => id);
+    const filteredContactsId = xor(conversationUsers, jsContacts);
+    return this.contacts.filter(({id}) => filteredContactsId.indexOf(id) !== -1);
+  }
 
   @action
   async login(username) {

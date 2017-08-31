@@ -29,14 +29,14 @@ class App extends React.Component {
 
   render() {
     const {chatStore} = this.props;
-    const {username, isLoggedIn, contacts, activeRelationId, conversations} = chatStore;
+    const {username, isLoggedIn, activeRelationId, conversations, displayContacts} = chatStore;
     return (
       <div className={s.root}>
         {!isLoggedIn && <Login onLoginClick={username => this.onLoginClick(username)}/>}
         {isLoggedIn && <ChatView
           username={username}
           activeRelationId={activeRelationId}
-          contacts={contacts.toJS()}
+          contacts={displayContacts}
           conversations={conversations.toJS()}
           startConversation={(relationId, isNewConversation) => chatStore.startConversation(relationId, isNewConversation)}
           sendMessage={messageBody => this.sendMessage(messageBody)}

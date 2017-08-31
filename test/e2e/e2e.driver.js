@@ -39,6 +39,10 @@ export default class AppDriver {
     return $$('[data-hook="contact-item"]').get(index).getText();
   }
 
+  getAllContactsNames() {
+    return $$('[data-hook="contact-item"]').map(contact => contact.getText());
+  }
+
   getConversationListItemTextAtIndex(index) {
     return $$('[data-hook="conversation-item"]').get(index).getText();
   }

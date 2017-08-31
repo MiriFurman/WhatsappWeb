@@ -71,6 +71,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.login(user2);
     await firstWindowDriver.waitForElement('conversation-item');
     expect(await firstWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(user1);
+    expect(await firstWindowDriver.getAllContactsNames()).to.eql([]);
   });
 
   it('should display a message that was send from user1 to user2', async () => {

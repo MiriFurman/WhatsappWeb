@@ -95,4 +95,27 @@ describe('Chat Store unit tests', () => {
     store.startConversation(relationId, false);
     expect(store.relationState).to.equal(RELATION_STATE.CONVERSATION);
   });
+
+  it('should display only contacts without conversation', async () => {
+    const contactsWithConversation = ['0ecc3b62-7059-4086-b273-91610aca4c31', 'f1c5fc86-170c-48a0-a1e0-a2121f936e20'];
+    const currentUserId = 'e10f1e42-78e6-4931-8d0a-01bca3cd5046';
+    const contactWithoutConversation = 'c71b811e-8c7f-44e3-a376-8ea75b2c6ea8';
+    const conversations = [{
+      id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7',
+      members: [currentUserId, contactsWithConversation[0]]
+    },
+    {
+      id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
+      members: [contactsWithConversation[1], currentUserId]
+    }
+    ];
+    const contacts = [{id: contactWithoutConversation}, {id: contactsWithConversation[0]}, {id: contactsWithConversation[1]}];
+    const relations = {conversations, contacts};
+    nock(baseURL).get(`${endpoints.GET_RELATIONS}?userId=${currentUserId}`).reply(200, relations);
+    store.currentUser = {id: currentUserId};
+    await store.getRelations(currentUserId);
+    expect(mobx.toJS(store.displayContacts[0]).id).to.equal(contactWithoutConversation);
+  });
+
+
 });
