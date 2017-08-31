@@ -4,6 +4,7 @@ import React from 'react';
 
 import MessageBubble from './MessageBubble';
 import * as dh from './MessageBubbleDataHooks';
+import {messageBubbleTimeFormatter} from './MessageBubbleTimeFormat';
 
 describe('Message Bubble Component', () => {
   let wrapper;
@@ -41,10 +42,21 @@ describe('Message Bubble Component', () => {
     expect(dhFinder(dh.Body).text()).to.contain(msgBody);
   });
 
-  it('should display unformatted time via prop provided', () => {
-    const created = '13:30 PM';
+  it('should format date correctly', () => {
+    const expectedDateFormat = '10:30 AM | Jan 23, 2017';
+    const created = '2017-01-23 10:30';
+    const formattedCreated = messageBubbleTimeFormatter(created);
+    expect(formattedCreated).to.equal(expectedDateFormat);
+  });
+
+  it('should format date correctly', () => {
+    const expectedDateFormat = '02:30 PM | Jan 23, 2017';
+    const created = '2017-01-23 14:30';
+    const formattedCreated = messageBubbleTimeFormatter(created);
+    expect(formattedCreated).to.equal(expectedDateFormat);
+
     const timeTestMessage = modifyExample({created});
     render(timeTestMessage);
-    expect(wrapper.html()).to.contain(created);
+    expect(dhFinder(dh.Time).text()).to.equal(expectedDateFormat);
   });
 });

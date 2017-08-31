@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import {Text} from 'wix-style-react';
+
+import {messageBubbleTimeFormatter} from './MessageBubbleTimeFormat';
 import * as dh from './MessageBubbleDataHooks';
 import * as s from './MessageBubble.scss';
 
@@ -11,7 +13,7 @@ export const MessageBubble = props => {
       <div data-hook={dh.Item}>
         <p data-hook={dh.Body}>{body}</p>
       </div>
-      <div data-hook={dh.Time} className={s.time}>{created}</div>
+      <div data-hook={dh.Time} className={s.time}>{messageBubbleTimeFormatter(created)}</div>
     </div>
   );
 };
