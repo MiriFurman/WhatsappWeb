@@ -18,7 +18,7 @@ class ConversationWindow extends React.Component {
     return (<div data-hook="conversation-window">
       <ul className="messages-container">
         {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message =>
-          <MessageBubble body={message.body} time={message.time} id={message.id} key={message.id}/>)}
+          <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>)}
       </ul>
 
       <Input
