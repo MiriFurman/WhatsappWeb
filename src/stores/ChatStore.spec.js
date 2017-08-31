@@ -137,4 +137,20 @@ describe('Chat Store unit tests', () => {
   });
 
 
+  it('should return the correct conversation display name', async () => {
+    store.activeRelationConversation = {
+      id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7'
+    };
+    store.conversations = [
+      {
+        id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7',
+        displayName: 'correct'
+      },
+      {
+        id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
+        displayName: 'incorrect'
+      }
+    ];
+    expect(store.conversationDisplayName).to.equal('correct');
+  });
 });

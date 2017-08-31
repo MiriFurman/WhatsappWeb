@@ -8,13 +8,13 @@ import axios from 'axios';
 
 describe('Chat View Component', () => {
   const username = 'Luke';
-  const contacts = [{id: 1, name: 'Luke'}, {id: 2, name: 'Leah'}, {id: 3, name: 'Darth Vader'}];
+  const contacts = [{id: '1', name: 'Luke'}, {id: '2', name: 'Leah'}, {id: '3', name: 'Darth Vader'}];
   let wrapper;
 
   const render = (props = {}) => {
     wrapper = mount(
       <Provider {...configureStores(axios)}>
-        <ChatView username={username} contacts={contacts} startConversation={() => {}} {...props}/>
+        <ChatView username={username} contacts={contacts} startConversation={() => {}} sendMessage={() => {}} {...props}/>
       </Provider>,
       {attachTo: document.createElement('div')}
     );

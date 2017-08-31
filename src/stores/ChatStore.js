@@ -34,6 +34,13 @@ class ChatStore {
     return this.contacts.filter(({id}) => filteredContactsId.indexOf(id) !== -1);
   }
 
+  @computed
+  get conversationDisplayName() {
+    const conversationId = this.activeRelationConversation.id;
+    const currConv = this.conversations.find(conv => conv.id === conversationId);
+    return currConv ? currConv.displayName : '';
+  }
+
   @action
   async login(username) {
     const currentUser = await this.restClient.login(username);
