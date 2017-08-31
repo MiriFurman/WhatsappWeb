@@ -12,17 +12,22 @@
   height: 90%;
   background: white;
   display: flex;
-  border: 1px solid red;
+  border: 1px solid #f0f4f7;
+  border-radius: 10px;
 
   .sidebar {
     width: 400px;
     display: flex;
     flex-direction: column;
-    border: 1px solid blue;
+    border: 1px solid #f0f4f7;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 
   .main-content {
     flex: 1;
-    border: 1px solid green;
+    border: 1px solid #f0f4f7;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 }
