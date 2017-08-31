@@ -65,7 +65,7 @@ describe('Wazzap E2E tests', () => {
     expect(await firstWindowDriver.getContactListItemTextAtIndex(0)).to.equal(user1);
   });
 
-  it('should move item from contacts to conversions on first message', async () => {
+  it('should move item from contacts to conversions on first message and remove him from contacts', async () => {
     await firstWindowDriver.startNewConversation(user1, user2, msg);
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user2);
@@ -109,5 +109,25 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.clickConversationAtIndex(0);
     await firstWindowDriver.waitForElement('msg-item');
     expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
+  });
+
+  it('should remove current conversation when click on new contact', async () => {
+    const user3 = 'Moshe';
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user1);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await firstWindowDriver.clickAtContactAndSendMsgAt(0, msg);
+    await secondWindowDriver.waitForElement('conversation-item');
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await secondWindowDriver.sendMessage(msg2);
+    await firstWindowDriver.waitForElement('conversation-item');
+    await firstWindowDriver.clickConversationAtIndex(0);
+    await firstWindowDriver.waitForElement('msg-item');
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user3);
+    await secondWindowDriver.waitForElement('contact-item');
+    await secondWindowDriver.clickContactAtIndex(0);
+    expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
 });

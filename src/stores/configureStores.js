@@ -1,6 +1,3 @@
-/**
- * Created by mirif on 29/08/2017.
- */
 import RestClient from '../common/restClient';
 import ChatStore from './ChatStore';
 

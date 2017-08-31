@@ -55,6 +55,7 @@ class ChatStore {
       this.relationState = RELATION_STATE.CONVERSATION;
       await this.getConversationById(relation);
     } else {
+      this.activeRelationConversation = {};
       this.relationState = RELATION_STATE.CONTACT;
     }
   }

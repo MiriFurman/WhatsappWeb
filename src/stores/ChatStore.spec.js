@@ -117,5 +117,24 @@ describe('Chat Store unit tests', () => {
     expect(mobx.toJS(store.displayContacts[0]).id).to.equal(contactWithoutConversation);
   });
 
+  it('should remove current conversation when clicking on contact', async () => {
+    const relationId = '0ecc3b62-7059-4086-b273-91610aca4c31';
+    const activeRelationConversation = {
+      id: '39d2a309-4430-4850-883a-0e22a03ad06d',
+      members: ['a65bd338-aba1-42e9-ae2b-322b090e069e',
+        'a98fb470-f2ec-45fd-b56c-1fecca7bda92'],
+      messages: [{
+        id: 'd0cca645-d462-477e-8c1b-9a39226cf408',
+        body: 'Bend the knee',
+        conversationId: '39d2a309-4430-4850-883a-0e22a03ad06d',
+        created: '2017-08-29T13:47:37.295Z',
+        createdBy: 'a65bd338-aba1-42e9-ae2b-322b090e069e'
+      }]
+    };
+    store.activeRelationConversation = activeRelationConversation;
+    store.startConversation(relationId);
+    expect(mobx.toJS(store.activeRelationConversation)).to.eql({});
+  });
+
 
 });

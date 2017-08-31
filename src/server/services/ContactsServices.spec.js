@@ -1,7 +1,3 @@
-/**
- * Created by mirif on 28/08/2017.
- */
-
 import {expect} from 'chai';
 import {contactsService} from './ContactsService';
 

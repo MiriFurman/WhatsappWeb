@@ -1,6 +1,3 @@
-/**
- * Created by mirif on 28/08/2017.
- */
 import uuid from 'uuid';
 import xor from 'lodash/xor';
 import {contactsService} from './ContactsService';

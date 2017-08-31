@@ -95,9 +95,9 @@ export default class AppDriver {
   }
 
 
+
   getMessagesFromSelectedConversation() {
     return $$('[data-hook="msg-item"]').map(msg => msg.getText());
-
   }
 
   getMessageFromSelectedConversation(index) {
