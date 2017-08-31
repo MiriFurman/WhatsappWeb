@@ -11,7 +11,7 @@
   "scripts": {
     "start": "yoshi start",
     "build": ":",
-    "precommit": "yoshi lint",
+    "precommit": "yoshi test && yoshi lint",
     "pretest": "yoshi build",
     "test": "yoshi test",
     "test:e2e": "yoshi test --protractor",
