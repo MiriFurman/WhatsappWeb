@@ -81,8 +81,7 @@ export default class AppDriver {
     await this.clickContactAtIndex(0);
     const inputMsg = await this.getInput('input-msg');
     await inputMsg.enterText(msg);
-    const sendBtn = await this.getButton('send-msg');
-    await sendBtn.click();
+    await inputMsg.element().$('input').sendKeys(protractor.Key.ENTER);
   }
 
   async clickAtContactAndSendMsgAt(contactIdx, msg) {
@@ -90,8 +89,7 @@ export default class AppDriver {
     await this.clickContactAtIndex(contactIdx);
     const inputMsg = await this.getInput('input-msg');
     await inputMsg.enterText(msg);
-    const sendBtn = await this.getButton('send-msg');
-    await sendBtn.click();
+    await inputMsg.element().$('input').sendKeys(protractor.Key.ENTER);
   }
 
 
@@ -107,8 +105,7 @@ export default class AppDriver {
   async sendMessage(msg) {
     const msgInput = await this.getInput('input-msg');
     await msgInput.enterText(msg);
-    const msgButton = await this.getButton('send-msg');
-    await msgButton.click();
+    await msgInput.element().$('input').sendKeys(protractor.Key.ENTER);
   }
 
   flushConversations() {

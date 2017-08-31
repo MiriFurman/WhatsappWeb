@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Input from 'wix-style-react/dist/src/Input';
-import Button from 'wix-style-react/dist/src/Button';
 import Text from 'wix-style-react/dist/src/Text';
 import MessageBubble from '../MessageBubble';
 import {observer, inject} from 'mobx-react';
@@ -32,8 +31,12 @@ class ConversationWindow extends React.Component {
           {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message =>
             <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>)}
         </ul>
-        <Input dataHook="input-msg" onChange={evt => this.setState({newMessage: evt.target.value})} unit="send"/>
-        <Button dataHook="send-msg" onClick={() => this.props.onSendMessage(this.state.newMessage)}/>
+        <Input
+          dataHook="input-msg" onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => {
+            this.props.onSendMessage(this.state.newMessage);
+            this.setState({newMessage: ''});
+          }} unit="send"
+             />
       </div>
     );
   }
