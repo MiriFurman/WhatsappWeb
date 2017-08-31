@@ -1,23 +1,64 @@
 import {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
-
+import ConversationWindow from './ConversationWindow';
+import {textTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
 import ChatStore from '../../stores/ChatStore';
 import RestClient from '../../common/restClient';
-import {beforeAndAfter} from '../../../test/environment';
 import {baseURL} from '../../../test/test-common';
 import axios from 'axios';
 import nock from 'nock';
 import * as endpoints from '../../common/endpoints';
-
-import ConversationWindow from './ConversationWindow';
-
 import * as dh from '../MessageBubble/MessageBubbleDataHooks';
+
+
+
+describe('Conversation window component test', () => {
+  const render = (props = {}) => (
+    mount(
+      <ConversationWindow onSendMessage={() => {}} {...props}/>,
+      {attachTo: document.createElement('div')}
+    )
+  );
+
+  it('should render the correct conversation display name', () => {
+    const propsObj = {
+      chatStore: {
+        activeRelationConversation: {},
+        conversationDisplayName: 'Miri'
+      }
+    };
+    const wrapper = render(propsObj);
+    expect(textTestkitFactory({wrapper, dataHook: 'conversation-window-display-name'}).getText()).to.equal(propsObj.chatStore.conversationDisplayName);
+  });
+
+  it('should render the correct conversation messages', () => {
+    const msg1 = 'bend the knee';
+    const msg2 = 'you know nothing';
+    const propsObj = {
+      chatStore: {
+        activeRelationConversation: {
+          messages: [
+            {
+              id: '111',
+              body: msg1
+            },
+            {
+              id: '222',
+              body: msg2
+            }
+          ]
+        }
+      }
+    };
+    const wrapper = render(propsObj);
+    expect(wrapper.find('[data-hook="msg-item"]').map(item => item.text())).to.eql([msg1, msg2]);
+  });
+});
+
 
 describe('Conversation Window', () => {
   let wrapper;
-
-  beforeAndAfter();
 
   const restClient = new RestClient(axios, url => `${baseURL}${url}`);
   const testChatStore = new ChatStore(restClient);
@@ -81,3 +122,4 @@ describe('Conversation Window', () => {
     expect(wrapper.find(`[data-message-id='${message2.conversationId}']`).text()).to.contain(message2.body);
   });
 });
+
