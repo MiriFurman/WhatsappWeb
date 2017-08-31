@@ -3,24 +3,25 @@
   width: 100%;
   display: flex;
   border-bottom: 1px solid #f0f4f7;
+  align-items: center;
 
-  .image-container {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-  img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50% 50%;
+  .img-holder {
+    padding: 10px;
+    box-sizing: border-box;
+    img {
+      border-radius: 50% 50%;
+      width: 60px;
+      height: 60px;
+    }
   }
   .text-container {
     width: 70%;
     height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    flex-flow: column;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: center;
   }
+
 }

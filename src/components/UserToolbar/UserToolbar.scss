@@ -5,27 +5,37 @@
 
   .user-mgmt {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #f0f4f7;
-    padding: 10px;
-    height: 80px;
+    height: 75px;
 
-    .user-details {
-      height: 80px;
+    .img-holder {
+      padding: 10px;
+      box-sizing: border-box;
+      img {
+        border-radius: 50% 50%;
+        width: 60px;
+        height: 60px;
+      }
+    }
+    .text-container {
+      width: 70%;
+      height: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
 
-      img {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
+      .user-details {
+
+      }
+
+      .user-actions {
+
       }
     }
 
-    .user-actions {
 
-    }
+
   }
 
   .search-container {

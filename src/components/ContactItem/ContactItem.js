@@ -5,12 +5,12 @@ import * as s from './ContactItem.scss';
 import noImg from './../../assets/no-image.png';
 
 const ContactItem = ({id, name, imageUrl, onContactClick}) => (
-  <div className={s.contactItem} onClick={() => onContactClick(id)} data-hook="contact-item">
-    <div className={s.imageContainer}>
+  <div className={s.contactItem} data-hook="contact-item" onClick={() => onContactClick(id)}>
+    <div className={s.imgHolder}>
       <img data-hook="contact-img" src={imageUrl ? imageUrl : noImg} alt=""/>
     </div>
     <div className={s.textContainer}>
-      <Text dataHook="contact-display-name">{name}</Text>
+      <Text appearance="T2" dataHook="contact-display-name">{name}</Text>
     </div>
   </div>
 );
