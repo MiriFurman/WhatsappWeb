@@ -14,7 +14,7 @@ describe('Message Bubble Component', () => {
   const exampleMessage = {body: exampleBody, id: exampleId, created: exampleTime};
   const modifyExample = modification => Object.assign({}, exampleMessage, modification);
 
-  const bubbleFinder = () => wrapper.find(`[data-hook='${dh.Item}']`);
+  const dhFinder = dh => wrapper.find(`[data-hook='${dh}']`);
 
   const render = props => {
     wrapper = mount(<MessageBubble {...props}/>);
@@ -32,13 +32,13 @@ describe('Message Bubble Component', () => {
 
   it('should store message id as attribute', () => {
     render(exampleMessage);
-    expect(bubbleFinder().html()).to.contain(exampleId);
+    expect(dhFinder(dh.Wrapper).html()).to.contain(exampleId);
   });
 
   it('should take a message as a prop', () => {
     const msgBody = 'When I inquired in the past, you indicated that all your products are under the supervision of badatz beit yosef, and it would soon be appearing on all the packages. I see it only on one package of one type of burger. Could you please update me as to what is happening.';
     render(modifyExample({body: msgBody}));
-    expect(wrapper.find(`[data-hook='${dh.Body}']`).text()).to.equal(msgBody);
+    expect(dhFinder(dh.Body).text()).to.contain(msgBody);
   });
 
   it('should display unformatted time via prop provided', () => {

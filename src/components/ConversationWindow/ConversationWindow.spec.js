@@ -78,6 +78,6 @@ describe('Conversation Window', () => {
       .reply(200, generatedResponse);
     await testChatStore.getConversationById(id);
     const message2 = generatedResponse.messages[1];
-    expect(wrapper.find(`[data-message-id='${message2.conversationId}']`).text()).to.equal(message2.body);
+    expect(wrapper.find(`[data-message-id='${message2.conversationId}']`).text()).to.contain(message2.body);
   });
 });
