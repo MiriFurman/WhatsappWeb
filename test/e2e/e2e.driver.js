@@ -43,6 +43,10 @@ export default class AppDriver {
     return $$('[data-hook="conversation-item"]').get(index).getText();
   }
 
+  getConversationListItemSenderAtIndex(index) {
+    return $$('[data-hook="conversation-display-name"]').get(index).getText();
+  }
+
   clickContactAtIndex(index) {
     return $$('[data-hook="contact-item"]').get(index).click();
   }
