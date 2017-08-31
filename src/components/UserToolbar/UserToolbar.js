@@ -11,7 +11,7 @@ const UserToolbar = ({username}) => (
       </div>
       <div className={s.textContainer}>
         <div className={s.userDetails}>
-          <Text appearance="T2" dataHook="toolbar-username">{username}</Text>
+          <Text appearance="T2" dataHook="username">{username}</Text>
         </div>
         <div className={s.userActions}>
           +

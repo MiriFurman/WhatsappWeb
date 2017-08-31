@@ -32,7 +32,7 @@ describe('Wazzap E2E tests', () => {
   let firstWindowDriver, secondWindowDriver;
 
   before(async () => {
-    await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
+    await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=800,height=800")`);
   });
 
   beforeEach(async () => {
