@@ -4,6 +4,8 @@ $alignThem: flex-end;
 .messageBubbleWrapper {
   display: flex;
   flex-direction: column;
+  padding: 20px;
+
   .bubble {
     width: 400px;
     border-radius: 12px;
