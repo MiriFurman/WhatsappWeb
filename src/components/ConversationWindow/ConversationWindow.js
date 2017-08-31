@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input from 'wix-style-react/dist/src/Input';
 import Button from 'wix-style-react/dist/src/Button';
+import MessageBubble from '../MessageBubble';
 import {observer, inject} from 'mobx-react';
 
 @inject('chatStore')
@@ -17,7 +18,7 @@ class ConversationWindow extends React.Component {
     return (<div data-hook="conversation-window">
       <ul className="messages-container">
         {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message =>
-          <li key={message.id} data-hook="msg-item">{message.body}</li>)}
+          <MessageBubble body={message.body} time={message.time} id={message.id} key={message.id}/>)}
       </ul>
 
       <Input

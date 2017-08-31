@@ -5,17 +5,19 @@ import * as dh from './MessageBubbleDataHooks';
 import * as s from './MessageBubble.scss';
 
 export const MessageBubble = props => {
+  const {id, body, created} = props; // can add ...props destruct if needed
   return (
-    <div data-hook={dh.Item} className={s.messageBubbleWrapper}>
-      <p>{props.message}</p>
-      <div data-hook={dh.Time} className={s.time}>{props.time}</div>
+    <div data-hook={dh.Item} className={s.messageBubbleWrapper} data-message-id={id}>
+      <p data-hook={dh.Body}>{body}</p>
+      <div data-hook={dh.Time} className={s.time}>{created}</div>
     </div>
   );
 };
 
 MessageBubble.propTypes = {
-  message: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  created: PropTypes.string.isRequired,
 };
 
 export default MessageBubble;
