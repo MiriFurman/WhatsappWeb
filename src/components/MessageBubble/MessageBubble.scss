@@ -1,6 +1,41 @@
+$alignMe: flex-start;
+$alignThem: flex-end;
+
 .messageBubbleWrapper {
   display: flex;
-  .time {
-    align-self: flex-end;
+  flex-direction: column;
+  .bubble {
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.05);
+
+    padding: 20px;
+    word-wrap: break-word;
+
+    font-family: HelveticaNeueW01-45;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .fromMe {
+    @extend .bubble;
+    align-items: $alignMe;
+    align-self: $alignMe;
+    background-color: #3899ec;
+    color: white;
+  }
+  .fromOthers {
+    @extend .bubble;
+    align-items: $alignThem;
+    align-self: $alignThem;
+    background-color: white;
+    color: #20455e;
+  }
+  .timeMe {
+    align-self: $alignMe;
+  }
+  .timeThem {
+    align-self: $alignThem;
   }
 }
