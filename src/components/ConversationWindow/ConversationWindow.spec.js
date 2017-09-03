@@ -1,8 +1,8 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 import ConversationWindow from './ConversationWindow';
-import {textTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+import {textTestkitFactory, inputTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
 import ChatStore from '../../stores/ChatStore';
 import RestClient from '../../common/restClient';
 import {baseURL} from '../../../test/test-common';
@@ -10,7 +10,9 @@ import axios from 'axios';
 import nock from 'nock';
 import * as endpoints from '../../common/endpoints';
 import * as dh from '../MessageBubble/MessageBubbleDataHooks';
-
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 
 
 describe('Conversation window component test', () => {
@@ -54,6 +56,26 @@ describe('Conversation window component test', () => {
     const wrapper = render(propsObj);
     expect(wrapper.find('[data-hook="msg-item"]').map(item => item.text())).to.eql([msg1, msg2]);
   });
+
+  it('should call onSendMessage function when message is not empty and enter pressed', () => {
+    const spy = sinon.spy();
+    const msg = 'bend the knee';
+    const propsObj = {
+      onSendMessage: spy,
+      chatStore: {
+        activeRelationConversation: {},
+        conversationDisplayName: 'Jon',
+        messages: []
+      }
+    };
+    const wrapper = render(propsObj);
+    const dataHook = 'input-msg';
+    const testkit = inputTestkitFactory({wrapper, dataHook});
+    testkit.enterText(msg);
+    testkit.trigger('keyDown', {keyCode: 13});
+    expect(spy).to.have.been.calledWith(msg);
+  });
+
 });
 
 

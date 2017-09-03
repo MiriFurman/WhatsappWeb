@@ -8326,6 +8326,10 @@ simply-uuid@1.0.1:
   version "1.0.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/simply-uuid/-/simply-uuid-1.0.1.tgz#539241d81528969cef23892faf4588005fa99ab8"
 
+sinon-chai@^2.13.0:
+  version "2.13.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/sinon-chai/-/sinon-chai-2.13.0.tgz#b9a42e801c20234bfc2f43b29e6f4f61b60990c4"
+
 sinon@^3.2.1:
   version "3.2.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/sinon/-/sinon-3.2.1.tgz#d8adabd900730fd497788a027049c64b08be91c2"
