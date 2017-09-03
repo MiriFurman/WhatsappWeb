@@ -23,6 +23,7 @@ class ChatStore {
   @observable activeRelationId = null;
   @observable activeRelationConversation = {};
   @observable relationState = '';
+  @observable filteredValue = '';
 
   @computed
   get displayContacts() {
@@ -32,6 +33,11 @@ class ChatStore {
     const jsContacts = this.contacts.map(({id}) => id);
     const filteredContactsId = xor(conversationUsers, jsContacts);
     return this.contacts.filter(({id}) => filteredContactsId.indexOf(id) !== -1);
+  }
+
+  @computed
+  get filteredVal() {
+    return this.filteredValue;
   }
 
   @computed
@@ -99,6 +105,11 @@ class ChatStore {
         this.getConversationById(this.activeRelationConversation.id);
       }
     }, POLL_INTERVAL);
+  }
+
+  @action
+  filterBy(val) {
+    this.filteredValue = val;
   }
 }
 
