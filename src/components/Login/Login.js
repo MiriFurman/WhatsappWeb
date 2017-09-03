@@ -6,8 +6,8 @@ import TextField from 'wix-style-react/dist/src/TextField';
 import Text from 'wix-style-react/dist/src/Text';
 import Label from 'wix-style-react/dist/src/Label';
 import Checkbox from 'wix-style-react/dist/src/Checkbox';
-import TextLink from 'wix-style-react/dist/src/TextLink';
 import s from './Login.scss';
+import {Link} from 'react-router-dom';
 
 
 class Login extends React.Component {
@@ -26,23 +26,40 @@ class Login extends React.Component {
           <div className={s.inputField}>
             <TextField>
               <Label appearance="T1.1" for="username">User Name</Label>
-              <Input id="username" size="normal" maxLength={524288} textOverflow="clip" theme="normal" width="initial" dataHook="login-username" onChange={evt => this.setState({username: evt.target.value})}/>
+              <Input
+                id="username" size="normal" maxLength={524288} textOverflow="clip"
+                theme="normal" width="initial" dataHook="login-username"
+                onChange={evt => this.setState({username: evt.target.value})}
+                />
             </TextField>
           </div>
           <div className={s.inputField}>
             <TextField>
               <Label appearance="T1.1" for="password">Password</Label>
-              <Input disabled id="password" size="normal" maxLength={524288} textOverflow="clip" theme="normal" width="initial" dataHook="login-password" onChange={evt => this.setState({password: evt.target.value})}/>
+              <Input
+                disabled id="password" size="normal" maxLength={524288} textOverflow="clip"
+                theme="normal" width="initial" dataHook="login-password"
+                onChange={evt => this.setState({password: evt.target.value})}
+                />
             </TextField>
           </div>
           <div className={s.inputField}>
-            <Checkbox checked={this.state.checked} onChange={() => this.setState({checked: !this.state.checked})}>Remember me</Checkbox>
+            <Checkbox
+              checked={this.state.checked}
+              onChange={() => this.setState({checked: !this.state.checked})}
+              >Remember
+              me</Checkbox>
           </div>
           <div className={s.buttomRight}>
-            <Button dataHook="login-btn" onClick={() => this.props.onLoginClick(this.state.username)}>Login</Button>
+            <Button
+              dataHook="login-btn"
+              onClick={() => this.props.onLoginClick(this.state.username)}
+              >Login</Button>
           </div>
           <div className={s.buttomLeft}>
-            <TextLink size="small" link="">Sign up</TextLink>
+            <Link data-hook="signup-link" to="/signup">
+              <Text size="small">Sign up</Text>
+            </Link>
           </div>
         </div>
       </div>

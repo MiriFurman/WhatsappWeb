@@ -16,13 +16,19 @@ module.exports = (app, context) => {
   app.use(wixExpressRequireHttps);
   app.use(bodyParser.json());
 
+  const createrRenderModel = async req => {
+    const templatePath = './src/index.ejs';
+    const data = {title: 'Wix Full Stack Project Boilerplate'};
+    const renderModel = await wixExpressRenderingModel.generate(req, config);
+    const html = await wixRenderer.render(templatePath, renderModel, data, wixRunMode.isProduction());
+    return html;
+  };
+
   app.get('/', wrapAsync(async (req, res) => {
     const templatePath = './src/index.ejs';
     const data = {title: 'Wix Full Stack Project Boilerplate'};
-
     const renderModel = await wixExpressRenderingModel.generate(req, config);
     const html = await wixRenderer.render(templatePath, renderModel, data, wixRunMode.isProduction());
-
     res.send(html);
   }));
 
@@ -60,6 +66,14 @@ module.exports = (app, context) => {
     const {conversationId} = req.query;
     const conversation = conversationsService.getMessagesById(conversationId);
     res.json(conversation);
+  }));
+
+  app.get('*', wrapAsync(async (req, res) => {
+    const templatePath = './src/index.ejs';
+    const data = {title: 'Wix Full Stack Project Boilerplate'};
+    const renderModel = await wixExpressRenderingModel.generate(req, config);
+    const html = await wixRenderer.render(templatePath, renderModel, data, wixRunMode.isProduction());
+    res.send(html);
   }));
 
   return app;

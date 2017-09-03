@@ -8,13 +8,27 @@ import axios from 'axios';
 
 describe('Chat View Component', () => {
   const username = 'Luke';
-  const contacts = [{id: '1', name: 'Luke'}, {id: '2', name: 'Leah'}, {id: '3', name: 'Darth Vader'}];
+  const contacts = [{id: '1', name: 'Luke'}, {id: '2', name: 'Leah'}, {
+    id: '3',
+    name: 'Darth Vader'
+  }];
   let wrapper;
+  const mockChatStore = {
+    contacts: {
+      toJS: () => contacts,
+      contacts
+    },
+    conversations: {
+      toJS: () => []
+    },
+    displayContacts: contacts,
+    username,
+  };
 
-  const render = (props = {}) => {
+  const render = (chatStore = mockChatStore) => {
     wrapper = mount(
       <Provider {...configureStores(axios)}>
-        <ChatView username={username} contacts={contacts} startConversation={() => {}} sendMessage={() => {}} {...props}/>
+        <ChatView chatStore={chatStore} sendMessage={() => {}} />
       </Provider>,
       {attachTo: document.createElement('div')}
     );
@@ -33,7 +47,18 @@ describe('Chat View Component', () => {
   });
 
   it('should not show welcome screen when there is conversation selected', () => {
-    render({activeRelationId: contacts[1].id});
+    const mockChatStore = {
+      contacts: {
+        toJS: () => contacts,
+        contacts
+      },
+      conversations: {
+        toJS: () => []
+      },
+      username,
+      activeRelationId: contacts[1].id
+    };
+    render(mockChatStore);
     expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
     expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
   });

@@ -48,6 +48,7 @@ class ChatStore {
     this.isLoggedIn = true;
     this.currentUser = currentUser;
     return this.getRelations(currentUser.id);
+
   }
 
   @action
@@ -71,6 +72,7 @@ class ChatStore {
   async sendMessage(from, members, messageBody) {
     const conversationId = await this.restClient.sendMessage(from, members, messageBody);
     await this.getConversationById(conversationId);
+    this.activeRelationId = conversationId;
   }
 
   @action

@@ -3,11 +3,15 @@ import {mount} from 'enzyme';
 import React from 'react';
 import Login from './Login';
 import {textTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+import {StaticRouter as Router} from 'react-router';
 
 describe('Login component test', () => {
   const render = (props = {}) => (
     mount(
-      <Login {...props}/>,
+      <Router>
+        <Login {...props}/>
+      </Router>
+      ,
       {attachTo: document.createElement('div')}
     )
   );
@@ -20,4 +24,5 @@ describe('Login component test', () => {
     const wrapper = render(propsObj);
     expect(textTestkitFactory({wrapper, dataHook: 'login-heading'}).getText()).to.equal(heading);
   });
+
 });

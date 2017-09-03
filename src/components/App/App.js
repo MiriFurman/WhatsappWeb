@@ -6,14 +6,17 @@ import ChatView from '../ChatView';
 import s from './App.scss';
 import '../../main.scss';
 import {RELATION_STATE} from '../../stores/ChatStore';
+import Signup from '../Signup';
+import {Route, Switch, Redirect} from 'react-router-dom';
+import {withRouter} from 'react-router';
 
-@inject('chatStore')
-@observer
-class App extends React.Component {
+export class App extends React.Component {
   async onLoginClick(username) {
     const {chatStore} = this.props;
     await chatStore.login(username);
     chatStore.dataPolling();
+    this.props.history.push('/chat');
+
   }
 
   sendMessage(messageBody) {
@@ -27,28 +30,39 @@ class App extends React.Component {
     }
   }
 
+  shouldRenderRoot(isLoggedIn) {
+    return isLoggedIn ? <Redirect to="/chat"/> :
+      <Login onLoginClick={username => this.onLoginClick(username)}/>;
+  }
+
+  shouldRenderSignup(isLoggedIn) {
+    return isLoggedIn ? <Redirect to="/chat"/> : <Signup/>;
+  }
+
+  shouldRenderChat(chatStore) {
+    return chatStore.isLoggedIn ? <ChatView sendMessage={messageBody => this.sendMessage(messageBody)}/> : <Redirect to="/login"/>;
+  }
+
+
   render() {
     const {chatStore} = this.props;
-    const {username, isLoggedIn, activeRelationId, conversations, displayContacts} = chatStore;
     return (
       <div className={s.root}>
-        {!isLoggedIn && <Login onLoginClick={username => this.onLoginClick(username)}/>}
-        {isLoggedIn && <ChatView
-          username={username}
-          activeRelationId={activeRelationId}
-          contacts={displayContacts}
-          conversations={conversations.toJS()}
-          startConversation={(relationId, isNewConversation) => chatStore.startConversation(relationId, isNewConversation)}
-          sendMessage={messageBody => this.sendMessage(messageBody)}
-          />}
+        <Switch>
+          <Route exact path="/" render={() => this.shouldRenderRoot(chatStore.isLoggedIn)}/>
+          <Route path="/login" render={() => this.shouldRenderRoot(chatStore.isLoggedIn)}/>
+          <Route exact path="/signup" render={() => this.shouldRenderSignup(chatStore.isLoggedIn)}/>
+          <Route path="/chat" render={() => this.shouldRenderChat(chatStore)}/>
+        </Switch>
       </div>
     );
   }
 }
 
+
 App.propTypes = {
-  chatStore: PropTypes.object
+  chatStore: PropTypes.object,
+  history: PropTypes.object
 };
 
-
-export default App;
+export default withRouter(inject('chatStore')(observer(App)));

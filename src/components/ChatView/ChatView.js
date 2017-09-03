@@ -6,29 +6,33 @@ import ConversationList from '../ConversationList';
 import Welcome from '../Welcome';
 import UserToolbar from '../UserToolbar';
 import s from './ChatView.scss';
+import {observer, inject} from 'mobx-react';
 
-const ChatView = props => (
+const ChatView = ({chatStore, sendMessage}) => (
   <div className={s.viewContainer}>
     <div className={s.chatViewContainer}>
       <div className={s.sidebar}>
-        <UserToolbar username={props.username}/>
-        <ConversationList conversations={props.conversations} startConversation={props.startConversation}/>
-        <ContactList username={props.username} contacts={props.contacts} startConversation={props.startConversation}/>
+        <UserToolbar username={chatStore.username}/>
+        <ConversationList
+          conversations={chatStore.conversations.toJS()}
+          startConversation={conversationId => chatStore.startConversation(conversationId, false)}
+          />
+        <ContactList
+          username={chatStore.username} contacts={chatStore.displayContacts}
+          startConversation={contactId => chatStore.startConversation(contactId)}
+          />
       </div>
       <div className={s.mainContent}>
-        {!props.activeRelationId && <Welcome/>}
-        {props.activeRelationId && <ConversationWindow onSendMessage={messageBody => props.sendMessage(messageBody)}/>}
+        {!chatStore.activeRelationId && <Welcome/>}
+        {chatStore.activeRelationId &&
+        <ConversationWindow onSendMessage={messageBody => sendMessage(messageBody)}/>}
       </div>
     </div>
   </div>
 );
 
 ChatView.propTypes = {
-  username: PropTypes.string.isRequired,
-  contacts: PropTypes.array,
-  conversations: PropTypes.array,
-  startConversation: PropTypes.func.isRequired,
-  activeRelationId: PropTypes.string,
+  chatStore: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired
 };
 
@@ -38,5 +42,5 @@ ChatView.defaultProps = {
   conversations: [],
 };
 
-export default ChatView;
+export default inject('chatStore')(observer(ChatView));
 

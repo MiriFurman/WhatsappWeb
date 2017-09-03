@@ -93,7 +93,6 @@ export default class AppDriver {
   }
 
 
-
   getMessagesFromSelectedConversation() {
     return $$('[data-hook="msg-item"]').map(msg => msg.getText());
   }
@@ -108,7 +107,7 @@ export default class AppDriver {
     await msgInput.element().$('input').sendKeys(protractor.Key.ENTER);
   }
 
-  flushConversations() {
-
+  isSignupScreenPresent() {
+    return $('[data-hook="register-screen"]').isPresent();
   }
 }
