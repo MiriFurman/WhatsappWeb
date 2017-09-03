@@ -73,6 +73,7 @@ class ChatStore {
     const conversationId = await this.restClient.sendMessage(from, members, messageBody);
     await this.getConversationById(conversationId);
     this.activeRelationId = conversationId;
+    this.relationState = RELATION_STATE.CONVERSATION;
   }
 
   @action
