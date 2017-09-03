@@ -89,7 +89,6 @@ describe('Chat View Component', () => {
       filteredVal: 'stark'
     };
     render(mockChatStore);
-    console.log(wrapper.find('[data-hook="conversation-list"]').children());
     expect(wrapper.find('[data-hook="conversation-list"]').children()).to.have.length(2);
   });
 

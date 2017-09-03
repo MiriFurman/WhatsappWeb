@@ -1,4 +1,4 @@
-import {SEND_MESSAGE, GET_RELATIONS, GET_CONVERSATION_BY_ID} from './endpoints';
+import {SEND_MESSAGE, GET_RELATIONS, GET_CONVERSATION_BY_ID, CREATE_GROUP} from './endpoints';
 
 export default class RestClient {
   constructor(axios, getUrl = str => str) {
@@ -33,6 +33,12 @@ export default class RestClient {
   async getConversationById(id) {
     const url = this.getUrl(GET_CONVERSATION_BY_ID);
     const {data} = await this.axios.get(`${url}?conversationId=${id}`);
+    return data;
+  }
+
+  async createGroup(members, displayName) {
+    const url = this.getUrl(CREATE_GROUP);
+    const {data} = await this.axios.post(url, {members, displayName});
     return data;
   }
 }

@@ -7,21 +7,31 @@ import Welcome from '../Welcome';
 import UserToolbar from '../UserToolbar';
 import s from './ChatView.scss';
 import {observer, inject} from 'mobx-react';
+import CreateGroup from '../CreateGroup/CreateGroup';
 
 const ChatView = ({chatStore, sendMessage}) => (
   <div className={s.viewContainer}>
     <div className={s.chatViewContainer}>
       <div className={s.sidebar}>
-        <UserToolbar username={chatStore.username}/>
-        <ConversationList
-          conversations={chatStore.conversations.toJS()}
-          startConversation={conversationId => chatStore.startConversation(conversationId, false)}
-          chatStore={chatStore}
-          />
-        <ContactList
-          username={chatStore.username} contacts={chatStore.displayContacts}
-          startConversation={contactId => chatStore.startConversation(contactId)}
-          />
+        {!chatStore.createGroupMode &&
+        <div>
+          <UserToolbar username={chatStore.username}/>
+          <ConversationList
+            conversations={chatStore.conversations.toJS()}
+            startConversation={conversationId => chatStore.startConversation(conversationId, false)}
+            chatStore={chatStore}
+            />
+          <ContactList
+            username={chatStore.username} contacts={chatStore.displayContacts}
+            onContactClick={contactId => chatStore.startConversation(contactId)}
+            />
+        </div>
+        }
+        {chatStore.createGroupMode &&
+          <div>
+            <CreateGroup/>
+          </div>
+        }
       </div>
       <div className={s.mainContent}>
         {!chatStore.activeRelationId && <Welcome/>}

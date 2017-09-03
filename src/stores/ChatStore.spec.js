@@ -30,6 +30,9 @@ describe('Chat Store unit tests', () => {
     expect(store.activeRelationConversation).to.eql({});
     expect(store.relationState).to.equal('');
     expect(store.filteredValue).to.equal('');
+    expect(store.createGroupMode).to.equal(false);
+    expect(store.groupMembers.toJS()).to.eql([]);
+    expect(store.groupTags.toJS()).to.eql([]);
   });
 
   it('should store correct username and isLoggedIn values', async () => {
@@ -137,7 +140,6 @@ describe('Chat Store unit tests', () => {
     expect(mobx.toJS(store.activeRelationConversation)).to.eql({});
   });
 
-
   it('should return the correct conversation display name', async () => {
     store.activeRelationConversation = {
       id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7'
@@ -153,5 +155,22 @@ describe('Chat Store unit tests', () => {
       }
     ];
     expect(store.conversationDisplayName).to.equal('correct');
+  });
+
+  it('should change create group mode on request', () => {
+    store.showCreateGroup();
+    expect(store.createGroupMode).to.equal(true);
+    store.hideCreateGroup();
+    expect(store.createGroupMode).to.equal(false);
+  });
+
+  it('should display only contacts that are not members of group when creating group', async () => {
+    const members = ['0ecc3b62-7059-4086-b273-91610aca4c31', 'f1c5fc86-170c-48a0-a1e0-a2121f936e20'];
+    const currentUserId = 'e10f1e42-78e6-4931-8d0a-01bca3cd5046';
+    const contacts = 'c71b811e-8c7f-44e3-a376-8ea75b2c6ea8';
+    store.contacts = [{id: contacts}, {id: members[0]}, {id: members[1]}];
+    store.groupMembers = members;
+    store.currentUser = {id: currentUserId};
+    expect(mobx.toJS(store.groupDisplayContacts[0]).id).to.equal(contacts);
   });
 });

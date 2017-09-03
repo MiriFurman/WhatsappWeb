@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text, Input} from 'wix-style-react';
+import {Text, Input, Button} from 'wix-style-react';
 import PropTypes from 'prop-types';
 import * as s from './UserToolbar.scss';
 import {inject} from 'mobx-react';
+import {Plus} from 'wix-style-react/dist/src/Icons';
 
 export const UserToolbar = ({username, chatStore}) => (
   <div className={s.toolbarContainer}>
@@ -15,7 +16,7 @@ export const UserToolbar = ({username, chatStore}) => (
           <Text appearance="T2" dataHook="username">{username}</Text>
         </div>
         <div className={s.userActions}>
-          +
+          <Button dataHook="create-group" height="medium" theme="icon-standardsecondary" onClick={() => chatStore.showCreateGroup()}><Plus/></Button>
         </div>
       </div>
     </div>

@@ -91,15 +91,21 @@ describe('Chat App Server', () => {
     expect(receivedConversation.messages.map(msg => msg.body)).to.eql([exampleMessage1, exampleMessage2, exampleMessage3]);
   });
 
-  it('should create group conversation', async () => {
+  it('should create group conversation with display name', async () => {
     const user1Obj = await restClient.login(user1);
     const user2Obj = await restClient.login(user2);
     const user3Obj = await restClient.login(user3);
+    const displayName = 'White walkers are bad!!!';
     const msg1 = 'The Lanisters always pay their debts';
     const msg2 = 'I know nothing';
-    const conversationId1 = await restClient.sendMessage(user3Obj.id, [user1Obj.id, user2Obj.id, user3Obj.id], msg1);
-    const conversationId2 = await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id, user3Obj.id], msg2);
+    const members = [user1Obj.id, user2Obj.id, user3Obj.id];
+    const groupId = await restClient.createGroup(members, displayName);
+    const conversationId1 = await restClient.sendMessage(user3Obj.id, members, msg1);
+    const conversationId2 = await restClient.sendMessage(user1Obj.id, members, msg2);
+    expect(conversationId1).to.equal(groupId);
     expect(conversationId1).to.equal(conversationId2);
+    const receivedConversation = await restClient.getConversationById(conversationId1);
+    expect(receivedConversation.displayName).to.equal(displayName);
   });
 
 });

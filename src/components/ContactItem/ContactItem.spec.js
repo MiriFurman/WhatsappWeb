@@ -41,7 +41,7 @@ describe('ContactItem component tests', () => {
     };
     const wrapper = render(propObject);
     wrapper.find('[data-hook="contact-item"]').at(0).simulate('click');
-    expect(spy.getCall(0).args).to.eql([propObject.id]);
+    expect(spy.getCall(0).args).to.eql([propObject.id, propObject.name]);
   });
 
 });

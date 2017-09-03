@@ -24,6 +24,9 @@ class ChatStore {
   @observable activeRelationConversation = {};
   @observable relationState = '';
   @observable filteredValue = '';
+  @observable createGroupMode = false;
+  @observable groupMembers = [];
+  @observable groupTags = [];
 
   @computed
   get displayContacts() {
@@ -32,6 +35,13 @@ class ChatStore {
     const conversationUsers = flattenMembers.filter(userId => userId !== this.currentUser.id);
     const jsContacts = this.contacts.map(({id}) => id);
     const filteredContactsId = xor(conversationUsers, jsContacts);
+    return this.contacts.filter(({id}) => filteredContactsId.indexOf(id) !== -1);
+  }
+
+  @computed
+  get groupDisplayContacts() {
+    const allContacts = this.contacts.map(({id}) => id);
+    const filteredContactsId = xor(this.groupMembers, allContacts);
     return this.contacts.filter(({id}) => filteredContactsId.indexOf(id) !== -1);
   }
 
@@ -111,6 +121,39 @@ class ChatStore {
   filterBy(val) {
     this.filteredValue = val;
   }
+
+  @action
+  async createGroup(displayName) {
+    const members = [...this.groupMembers, this.currentUser.id];
+    const conversationId = await this.restClient.createGroup(members, displayName);
+    await this.getConversationById(conversationId);
+    this.activeRelationId = conversationId;
+    this.relationState = RELATION_STATE.CONVERSATION;
+    this.groupMembers = [];
+    this.groupTags = [];
+  }
+
+  @action
+  showCreateGroup() {
+    this.createGroupMode = true;
+  }
+
+  @action
+  hideCreateGroup() {
+    this.createGroupMode = false;
+  }
+
+  @action
+  handleOnRemoveTag(tagId) {
+    this.groupTags = this.groupTags.filter(currTag => currTag.id !== tagId);
+    this.groupMembers = this.groupMembers.filter(currMember => currMember !== tagId);
+  }
+
+  @action
+  handleAddContact(contactId, contactName) {
+    this.groupTags = [...this.groupTags, {id: contactId, label: contactName}];
+    this.groupMembers = [...this.groupMembers, contactId];
+  };
 }
 
 export default ChatStore;

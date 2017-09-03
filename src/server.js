@@ -7,7 +7,7 @@ import wixExpressRequireHttps from 'wix-express-require-https';
 import {contactsService} from './server/services/ContactsService';
 import {conversationsService} from './server/services/ConversationsService';
 import bodyParser from 'body-parser';
-import {GET_RELATIONS, SEND_MESSAGE, GET_CONVERSATION_BY_ID, FLUSH} from './common/endpoints';
+import {GET_RELATIONS, SEND_MESSAGE, GET_CONVERSATION_BY_ID, FLUSH, CREATE_GROUP} from './common/endpoints';
 
 module.exports = (app, context) => {
   const config = context.config.load('shilo-miri-salaverry-sms');
@@ -58,6 +58,12 @@ module.exports = (app, context) => {
     const {conversationId} = req.query;
     const conversation = conversationsService.getMessagesById(conversationId);
     res.json(conversation);
+  }));
+
+  app.post(CREATE_GROUP, wrapAsync(async (req, res) => {
+    const {members, displayName} = req.body;
+    const conversationId = conversationsService.createGroup({members, displayName});
+    res.json(conversationId);
   }));
 
   app.get('*', wrapAsync(async (req, res) => {

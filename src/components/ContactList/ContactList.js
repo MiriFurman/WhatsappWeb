@@ -13,7 +13,7 @@ const ContactList = props => (
       .filter(contact => contact.name !== props.username)
       .map(contact =>
         (<li key={contact.id}>
-          <ContactItem {...contact} onContactClick={contactId => props.startConversation(contactId)}/>
+          <ContactItem {...contact} onContactClick={(contactId, contactName) => props.onContactClick(contactId, contactName)}/>
         </li>)
       )}
     </ul>
@@ -24,7 +24,7 @@ const ContactList = props => (
 ContactList.propTypes = {
   username: PropTypes.string.isRequired,
   contacts: PropTypes.array,
-  startConversation: PropTypes.func.isRequired,
+  onContactClick: PropTypes.func.isRequired,
 };
 
 ContactList.defaultProps = {
