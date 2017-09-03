@@ -113,7 +113,8 @@ describe('Conversation Window', () => {
     nock(baseURL).get(`${endpoints.GET_CONVERSATION_BY_ID}?conversationId=${id}`)
       .reply(200, generatedResponse);
     await testChatStore.getConversationById(id);
-    expect(wrapper.find(`[data-hook='${dh.Body}']`).text()).to.equal(generatedResponse.messages[0].body);
+    const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Body});
+    expect(textTestkit.getText()).to.equal(generatedResponse.messages[0].body);
   });
 
   it('should render multiple chat messages', async () => {
@@ -173,25 +174,6 @@ describe('Conversation Window', () => {
       }
     }
     ;
-    wrapper = mount(<ConversationWindow chatStore={chatStore}/>);
-
-    expect(wrapper.find(`.messageBubbleWrapper`).length).to.equal(2);
-    expect(wrapper.find(`.messageBubbleWrapper`).first().html()).to.contain('fromMe');
-    expect(wrapper.find(`.messageBubbleWrapper`).last().html()).to.contain('fromOthers');
-  });
-
-  // testing the network reply; going to test the props instead
-  it.skip('should format message bubble from server reply', () => {
-    const currentUser = '744d0635-98bd-4a63-b580-da47f00aaa44';
-    // const otherUser = '342dbdee-c4ea-4213-bc69-04eb4371ceaa';
-
-    const chatStore = {
-      currentUser,
-      activeRelationConversation: {
-        messages: [{id: '319f59ca-4ec0-4767-868e-769c93a34d85', body: 'i\'m bob', conversationId: 'b78eb590-8c8f-45cb-8c16-c695fcef0469', created: '2017-09-03T07:40:12.957Z', createdBy: '744d0635-98bd-4a63-b580-da47f00aaa44'}, {id: 'f82f7efd-56a0-421e-a9e5-f3acb035e637', body: 'i\'m alice', conversationId: 'b78eb590-8c8f-45cb-8c16-c695fcef0469', created: '2017-09-03T07:40:23.855Z', createdBy: '342dbdee-c4ea-4213-bc69-04eb4371ceaa'}]
-      }
-    };
-
     wrapper = mount(<ConversationWindow chatStore={chatStore}/>);
 
     expect(wrapper.find(`.messageBubbleWrapper`).length).to.equal(2);

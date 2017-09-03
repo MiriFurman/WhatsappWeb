@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {Text} from 'wix-style-react';
+import {Text} from 'wix-style-react';
 
 import {messageBubbleTimeFormatter} from './MessageBubbleTimeFormat';
 import * as dh from './MessageBubbleDataHooks';
@@ -11,9 +11,13 @@ export const MessageBubble = props => {
   return (
     <div className={s.messageBubbleWrapper} data-message-id={id} data-hook={dh.Wrapper}>
       <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
-        <p data-hook={dh.Body} className={s.msgBody}>{body}</p>
+        <Text appearance="T1" dataHook={dh.Body} className={s.msgBody}>{body}</Text>
       </div>
-      <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>{messageBubbleTimeFormatter(created)}</div>
+      <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>
+        <Text appearance="T3.4">
+          {messageBubbleTimeFormatter(created)}
+        </Text>
+      </div>
     </div>
   );
 };

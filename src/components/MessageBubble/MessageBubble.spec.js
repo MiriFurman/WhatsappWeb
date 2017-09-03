@@ -6,6 +6,8 @@ import MessageBubble from './MessageBubble';
 import * as dh from './MessageBubbleDataHooks';
 import {messageBubbleTimeFormatter} from './MessageBubbleTimeFormat';
 
+import {textTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+
 describe('Message Bubble Component', () => {
   let wrapper;
 
@@ -39,7 +41,8 @@ describe('Message Bubble Component', () => {
   it('should take a message as a prop', () => {
     const msgBody = 'When I inquired in the past, you indicated that all your products are under the supervision of badatz beit yosef, and it would soon be appearing on all the packages. I see it only on one package of one type of burger. Could you please update me as to what is happening.';
     render(modifyExample({body: msgBody}));
-    expect(dhFinder(dh.Body).text()).to.contain(msgBody);
+    const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Body});
+    expect(textTestkit.getText()).to.contain(msgBody);
   });
 
   it('should format date correctly', () => {
@@ -57,7 +60,8 @@ describe('Message Bubble Component', () => {
 
     const timeTestMessage = modifyExample({created});
     render(timeTestMessage);
-    expect(dhFinder(dh.Time).text()).to.equal(expectedDateFormat);
+    const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Time});
+    expect(textTestkit.getText()).to.equal(expectedDateFormat);
   });
 
   it('should put time and message on the same side', () => {
