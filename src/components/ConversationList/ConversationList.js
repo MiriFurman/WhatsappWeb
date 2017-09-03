@@ -5,14 +5,16 @@ import * as s from './ConversationList.scss';
 
 const ConversationList = props => (
   <section className={s.conversationList}>
-    <ul data-hook="conversation-list">{props.conversations.map(conversation => (
-      <li key={conversation.id}>
-        <ConversationItem
-          id={conversation.id}
-          onConversationClick={conversationId => props.startConversation(conversationId, false)}
-          displayName={conversation.displayName}
-          />
-      </li>))}
+    <ul data-hook="conversation-list">{props.conversations
+      .filter(conversation => conversation.displayName.toLowerCase().includes(props.chatStore.filteredVal))
+      .map(conversation => (
+        <li key={conversation.id}>
+          <ConversationItem
+            id={conversation.id}
+            onConversationClick={conversationId => props.startConversation(conversationId, false)}
+            displayName={conversation.displayName}
+            />
+        </li>))}
     </ul>
   </section>
 );
@@ -20,7 +22,8 @@ const ConversationList = props => (
 
 ConversationList.propTypes = {
   conversations: PropTypes.array,
-  startConversation: PropTypes.func.isRequired
+  startConversation: PropTypes.func.isRequired,
+  chatStore: PropTypes.object.isRequired
 };
 
 ConversationList.defaultProps = {

@@ -29,6 +29,7 @@ describe('Chat Store unit tests', () => {
     expect(store.activeRelationId).to.equal(null);
     expect(store.activeRelationConversation).to.eql({});
     expect(store.relationState).to.equal('');
+    expect(store.filteredValue).to.equal('');
   });
 
   it('should store correct username and isLoggedIn values', async () => {

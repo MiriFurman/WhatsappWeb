@@ -7,8 +7,8 @@ import {configureStores} from '../../stores/configureStores';
 import axios from 'axios';
 
 describe('Chat View Component', () => {
-  const username = 'Luke';
-  const contacts = [{id: '1', name: 'Luke'}, {id: '2', name: 'Leah'}, {
+  let username = 'Luke';
+  let contacts = [{id: '1', name: 'Luke'}, {id: '2', name: 'Leah'}, {
     id: '3',
     name: 'Darth Vader'
   }];
@@ -61,6 +61,36 @@ describe('Chat View Component', () => {
     render(mockChatStore);
     expect(wrapper.find('[data-hook="welcome-screen"]').exists()).to.equal(false);
     expect(wrapper.find('[data-hook="conversation-window"]').exists()).to.equal(true);
+  });
+
+  it('should filter conversations by name', () => {
+    username = 'Jon Snow';
+    contacts = [
+      {id: '1', name: 'Jon Snow'},
+      {id: '2', name: 'Daenerys Targaryen'},
+      {id: '3', name: 'Sansa Stark'},
+      {id: '4', name: 'Arya Stark'},
+    ];
+    const conversations = [
+      {id: '2-2', displayName: 'Daenerys Targaryen'},
+      {id: '3-3', displayName: 'Sansa Stark'},
+      {id: '4-4', displayName: 'Arya Stark'}
+    ];
+    const mockChatStore = {
+      contacts: {
+        toJS: () => contacts,
+        contacts
+      },
+      conversations: {
+        toJS: () => conversations
+      },
+      username,
+      activeRelationId: contacts[1].id,
+      filteredVal: 'stark'
+    };
+    render(mockChatStore);
+    console.log(wrapper.find('[data-hook="conversation-list"]').children());
+    expect(wrapper.find('[data-hook="conversation-list"]').children()).to.have.length(2);
   });
 
 });

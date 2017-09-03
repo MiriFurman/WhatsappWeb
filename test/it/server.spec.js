@@ -19,6 +19,7 @@ describe('Chat App Server', () => {
 
   const user1 = 'Danny';
   const user2 = 'Jon';
+  const user3 = 'Cersei';
 
   beforeEach(() => {
     return axiosInstance.post(app.getUrl(FLUSH));
@@ -88,6 +89,17 @@ describe('Chat App Server', () => {
     expect(conversationId1).to.equal(conversationId3);
     const receivedConversation = await restClient.getConversationById(conversationId1);
     expect(receivedConversation.messages.map(msg => msg.body)).to.eql([exampleMessage1, exampleMessage2, exampleMessage3]);
+  });
+
+  it('should create group conversation', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const user3Obj = await restClient.login(user3);
+    const msg1 = 'The Lanisters always pay their debts';
+    const msg2 = 'I know nothing';
+    const conversationId1 = await restClient.sendMessage(user3Obj.id, [user1Obj.id, user2Obj.id, user3Obj.id], msg1);
+    const conversationId2 = await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id, user3Obj.id], msg2);
+    expect(conversationId1).to.equal(conversationId2);
   });
 
 });

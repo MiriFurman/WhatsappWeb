@@ -16,6 +16,7 @@ const ChatView = ({chatStore, sendMessage}) => (
         <ConversationList
           conversations={chatStore.conversations.toJS()}
           startConversation={conversationId => chatStore.startConversation(conversationId, false)}
+          chatStore={chatStore}
           />
         <ContactList
           username={chatStore.username} contacts={chatStore.displayContacts}
@@ -33,7 +34,7 @@ const ChatView = ({chatStore, sendMessage}) => (
 
 ChatView.propTypes = {
   chatStore: PropTypes.object.isRequired,
-  sendMessage: PropTypes.func.isRequired
+  sendMessage: PropTypes.func.isRequired,
 };
 
 ChatView.defaultProps = {

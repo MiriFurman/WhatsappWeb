@@ -14,7 +14,7 @@ wixAxiosConfig(axios, {baseURL: baseUrl});
 
 ReactDOM.render(
   <Provider {...configureStores(axios)}>
-    <BrowserRouter>
+    <BrowserRouter basename={baseUrl}>
       <App/>
     </BrowserRouter>
   </Provider>,

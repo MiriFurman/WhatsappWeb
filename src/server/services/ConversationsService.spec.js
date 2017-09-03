@@ -80,4 +80,30 @@ describe('Conversations Service', () => {
     expect(conversationsList[0].members).to.eql(members);
     expect(conversationsList[0].displayName).to.eql(user2.name);
   });
+
+  it('should create group conversation including display name', () => {
+    const displayName = 'The wall';
+    const members = ['1', '2', '3'];
+    const conversationId = conversationsService.createGroup({members, displayName});
+    const conversationsList = conversationsService.listConversationsByContactId('1');
+    expect(conversationsList[0].id).to.equal(conversationId);
+    expect(conversationsList[0].displayName).to.equal(displayName);
+  });
+
+  it('should create group conversation with messages', () => {
+    const displayName = 'The wall';
+    const members = ['1', '2', '3'];
+    const messageBody1 = 'Winter is coming!';
+    const messageBody2 = 'oh no!';
+    const conversationIdCreate = conversationsService.createGroup({members, displayName});
+    const conversationIdMsg1 = conversationsService.addMessage({from: members[0], messageBody: messageBody1, members});
+    const conversationIdMsg2 = conversationsService.addMessage({from: members[1], messageBody: messageBody2, members});
+    expect(conversationIdCreate).to.equal(conversationIdMsg1);
+    expect(conversationIdMsg2).to.equal(conversationIdMsg1);
+    const conversationsList = conversationsService.listConversationsByContactId(members[2]);
+    expect(conversationsList[0].displayName).to.equal(displayName);
+    const {messages} = conversationsService.getMessagesById(conversationIdCreate);
+    expect(messages[0].body).to.equal(messageBody1);
+    expect(messages[0].createdBy).to.equal(members[0]);
+  });
 });

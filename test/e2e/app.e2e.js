@@ -39,6 +39,8 @@ describe('Wazzap E2E tests', () => {
     const [firstWindow, secondWindow] = await browser.getAllWindowHandles();
     firstWindowDriver = createWindowDriver(firstWindow);
     secondWindowDriver = createWindowDriver(secondWindow);
+    await firstWindowDriver.navigate();
+    await secondWindowDriver.navigate();
     await axios.post(app.getUrl(FLUSH));
   });
 
@@ -130,4 +132,10 @@ describe('Wazzap E2E tests', () => {
     await secondWindowDriver.clickContactAtIndex(0);
     expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
+  // it('should sign up and redirected to login page', async () => {
+  //   await firstWindowDriver.navigate();
+  //   expect(firstWindowDriver.isLoginScreenPresent()).to.equal(true);
+  //   await firstWindowDriver.clickSignup();
+  //   await firstWindowDriver.fillValues()
+  // });
 });

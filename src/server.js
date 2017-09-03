@@ -16,8 +16,6 @@ module.exports = (app, context) => {
   app.use(wixExpressRequireHttps);
   app.use(bodyParser.json());
 
-
-
   app.get('/', wrapAsync(async (req, res) => {
     const templatePath = './src/index.ejs';
     const data = {title: 'Wazzap Chat'};

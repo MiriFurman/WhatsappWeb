@@ -25,6 +25,17 @@ const createConversation = ({conversationId, members, firstMessage}) => ({
   messages: [firstMessage]
 });
 
+const createGroup = ({members, displayName}) => {
+  const conversation = {
+    id: uuid.v4(),
+    members: [...members],
+    messages: [],
+    displayName
+  };
+  conversations[conversation.id] = conversation;
+  return conversation.id;
+};
+
 const addMessage = ({from, messageBody, members}) => {
   const conversationId = uuid.v4();
   const newMessage = createMessage({from, body: messageBody, conversationId});
@@ -58,7 +69,7 @@ const listConversationsByContactId = contactId => {
     .map(conversation => ({
       id: conversation.id,
       members: conversation.members,
-      displayName: contactById(otherMember(conversation, contactId)).name
+      displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name
     }));
 };
 
@@ -68,5 +79,6 @@ export const conversationsService = {
   addMessage,
   getMessagesById,
   listConversationsByContactId,
+  createGroup,
   reset
 };
