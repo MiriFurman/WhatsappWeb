@@ -15,6 +15,14 @@ class ConversationWindow extends React.Component {
     this.state = {newMessage: ''};
   }
 
+  onMessageSend() {
+    if (this.state.newMessage !== '') {
+      this.props.onSendMessage(this.state.newMessage);
+      this.setState({newMessage: ''});
+    }
+
+  }
+
   render() {
     const {chatStore} = this.props;
     return (
@@ -32,11 +40,9 @@ class ConversationWindow extends React.Component {
             <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>)}
         </ul>
         <Input
-          dataHook="input-msg" onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => {
-            this.props.onSendMessage(this.state.newMessage);
-            this.setState({newMessage: ''});
-          }} unit="send"
-             />
+          dataHook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => this.onMessageSend()} unit="send"
+          placeholder="Write Message..."
+          />
       </div>
     );
   }
