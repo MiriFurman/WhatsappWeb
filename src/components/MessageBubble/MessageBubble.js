@@ -11,9 +11,9 @@ export const MessageBubble = props => {
   return (
     <div className={s.messageBubbleWrapper} data-message-id={id} data-hook={dh.Wrapper}>
       <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
-        <p data-hook={dh.Body}>{body}</p>
+        <p data-hook={dh.Body} className={s.msgBody}>{body}</p>
       </div>
-      <div data-hook={dh.Time} className={s.timeMe}>{messageBubbleTimeFormatter(created)}</div>
+      <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>{messageBubbleTimeFormatter(created)}</div>
     </div>
   );
 };

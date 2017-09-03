@@ -59,4 +59,10 @@ describe('Message Bubble Component', () => {
     render(timeTestMessage);
     expect(dhFinder(dh.Time).text()).to.equal(expectedDateFormat);
   });
+
+  it('should put time and message on the same side', () => {
+    render(exampleMessage);
+    expect(dhFinder(dh.Item).html()).to.contain('fromOthers');
+    expect(dhFinder(dh.Time).html()).to.contain('timeThem');
+  });
 });

@@ -34,10 +34,18 @@ $alignThem: flex-end;
     background-color: white;
     color: #20455e;
   }
+  .time {
+    margin-top: .5rem;
+  }
   .timeMe {
+    @extend .time;
     align-self: $alignMe;
   }
   .timeThem {
+    @extend .time;
     align-self: $alignThem;
+  }
+  .msgBody {
+    margin: 0;
   }
 }
