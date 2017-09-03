@@ -4,4 +4,5 @@ export const FLUSH = '/api/flush';
 export const SEND_MESSAGE = '/api/send-message';
 export const GET_RELATIONS = '/api/relations';
 export const GET_CONVERSATION_BY_ID = '/api/conversation';
+export const SIGNUP = '/api/signup';
 export const CREATE_GROUP = '/api/create-group';

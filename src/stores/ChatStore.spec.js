@@ -29,6 +29,7 @@ describe('Chat Store unit tests', () => {
     expect(store.activeRelationId).to.equal(null);
     expect(store.activeRelationConversation).to.eql({});
     expect(store.relationState).to.equal('');
+    expect(store.authenticationProblem).to.equal(false);
     expect(store.filteredValue).to.equal('');
     expect(store.createGroupMode).to.equal(false);
     expect(store.groupMembers.toJS()).to.eql([]);
@@ -36,10 +37,14 @@ describe('Chat Store unit tests', () => {
   });
 
   it('should store correct username and isLoggedIn values', async () => {
+    const user = {
+      username: username1,
+      password: '1q2w3e'
+    };
     const exampleUser = {id: '1a2b', name: username1};
-    nock(baseURL).post(endpoints.LOGIN, {username: username1}).reply(200, exampleUser);
+    nock(baseURL).post(endpoints.LOGIN, {user}).reply(200, exampleUser);
     nock(baseURL).get(`${endpoints.GET_RELATIONS}?userId=${exampleUser.id}`).reply(200, []);
-    await store.login(username1);
+    await store.login(user);
     expect(store.currentUser).to.eql(exampleUser);
     expect(store.isLoggedIn).to.equal(true);
   });
@@ -108,10 +113,10 @@ describe('Chat Store unit tests', () => {
       id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7',
       members: [currentUserId, contactsWithConversation[0]]
     },
-    {
-      id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
-      members: [contactsWithConversation[1], currentUserId]
-    }
+      {
+        id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
+        members: [contactsWithConversation[1], currentUserId]
+      }
     ];
     const contacts = [{id: contactWithoutConversation}, {id: contactsWithConversation[0]}, {id: contactsWithConversation[1]}];
     const relations = {conversations, contacts};
@@ -139,6 +144,7 @@ describe('Chat Store unit tests', () => {
     store.startConversation(relationId);
     expect(mobx.toJS(store.activeRelationConversation)).to.eql({});
   });
+
 
   it('should return the correct conversation display name', async () => {
     store.activeRelationConversation = {
@@ -172,5 +178,14 @@ describe('Chat Store unit tests', () => {
     store.groupMembers = members;
     store.currentUser = {id: currentUserId};
     expect(mobx.toJS(store.groupDisplayContacts[0]).id).to.equal(contacts);
+  });
+  it('should set authentication problem as true', async () => {
+    const user = {
+      username: username1,
+      password: '1q2w3e'
+    };
+    nock(baseURL).post(endpoints.LOGIN, {user}).reply(200, null);
+    await store.login(user);
+    expect(store.authenticationProblem).to.equal(true);
   });
 });

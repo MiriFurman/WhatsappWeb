@@ -23,5 +23,6 @@ ContactItem.propTypes = {
   id: PropTypes.string.isRequired
 };
 
+
 export default ContactItem;
 

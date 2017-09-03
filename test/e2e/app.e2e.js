@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {beforeAndAfter, app} from './../environment';
 import AppDriver from './e2e.driver';
 import wrap from 'lodash/wrap';
-import {FLUSH} from '../../src/common/endpoints';
+import {FLUSH, SIGNUP} from '../../src/common/endpoints';
 import axios from 'axios';
 
 const createWindowDriver = windowHandle => {
@@ -25,8 +25,8 @@ const createWindowDriver = windowHandle => {
 describe('Wazzap E2E tests', () => {
 
   beforeAndAfter();
-  const user1 = 'Donald';
-  const user2 = 'Ivanka';
+  const user1 = {username: 'Donald', password: '111'};
+  const user2 = {username: 'Ivanka', password: '222'};
   const msg = 'lets make America great again!';
   const msg2 = 'Winning!!!';
   let firstWindowDriver, secondWindowDriver;
@@ -42,20 +42,20 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.navigate();
     await secondWindowDriver.navigate();
     await axios.post(app.getUrl(FLUSH));
+    await axios.post(app.getUrl(SIGNUP), {user: user1});
+    await axios.post(app.getUrl(SIGNUP), {user: user2});
   });
 
   it('should login to app', async () => {
     await firstWindowDriver.navigate();
     expect(await firstWindowDriver.isLoginScreenPresent()).to.equal(true);
     expect(await firstWindowDriver.isUserNameElementPresent()).to.equal(false);
-
     await firstWindowDriver.login(user1);
-
-    expect(await firstWindowDriver.getUserNameElementText()).to.equal(user1);
+    expect(await firstWindowDriver.getUserNameElementText()).to.equal(user1.username);
     expect(await firstWindowDriver.isLoginScreenPresent()).to.equal(false);
   });
 
-  it('should show contacts list on login', async () => {
+  it.skip('should show contacts list on login', async () => {
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user1);
     expect(await firstWindowDriver.isContactListCntDisplayed(), 'Contact list invisible').to.equal(false);
@@ -64,7 +64,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.login(user2);
 
     expect(await firstWindowDriver.isContactListCntDisplayed(), 'Contact list visible').to.equal(true);
-    expect(await firstWindowDriver.getContactListItemTextAtIndex(0)).to.equal(user1);
+    expect(await firstWindowDriver.getContactListItemTextAtIndex(0)).to.equal(user1.username);
   });
 
   it('should move item from contacts to conversions on first message and remove him from contacts', async () => {
@@ -72,7 +72,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user2);
     await firstWindowDriver.waitForElement('conversation-item');
-    expect(await firstWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(user1);
+    expect(await firstWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(user1.username);
     expect(await firstWindowDriver.getAllContactsNames()).to.eql([]);
   });
 
@@ -114,7 +114,8 @@ describe('Wazzap E2E tests', () => {
   });
 
   it('should remove current conversation when click on new contact', async () => {
-    const user3 = 'Moshe';
+    const user3 = {username: 'Moshe', password: '12345'};
+    await axios.post(app.getUrl(SIGNUP), {user: user3});
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user1);
     await secondWindowDriver.navigate();
@@ -132,10 +133,17 @@ describe('Wazzap E2E tests', () => {
     await secondWindowDriver.clickContactAtIndex(0);
     expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
-  // it('should sign up and redirected to login page', async () => {
-  //   await firstWindowDriver.navigate();
-  //   expect(firstWindowDriver.isLoginScreenPresent()).to.equal(true);
-  //   await firstWindowDriver.clickSignup();
-  //   await firstWindowDriver.fillValues()
-  // });
+  it.skip('should sign up and redirected to login page', async () => {
+    const signupObject = {
+      username: 'Eden Ben Zaken',
+      password: 'queenOfRoses'
+    };
+    await firstWindowDriver.navigate();
+    expect(await firstWindowDriver.isLoginScreenPresent(), 'should show login screen at the beginning').to.equal(true);
+    await firstWindowDriver.clickSignup();
+    expect(await firstWindowDriver.isLoginScreenPresent(), 'should not show login screen after clicking signup').to.equal(false);
+    await firstWindowDriver.signup(signupObject);
+    expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
+  });
+
 });

@@ -10,7 +10,6 @@ const create = ({name, ...rest}) => {
   if (!name) {
     throw new Error('A girl has no name');
   }
-
   const existingContact = findByName(name);
   if (existingContact) {
     return existingContact;
@@ -27,10 +26,23 @@ const create = ({name, ...rest}) => {
 };
 
 const getById = contactId => contacts[contactId];
+const authenticate = user => {
+  const contactDTO = findByName(user.username);
+  if (!contactDTO) {
+    return null;
+  }
+  const contact = getById(contactDTO.id);
+  if (!contact) {
+    return null;
+  }
+  return contact.password === user.password ? contactDTO : null;
+
+};
 
 export const contactsService = {
   list,
   create,
   getById,
-  reset
+  reset,
+  authenticate
 };

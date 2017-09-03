@@ -28,6 +28,7 @@ class ConversationWindow extends React.Component {
   }
 
   render() {
+    const {chatStore} = this.props;
     return (
       <div data-hook="conversation-window" className={s.conversationWindow}>
         <div className={s.conversationInfo}>
@@ -35,11 +36,11 @@ class ConversationWindow extends React.Component {
             <img src="https://placeimg.com/60/60/animals" alt="Conversation Picture"/>
           </div>
           <div className={s.textContainer}>
-            <Text appearance="T2" dataHook="conversation-window-display-name">{this.props.chatStore.conversationDisplayName && this.props.chatStore.conversationDisplayName}</Text>
+            <Text appearance="T2" dataHook="conversation-window-display-name">{chatStore.conversationDisplayName && chatStore.conversationDisplayName}</Text>
           </div>
         </div>
         <ul className={s.messagesContainer}>
-          {this.props.chatStore.activeRelationConversation.messages && this.props.chatStore.activeRelationConversation.messages.map(message => {
+          {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message => {
             if (this.messageFromCurrentUser(message)) {
               return <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id} currentUser/>;
             } else {

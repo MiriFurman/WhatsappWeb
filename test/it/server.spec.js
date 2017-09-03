@@ -17,29 +17,26 @@ describe('Chat App Server', () => {
 
   const restClient = new RestClient(axiosInstance, url => app.getUrl(url));
 
-  const user1 = 'Danny';
-  const user2 = 'Jon';
-  const user3 = 'Cersei';
+  const user1 = {username: 'Danny', password: '123'};
+  const user2 = {username: 'Jon', password: 'xcv'};
+  const user3 = {username: 'Cersei', password: '113'};
 
-  beforeEach(() => {
-    return axiosInstance.post(app.getUrl(FLUSH));
+  beforeEach(async () => {
+    await axiosInstance.post(app.getUrl(FLUSH));
+    await restClient.signup(user1);
+    return restClient.signup(user2);
   });
 
   it('should login', async () => {
-    const userObj = await restClient.login(user1);
-    expect(userObj.name).to.equal(user1);
-  });
-
-  it('should get empty contacts list on login', async () => {
-    const contacts = await restClient.getContacts();
-    expect(contacts).to.eql([]);
+    const userObj = await restClient.login({username: user1.username, password: user1.password});
+    expect(userObj.name).to.equal(user1.username);
   });
 
   it('should get contacts list when there are 2 users', async () => {
     await restClient.login(user1);
     await restClient.login(user2);
     const contacts = await restClient.getContacts();
-    expect(contacts.map(x => x.name)).to.eql([user1, user2]);
+    expect(contacts.map(x => x.name)).to.eql([user1, user2].map(x => x.username));
   });
 
   it('should create conversation on first message', async () => {
@@ -89,6 +86,24 @@ describe('Chat App Server', () => {
     expect(conversationId1).to.equal(conversationId3);
     const receivedConversation = await restClient.getConversationById(conversationId1);
     expect(receivedConversation.messages.map(msg => msg.body)).to.eql([exampleMessage1, exampleMessage2, exampleMessage3]);
+  });
+  it('should reject login with wrong credentials', async () => {
+    const signupUser = {
+      username: 'Shimon',
+      password: '1q2w3e'
+    };
+    await restClient.signup(signupUser);
+    const userObj = await restClient.login({username: signupUser.username, password: 'WRONG_PASS'});
+    expect(userObj).to.eql(null);
+  });
+  it('should authenticate successfully', async () => {
+    const signupUser = {
+      username: 'Shimon',
+      password: '1q2w3e'
+    };
+    await restClient.signup(signupUser);
+    const userObj = await restClient.login({username: signupUser.username, password: signupUser.password});
+    expect(userObj.name).to.eql(signupUser.username);
   });
 
   it('should create group conversation with display name', async () => {

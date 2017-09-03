@@ -10,9 +10,12 @@ export const RELATION_STATE = {
 const POLL_INTERVAL = 500;
 
 class ChatStore {
-  constructor(restClient) {
+  constructor(restClient, initialData = {}) {
     this.restClient = restClient;
     this.intervalId = '';
+    this.isLoggedIn = initialData.isLoggedIn || this.isLoggedIn;
+    this.username = initialData.username || this.username;
+    this.authenticationProblem = initialData.authenticationProblem || this.authenticationProblem;
   }
 
   @observable username = '';
@@ -23,6 +26,7 @@ class ChatStore {
   @observable activeRelationId = null;
   @observable activeRelationConversation = {};
   @observable relationState = '';
+  @observable authenticationProblem = false;
   @observable filteredValue = '';
   @observable createGroupMode = false;
   @observable groupMembers = [];
@@ -58,13 +62,17 @@ class ChatStore {
   }
 
   @action
-  async login(username) {
-    const currentUser = await this.restClient.login(username);
-    this.username = username;
-    this.isLoggedIn = true;
-    this.currentUser = currentUser;
-    return this.getRelations(currentUser.id);
-
+  async login(user) {
+    const currentUser = await this.restClient.login(user);
+    if (currentUser) {
+      this.username = currentUser.name;
+      this.isLoggedIn = true;
+      this.currentUser = currentUser;
+      await this.getRelations(currentUser.id);
+      return currentUser;
+    } else {
+      this.authenticationProblem = true;
+    }
   }
 
   @action
@@ -154,6 +162,10 @@ class ChatStore {
     this.groupTags = [...this.groupTags, {id: contactId, label: contactName}];
     this.groupMembers = [...this.groupMembers, contactId];
   };
+
+  signup(user) {
+    return this.restClient.signup(user);
+  }
 }
 
 export default ChatStore;

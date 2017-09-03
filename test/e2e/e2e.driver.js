@@ -64,9 +64,11 @@ export default class AppDriver {
   }
 
 
-  async login(username) {
+  async login({username, password}) {
     const loginInput = await this.getInput('login-username');
     await loginInput.enterText(username);
+    const passwordInput = await this.getInput('login-password');
+    await passwordInput.enterText(password);
     const loginButton = await this.getButton('login-btn');
     await loginButton.click();
     return browser.wait(EC.presenceOf($('[data-hook="username"]')));
@@ -109,5 +111,24 @@ export default class AppDriver {
 
   isSignupScreenPresent() {
     return $('[data-hook="register-screen"]').isPresent();
+  }
+
+  clickSignup() {
+    $('[data-hook="signup-link"]').click();
+  }
+
+  async signup(signupDetails) {
+    await this.fillValues(signupDetails);
+    const signupBtn = await this.getButton('signup-btn');
+    return signupBtn.click();
+  }
+
+  async fillValues({username, password}) {
+    const usernameInput = await this.getInput('signup-username');
+    const passwordInput = await this.getInput('signup-password');
+    const verifyInput = await this.getInput('signup-verify-password');
+    await usernameInput.enterText(username);
+    await passwordInput.enterText(password);
+    return verifyInput.enterText(password);
   }
 }

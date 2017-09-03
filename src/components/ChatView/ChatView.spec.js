@@ -27,7 +27,7 @@ describe('Chat View Component', () => {
 
   const render = (chatStore = mockChatStore) => {
     wrapper = mount(
-      <Provider {...configureStores(axios)}>
+      <Provider {...configureStores({axios})}>
         <ChatView chatStore={chatStore} sendMessage={() => {}}/>
       </Provider>,
       {attachTo: document.createElement('div')}

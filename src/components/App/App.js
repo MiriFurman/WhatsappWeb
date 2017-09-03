@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {observer, inject} from 'mobx-react';
 import Login from '../Login';
@@ -10,13 +10,20 @@ import Signup from '../Signup';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
-export class App extends React.Component {
-  async onLoginClick(username) {
+export class App extends Component {
+  async onLoginClick(user) {
     const {chatStore} = this.props;
-    await chatStore.login(username);
-    chatStore.dataPolling();
-    this.props.history.push('/chat');
+    const authenUser = await chatStore.login(user);
+    if (authenUser) {
+      chatStore.dataPolling();
+      this.props.history.push('/chat');
+    }
+  }
 
+  async onSignupClick(username, password) {
+    const {chatStore} = this.props;
+    await chatStore.signup({username, password});
+    this.props.history.push('/login');
   }
 
   sendMessage(messageBody) {
@@ -32,15 +39,18 @@ export class App extends React.Component {
 
   shouldRenderRoot(isLoggedIn) {
     return isLoggedIn ? <Redirect to="/chat"/> :
-    <Login onLoginClick={username => this.onLoginClick(username)}/>;
+    <Login onLoginClick={user => this.onLoginClick(user)}/>;
   }
 
   shouldRenderSignup(isLoggedIn) {
-    return isLoggedIn ? <Redirect to="/chat"/> : <Signup/>;
+    return isLoggedIn ? <Redirect to="/chat"/> :
+    <Signup onSignupClick={(username, password) => this.onSignupClick(username, password)}/>;
   }
 
   shouldRenderChat(chatStore) {
-    return chatStore.isLoggedIn ? <ChatView sendMessage={messageBody => this.sendMessage(messageBody)}/> : <Redirect to="/login"/>;
+    return chatStore.isLoggedIn ?
+      <ChatView sendMessage={messageBody => this.sendMessage(messageBody)}/> :
+      <Redirect to="/login"/>;
   }
 
 
