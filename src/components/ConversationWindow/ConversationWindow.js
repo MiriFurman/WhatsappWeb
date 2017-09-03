@@ -20,11 +20,16 @@ class ConversationWindow extends React.Component {
       this.props.onSendMessage(this.state.newMessage);
       this.setState({newMessage: ''});
     }
+  }
 
+  messageFromCurrentUser(message) {
+    const {chatStore} = this.props;
+    return chatStore.currentUser.id === message.createdBy;
   }
 
   render() {
     const {chatStore} = this.props;
+    // console.log(JSON.stringify(this.props));
     return (
       <div data-hook="conversation-window" className={s.conversationWindow}>
         <div className={s.conversationInfo}>
@@ -36,8 +41,13 @@ class ConversationWindow extends React.Component {
           </div>
         </div>
         <ul className={s.messagesContainer}>
-          {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message =>
-            <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>)}
+          {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message => {
+            if (this.messageFromCurrentUser(message)) {
+              return <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id} currentUser/>;
+            } else {
+              return <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>;
+            }
+          })}
         </ul>
         <Input
           dataHook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => this.onMessageSend()} unit="send"

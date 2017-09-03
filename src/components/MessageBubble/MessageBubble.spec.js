@@ -10,7 +10,7 @@ describe('Message Bubble Component', () => {
   let wrapper;
 
   const exampleBody = 'lol';
-  const exampleTime = '10:30 AM';
+  const exampleTime = '2017-01-23 10:30';
   const exampleId = '1a2b';
   const exampleMessage = {body: exampleBody, id: exampleId, created: exampleTime};
   const modifyExample = modification => Object.assign({}, exampleMessage, modification);
