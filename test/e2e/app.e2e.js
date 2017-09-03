@@ -130,6 +130,4 @@ describe('Wazzap E2E tests', () => {
     await secondWindowDriver.clickContactAtIndex(0);
     expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
-
-
 });

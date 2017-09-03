@@ -32,7 +32,7 @@ export class App extends React.Component {
 
   shouldRenderRoot(isLoggedIn) {
     return isLoggedIn ? <Redirect to="/chat"/> :
-      <Login onLoginClick={username => this.onLoginClick(username)}/>;
+    <Login onLoginClick={username => this.onLoginClick(username)}/>;
   }
 
   shouldRenderSignup(isLoggedIn) {
