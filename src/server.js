@@ -20,7 +20,7 @@ module.exports = (app, context) => {
 
   app.get('/', wrapAsync(async (req, res) => {
     const templatePath = './src/index.ejs';
-    const data = {title: 'Wix Full Stack Project Boilerplate'};
+    const data = {title: 'Wazzap Chat'};
     const renderModel = await wixExpressRenderingModel.generate(req, config);
     const html = await wixRenderer.render(templatePath, renderModel, data, wixRunMode.isProduction());
     res.send(html);
@@ -64,7 +64,7 @@ module.exports = (app, context) => {
 
   app.get('*', wrapAsync(async (req, res) => {
     const templatePath = './src/index.ejs';
-    const data = {title: 'Wix Full Stack Project Boilerplate'};
+    const data = {title: 'Wazzap Chat'};
     const renderModel = await wixExpressRenderingModel.generate(req, config);
     const html = await wixRenderer.render(templatePath, renderModel, data, wixRunMode.isProduction());
     res.send(html);
