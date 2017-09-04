@@ -164,6 +164,7 @@ class ChatStore {
   };
 
   signup(user) {
+    this.authenticationProblem = false;
     return this.restClient.signup(user);
   }
 }
