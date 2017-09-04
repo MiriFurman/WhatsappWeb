@@ -24,7 +24,6 @@ describe('Contacts Service', () => {
       contactsService.create({name: 'Bob'});
       contactsService.reset();
       const contactList = contactsService.list();
-
       expect(contactList).to.eql([]);
     });
   });

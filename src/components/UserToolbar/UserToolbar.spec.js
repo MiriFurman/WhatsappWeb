@@ -10,7 +10,7 @@ chai.use(sinonChai);
 describe('User Toolbar component test', () => {
   const render = (props = {}) => (
     mount(
-      <UserToolbar {...props}/>,
+      <UserToolbar chatStore={{}} {...props}/>,
       {attachTo: document.createElement('div')}
     )
   );

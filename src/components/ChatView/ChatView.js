@@ -27,11 +27,7 @@ const ChatView = ({chatStore, sendMessage}) => (
             />
         </div>
         }
-        {chatStore.createGroupMode &&
-          <div>
-            <CreateGroup/>
-          </div>
-        }
+        {chatStore.createGroupMode && <CreateGroup/>}
       </div>
       <div className={s.mainContent}>
         {!chatStore.activeRelationId && <Welcome/>}

@@ -10,7 +10,8 @@ const createMessage = ({from, body, conversationId}) => {
     body,
     conversationId,
     created: new Date(),
-    createdBy: from
+    createdBy: from,
+    ack: [from]
   };
 };
 
@@ -25,12 +26,13 @@ const createConversation = ({conversationId, members, firstMessage}) => ({
   messages: [firstMessage]
 });
 
-const createGroup = ({members, displayName}) => {
+const createGroup = ({members, displayName, imgUrl}) => {
   const conversation = {
     id: uuid.v4(),
     members: [...members],
     messages: [],
-    displayName
+    displayName,
+    imgUrl
   };
   conversations[conversation.id] = conversation;
   return conversation.id;
@@ -62,6 +64,9 @@ const getMessagesById = id => {
 
 const otherMember = (conversation, contactId) => conversation.members.find(member => member !== contactId);
 const contactById = contactId => contactsService.getById(contactId);
+const getLastMessageBodyFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || '';
+const getLastMessageDateFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].created) || new Date();
+
 
 const listConversationsByContactId = contactId => {
   return Object.values(conversations)
@@ -69,8 +74,23 @@ const listConversationsByContactId = contactId => {
     .map(conversation => ({
       id: conversation.id,
       members: conversation.members,
-      displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name
+      displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name,
+      imgUrl: conversation.imgUrl ? conversation.imgUrl : contactById(otherMember(conversation, contactId)).imgUrl,
+      lastMessage: {
+        body: getLastMessageBodyFromConversation(conversation),
+        created: getLastMessageDateFromConversation(conversation)
+      },
+      unreadMessageCount: conversation.messages.filter(message => message.ack.indexOf(contactId) === -1).length
     }));
+};
+
+const ack = ({conversationId, contactId}) => {
+  const {messages} = getMessagesById(conversationId);
+  messages.forEach(message => {
+    if (message.ack.indexOf(contactId) === -1) {
+      message.ack.push(contactId);
+    }
+  });
 };
 
 const reset = () => conversations = {};
@@ -80,5 +100,6 @@ export const conversationsService = {
   getMessagesById,
   listConversationsByContactId,
   createGroup,
+  ack,
   reset
 };

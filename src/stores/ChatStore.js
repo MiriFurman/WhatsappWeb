@@ -34,7 +34,8 @@ class ChatStore {
 
   @computed
   get displayContacts() {
-    const conversationsMembers = this.conversations.map(({members}) => members.toJS());
+    const regularConversations = this.conversations.filter(({members}) => members.length < 3);
+    const conversationsMembers = regularConversations.map(({members}) => members.toJS());
     const flattenMembers = flatten(conversationsMembers);
     const conversationUsers = flattenMembers.filter(userId => userId !== this.currentUser.id);
     const jsContacts = this.contacts.map(({id}) => id);
@@ -138,10 +139,10 @@ class ChatStore {
   }
 
   @action
-  async createGroup(displayName) {
+  async createGroup(displayName, imgUrl) {
     if (displayName !== '') {
       const members = [...this.groupMembers, this.currentUser.id];
-      const conversationId = await this.restClient.createGroup(members, displayName);
+      const conversationId = await this.restClient.createGroup(members, displayName, imgUrl);
       await this.getConversationById(conversationId);
       this.activeRelationId = conversationId;
       this.relationState = RELATION_STATE.CONVERSATION;

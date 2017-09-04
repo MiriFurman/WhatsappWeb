@@ -115,13 +115,12 @@ export default class AppDriver {
     await msgInput.element().$('input').sendKeys(protractor.Key.ENTER);
   }
 
-  async isSignupScreenPresent() {
-    await browser.wait(EC.visibilityOf($('[data-hook="signup-screen"]'), 1000));
-    return $('[data-hook="signup-screen"]').isPresent();
+  waitForSignupToBePresent() {
+    return browser.wait(EC.presenceOf($('[data-hook="signup-heading"]')));
   }
 
   clickSignup() {
-    $('[data-hook="signup-link"]').click();
+    return $('[data-hook="signup-link"]').click();
   }
 
   async signup(signupDetails) {

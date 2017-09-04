@@ -17,7 +17,10 @@ chai.use(sinonChai);
 describe('Conversation window component test', () => {
   const render = (props = {}) => (
     mount(
-      <ConversationWindow onSendMessage={() => {}} {...props}/>,
+      <ConversationWindow
+        onSendMessage={() => {
+        }} {...props}
+           />,
       {attachTo: document.createElement('div')}
     )
   );
@@ -30,7 +33,10 @@ describe('Conversation window component test', () => {
       }
     };
     const wrapper = render(propsObj);
-    expect(textTestkitFactory({wrapper, dataHook: 'conversation-window-display-name'}).getText()).to.equal(propsObj.chatStore.conversationDisplayName);
+    expect(textTestkitFactory({
+      wrapper,
+      dataHook: 'conversation-window-display-name'
+    }).getText()).to.equal(propsObj.chatStore.conversationDisplayName);
   });
 
   it('should render the correct conversation messages', () => {
@@ -159,8 +165,11 @@ describe('Conversation Window', () => {
   const restClient = new RestClient(axios, url => `${baseURL}${url}`);
   const testChatStore = new ChatStore(restClient);
 
-  const render = props => {
-    wrapper = mount(<ConversationWindow onSendMessage={() => {}} chatStore={testChatStore} {...props}/>);
+  const render = (props = {}) => {
+    wrapper = mount(<ConversationWindow
+      onSendMessage={() => {
+      }} chatStore={testChatStore} {...props}
+                                   />);
   };
 
   it('should render', () => {
@@ -249,7 +258,7 @@ describe('Conversation Window', () => {
       }
     }
     ;
-    wrapper = mount(<ConversationWindow chatStore={chatStore}/>);
+    wrapper = mount(<ConversationWindow onSendMessage={() => {}} chatStore={chatStore}/>);
 
     expect(wrapper.find(`.messageBubbleWrapper`).length).to.equal(2);
     expect(wrapper.find(`.messageBubbleWrapper`).first().html()).to.contain('fromMe');
@@ -301,8 +310,7 @@ describe('Conversation Window', () => {
         relationState: 'conversation'
       }
     };
-
-    wrapper = mount(<ConversationWindow {...realProps}/>);
+    wrapper = mount(<ConversationWindow onSendMessage={() => {}} {...realProps}/>);
 
     expect(wrapper.find(`.messageBubbleWrapper`).last().html()).to.contain('fromMe');
     expect(wrapper.find(`.messageBubbleWrapper`).first().html()).to.contain('fromOthers');

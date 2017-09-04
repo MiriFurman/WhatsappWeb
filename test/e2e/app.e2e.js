@@ -43,6 +43,7 @@ describe('Wazzap E2E tests', () => {
     thirdWindowDriver = createWindowDriver(thirdWindow);
     await firstWindowDriver.navigate();
     await secondWindowDriver.navigate();
+    await thirdWindowDriver.navigate();
     await axios.post(app.getUrl(FLUSH));
   });
 
@@ -155,7 +156,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.navigate();
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should show login screen at the beginning').to.equal(true);
     await firstWindowDriver.clickSignup();
-    await firstWindowDriver.isSignupScreenPresent();
+    await firstWindowDriver.waitForSignupToBePresent();
     await firstWindowDriver.signup(signupObject);
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
   });
@@ -194,5 +195,4 @@ describe('Wazzap E2E tests', () => {
     // todo replace this test with a component test
     // expect(await firstWindowDriver.getDisplayedMessageTime(0)).to.not.contain('Donald');
   });
-
 });

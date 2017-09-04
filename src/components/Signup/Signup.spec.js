@@ -13,7 +13,7 @@ import sinon from 'sinon';
 describe('Signup component test', () => {
   const render = (props = {}) => (
     mount(
-      <Router>
+      <Router context={{}}>
         <Signup {...props}/>
       </Router>
       ,

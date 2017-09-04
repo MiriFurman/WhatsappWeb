@@ -16,20 +16,23 @@ describe('ContactItem component tests', () => {
     const propObject = {
       name: 'Shilo Mangam',
       imageUrl: 'https://placebear.com/40/40',
+      id: '1',
       onContactClick: () => {}
     };
     const wrapper = render(propObject);
     expect(textTestkitFactory({wrapper, dataHook: 'contact-display-name'}).getText()).to.equal(propObject.name);
     expect(wrapper.find('[data-hook="contact-img"]').prop('src')).to.equal(propObject.imageUrl);
   });
-  it('should render empty image when no image provided', () => {
+  it('should render dummy image when no image provided', () => {
     const propObject = {
       name: 'Shilo Mangam',
       imageUrl: '',
+      id: '1',
       onContactClick: () => {}
     };
+    const dummyImg = 'https://placeimg.com/60/60/animals';
     const wrapper = render(propObject);
-    expect(wrapper.find('[data-hook="contact-img"]').prop('src')).to.equal('no-image.png');
+    expect(wrapper.find('[data-hook="contact-img"]').prop('src')).to.equal(dummyImg);
   });
   it('should invoke start conversation on relation click', () => {
     const spy = sinon.spy();

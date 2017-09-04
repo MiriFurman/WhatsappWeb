@@ -54,7 +54,6 @@ describe('Chat App Server', () => {
     const exampleMessage = 'Bend the knee';
     const conversationId = await restClient
       .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
-
     const relations = await restClient.getRelations(user1Obj.id);
     expect(relations.conversations[0].id).to.equal(conversationId);
     expect(relations.contacts.length).to.equal(2);
@@ -102,7 +101,10 @@ describe('Chat App Server', () => {
       password: '1q2w3e'
     };
     await restClient.signup(signupUser);
-    const userObj = await restClient.login({username: signupUser.username, password: signupUser.password});
+    const userObj = await restClient.login({
+      username: signupUser.username,
+      password: signupUser.password
+    });
     expect(userObj.name).to.eql(signupUser.username);
   });
 
@@ -123,5 +125,24 @@ describe('Chat App Server', () => {
     const receivedConversation = await restClient.getConversationById(conversationId1);
     expect(receivedConversation.displayName).to.equal(displayName);
   });
-
+  it('should get last message on conversation object', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage = 'Bend the knee';
+    await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+    const relations = await restClient.getRelations(user1Obj.id);
+    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage', 'unreadMessageCount');
+    expect(relations.conversations[0].lastMessage).to.have.all.keys('created', 'body');
+  });
+  it('should ack conversation', async () => {
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage = 'Bend the knee';
+    const conversationId = await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+    const {conversations} = await restClient.getRelations(user2Obj.id);
+    expect(conversations[0].unreadMessageCount).to.equal(1);
+    await restClient.ackConversation({conversationId, contactId: user2Obj.id});
+    const relationAfterAck = await restClient.getRelations(user2Obj.id);
+    expect(relationAfterAck.conversations[0].unreadMessageCount).to.equal(0);
+  });
 });

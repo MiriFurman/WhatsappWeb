@@ -10,7 +10,10 @@ import Signup from '../Signup';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
-export class App extends Component {
+@withRouter
+@inject('chatStore')
+@observer
+class App extends Component {
   async onLoginClick(user) {
     const {chatStore} = this.props;
     const authenUser = await chatStore.login(user);
@@ -20,9 +23,9 @@ export class App extends Component {
     }
   }
 
-  async onSignupClick(username, password) {
+  async onSignupClick(username, password, imgUrl = '') {
     const {chatStore} = this.props;
-    await chatStore.signup({username, password});
+    await chatStore.signup({username, password, imgUrl});
     this.props.history.push('/login');
   }
 
@@ -75,4 +78,4 @@ App.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(inject('chatStore')(observer(App)));
+export default App;

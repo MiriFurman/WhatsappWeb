@@ -12,15 +12,18 @@ describe('conversation item component tests', () => {
       {attachTo: document.createElement('div')}
     )
   );
-
   it('should render conversationItem component successfully', () => {
     const propObject = {
       id: '1',
       displayName: 'Shilo',
-      onConversationClick: () => {}
+      onConversationClick: () => {
+      }
     };
     const wrapper = render(propObject);
-    expect(textTestkitFactory({wrapper, dataHook: 'conversation-display-name'}).getText()).to.equal(propObject.displayName);
+    expect(textTestkitFactory({
+      wrapper,
+      dataHook: 'conversation-display-name'
+    }).getText()).to.equal(propObject.displayName);
   });
   it('should call onConversationClick on click', () => {
     const spy = sinon.spy();
@@ -33,6 +36,20 @@ describe('conversation item component tests', () => {
     wrapper.find('[data-hook="conversation-item"]').at(0).simulate('click');
     expect(spy.getCall(0).args).to.eql([propObject.id]);
   });
-
-
+  it('should show last message on conversation-item', () => {
+    const propObject = {
+      id: '1',
+      displayName: 'Shilo',
+      onConversationClick: () => {},
+      lastMessage: {
+        body: 'Hi',
+        created: new Date()
+      }
+    };
+    const wrapper = render(propObject);
+    expect(textTestkitFactory({
+      wrapper,
+      dataHook: 'conversation-last-message'
+    }).getText()).to.equal(propObject.lastMessage.body);
+  });
 });

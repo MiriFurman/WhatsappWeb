@@ -9,7 +9,7 @@ import {conversationsService} from './server/services/ConversationsService';
 import bodyParser from 'body-parser';
 import {
   GET_RELATIONS, SEND_MESSAGE, GET_CONVERSATION_BY_ID, FLUSH,
-  CONTACTS, LOGIN, SIGNUP, CREATE_GROUP
+  CONTACTS, LOGIN, SIGNUP, CREATE_GROUP, ACK_CONVERSATION
 } from './common/endpoints';
 
 module.exports = (app, context) => {
@@ -65,14 +65,20 @@ module.exports = (app, context) => {
 
   app.post(SIGNUP, wrapAsync(async (req, res) => {
     const {user} = req.body;
-    await contactsService.create({name: user.username, password: user.password});
+    await contactsService.create({name: user.username, password: user.password, imgUrl: user.imgUrl});
     res.end();
   }));
 
   app.post(CREATE_GROUP, wrapAsync(async (req, res) => {
-    const {members, displayName} = req.body;
-    const conversationId = conversationsService.createGroup({members, displayName});
+    const {members, displayName, imgUrl} = req.body;
+    const conversationId = conversationsService.createGroup({members, displayName, imgUrl});
     res.json(conversationId);
+  }));
+
+  app.post(ACK_CONVERSATION, wrapAsync(async (req, res) => {
+    const {conversationId, contactId} = req.body;
+    conversationsService.ack({conversationId, contactId});
+    res.end();
   }));
 
   app.get('*', wrapAsync(async (req, res) => {
