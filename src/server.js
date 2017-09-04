@@ -9,7 +9,7 @@ import {conversationsService} from './server/services/ConversationsService';
 import bodyParser from 'body-parser';
 import {
   GET_RELATIONS, SEND_MESSAGE, GET_CONVERSATION_BY_ID, FLUSH,
-  CONTACTS, LOGIN, SIGNUP, CREATE_GROUP
+  CONTACTS, LOGIN, SIGNUP, CREATE_GROUP, ACK_CONVERSATION
 } from './common/endpoints';
 
 module.exports = (app, context) => {
@@ -73,6 +73,12 @@ module.exports = (app, context) => {
     const {members, displayName, imgUrl} = req.body;
     const conversationId = conversationsService.createGroup({members, displayName, imgUrl});
     res.json(conversationId);
+  }));
+
+  app.post(ACK_CONVERSATION, wrapAsync(async (req, res) => {
+    const {conversationId, contactId} = req.body;
+    conversationsService.ack({conversationId, contactId});
+    res.end();
   }));
 
   app.get('*', wrapAsync(async (req, res) => {

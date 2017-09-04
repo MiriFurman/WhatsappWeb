@@ -10,7 +10,8 @@ const createMessage = ({from, body, conversationId}) => {
     body,
     conversationId,
     created: new Date(),
-    createdBy: from
+    createdBy: from,
+    ack: [from]
   };
 };
 
@@ -64,7 +65,8 @@ const getMessagesById = id => {
 const otherMember = (conversation, contactId) => conversation.members.find(member => member !== contactId);
 const contactById = contactId => contactsService.getById(contactId);
 const getLastMessageBodyFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || '';
-const getLastMessageDateFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].created) || new Date()
+const getLastMessageDateFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].created) || new Date();
+
 
 const listConversationsByContactId = contactId => {
   return Object.values(conversations)
@@ -77,8 +79,18 @@ const listConversationsByContactId = contactId => {
       lastMessage: {
         body: getLastMessageBodyFromConversation(conversation),
         created: getLastMessageDateFromConversation(conversation)
-      }
+      },
+      unreadMessageCount: conversation.messages.filter(message => message.ack.indexOf(contactId) === -1).length
     }));
+};
+
+const ack = ({conversationId, contactId}) => {
+  const {messages} = getMessagesById(conversationId);
+  messages.forEach(message => {
+    if (message.ack.indexOf(contactId) === -1) {
+      message.ack.push(contactId);
+    }
+  });
 };
 
 const reset = () => conversations = {};
@@ -88,5 +100,6 @@ export const conversationsService = {
   getMessagesById,
   listConversationsByContactId,
   createGroup,
+  ack,
   reset
 };
