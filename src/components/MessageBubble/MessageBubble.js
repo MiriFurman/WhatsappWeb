@@ -11,7 +11,7 @@ export const MessageBubble = props => {
   return (
     <div className={s.messageBubbleWrapper} data-message-id={id} data-hook={dh.Wrapper}>
       <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
-        <Text appearance="T1" dataHook={dh.Body} className={s.msgBody}>{body}</Text>
+        <Text appearance={props.currentUser ? 'T1.2' : 'T1'} dataHook={dh.Body} className={s.msgBody}>{body}</Text>
       </div>
       <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>
         <Text appearance="T3.4">
