@@ -10,6 +10,7 @@ import Signup from '../Signup';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
+@withRouter
 @inject('chatStore')
 @observer
 class App extends Component {
@@ -77,4 +78,4 @@ App.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(App);
+export default App;

@@ -43,6 +43,7 @@ describe('Wazzap E2E tests', () => {
     thirdWindowDriver = createWindowDriver(thirdWindow);
     await firstWindowDriver.navigate();
     await secondWindowDriver.navigate();
+    await thirdWindowDriver.navigate();
     await axios.post(app.getUrl(FLUSH));
   });
 

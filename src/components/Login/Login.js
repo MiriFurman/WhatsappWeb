@@ -81,7 +81,7 @@ class Login extends Component {
 
 Login.propTypes = {
   onLoginClick: PropTypes.func.isRequired,
-  chatStore: PropTypes.object.isRequired
+  chatStore: PropTypes.object
 };
 Login.defaultProps = {
   onLoginClick: () => {}
