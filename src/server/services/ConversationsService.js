@@ -62,6 +62,8 @@ const getMessagesById = id => {
 
 const otherMember = (conversation, contactId) => conversation.members.find(member => member !== contactId);
 const contactById = contactId => contactsService.getById(contactId);
+const getLastMessageBodyFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || '';
+const getLastMessageDateFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].created) || new Date()
 
 const listConversationsByContactId = contactId => {
   return Object.values(conversations)
@@ -70,7 +72,10 @@ const listConversationsByContactId = contactId => {
       id: conversation.id,
       members: conversation.members,
       displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name,
-      lastMessage: (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || ''
+      lastMessage: {
+        body: getLastMessageBodyFromConversation(conversation),
+        created: getLastMessageDateFromConversation(conversation)
+      }
     }));
 };
 

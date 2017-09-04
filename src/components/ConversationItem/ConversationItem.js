@@ -13,7 +13,7 @@ const ConversationItem = ({id, onConversationClick, displayName, lastMessage}) =
     </div>
     <div className={s.textContainer}>
       <Text appearance="T2" dataHook="conversation-display-name">{displayName}</Text>
-      <Text appearance="T3.1" dataHook="conversation-last-message">{lastMessage}</Text>
+      <Text appearance="T3.1" dataHook="conversation-last-message">{lastMessage.body}</Text>
     </div>
   </div>
 );

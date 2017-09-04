@@ -41,12 +41,15 @@ describe('conversation item component tests', () => {
       id: '1',
       displayName: 'Shilo',
       onConversationClick: () => {},
-      lastMessage: 'Hi!'
+      lastMessage: {
+        body: 'Hi',
+        created: new Date()
+      }
     };
     const wrapper = render(propObject);
     expect(textTestkitFactory({
       wrapper,
       dataHook: 'conversation-last-message'
-    }).getText()).to.equal(propObject.lastMessage);
+    }).getText()).to.equal(propObject.lastMessage.body);
   });
 });

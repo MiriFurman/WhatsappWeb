@@ -129,8 +129,6 @@ describe('Chat App Server', () => {
     await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
     const relations = await restClient.getRelations(user1Obj.id);
     expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage');
-    expect(relations.conversations[0].lastMessage).to.equal(exampleMessage);
-
-
+    expect(relations.conversations[0].lastMessage).to.have.all.keys('created', 'body');
   });
 });
