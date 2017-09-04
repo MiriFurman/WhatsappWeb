@@ -41,9 +41,9 @@ export default class RestClient {
     await this.axios.post(url, {user});
   }
 
-  async createGroup(members, displayName) {
+  async createGroup(members, displayName, imgUrl) {
     const url = this.getUrl(CREATE_GROUP);
-    const {data} = await this.axios.post(url, {members, displayName});
+    const {data} = await this.axios.post(url, {members, displayName, imgUrl});
     return data;
   }
 }

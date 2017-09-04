@@ -25,12 +25,13 @@ const createConversation = ({conversationId, members, firstMessage}) => ({
   messages: [firstMessage]
 });
 
-const createGroup = ({members, displayName}) => {
+const createGroup = ({members, displayName, imgUrl}) => {
   const conversation = {
     id: uuid.v4(),
     members: [...members],
     messages: [],
-    displayName
+    displayName,
+    imgUrl
   };
   conversations[conversation.id] = conversation;
   return conversation.id;
@@ -72,6 +73,7 @@ const listConversationsByContactId = contactId => {
       id: conversation.id,
       members: conversation.members,
       displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name,
+      imgUrl: conversation.imgUrl ? conversation.imgUrl : contactById(otherMember(conversation, contactId)).imgUrl,
       lastMessage: {
         body: getLastMessageBodyFromConversation(conversation),
         created: getLastMessageDateFromConversation(conversation)

@@ -132,10 +132,10 @@ class ChatStore {
   }
 
   @action
-  async createGroup(displayName) {
+  async createGroup(displayName, imgUrl) {
     if (displayName !== '') {
       const members = [...this.groupMembers, this.currentUser.id];
-      const conversationId = await this.restClient.createGroup(members, displayName);
+      const conversationId = await this.restClient.createGroup(members, displayName, imgUrl);
       await this.getConversationById(conversationId);
       this.activeRelationId = conversationId;
       this.relationState = RELATION_STATE.CONVERSATION;

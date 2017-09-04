@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Button, TextField, Label, MultiSelect} from 'wix-style-react';
+import {Input, Button, TextField, Label, MultiSelect, Notification} from 'wix-style-react';
 import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
 import ContactList from '../ContactList/ContactList';
@@ -12,20 +12,21 @@ class CreateGroup extends React.Component {
   constructor() {
     super();
     this.state = {
-      membersInput: '',
       displayName: '',
-      icon: '',
       displayNameError: false,
-      membersError: false
+      membersError: false,
+      imgUrl: '',
     };
+    this.dummyImg = 'https://placeimg.com/60/60/animals';
   }
 
   handleCreate() {
-    if (this.state.displayName === '') {
-      this.setState({displayNameError: true});
-    } else {
-      this.setState({displayNameError: false});
-      this.props.chatStore.createGroup(this.state.displayName);
+    const displayNameError = this.state.displayName === '';
+    const membersError = this.props.chatStore.groupMembers.length < 2;
+    this.setState({displayNameError, membersError});
+    if (!displayNameError && !membersError) {
+      this.props.chatStore.createGroup(this.state.displayName, this.state.imgUrl);
+      this.setState({displayName: '', imgUrl: ''});
     }
   }
 
@@ -50,22 +51,23 @@ class CreateGroup extends React.Component {
             <div className={s.iconInput}>
               <TextField>
                 <Label appearance="T1.1" for="groupIcon">Group Icon</Label>
-                <Input id="groupIcon" dataHook="input-icon" value={this.state.icon} onChange={evt => this.setState({icon: evt.target.value})}/>
+                <Input id="groupIcon" dataHook="input-icon" value={this.state.icon} onBlur={e => this.setState({imgUrl: e.target.value})}/>
               </TextField>
             </div>
             <div className={s.imgHolder}>
-              <img src="https://placeimg.com/60/60/animals" alt="Conversation Picture"/>
+              <img src={this.state.imgUrl} alt="Conversation Picture" onError={() => this.setState({imgUrl: this.dummyImg})}/>
             </div>
           </div>
           <div className={s.memberSection}>
             <Label appearance="T1.1" for="members">Members</Label>
             <MultiSelect
               id="members"
-              tags={this.props.chatStore.groupTags}
+              tags={this.props.chatStore.groupTags.toJS()}
               onRemoveTag={tagId => this.props.chatStore.handleOnRemoveTag(tagId)}
               />
           </div>
         </div>
+        {this.state.membersError && <Notification show theme="error" type="global" dataHook="members-error-notification"><Notification.TextLabel>Please select at least 2 members!</Notification.TextLabel></Notification>}
         <div className={s.contactsSection}>
           <ContactList
             username={this.props.chatStore.username} contacts={this.props.chatStore.groupDisplayContacts}
@@ -84,7 +86,7 @@ class CreateGroup extends React.Component {
 }
 
 CreateGroup.propTypes = {
-  chatStore: PropTypes.object.isRequired
+  chatStore: PropTypes.object
 };
 
 export default CreateGroup;

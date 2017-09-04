@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 import CreateGroup from './CreateGroup';
-import {buttonTestkitFactory, inputTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+import {buttonTestkitFactory, inputTestkitFactory, notificationTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
@@ -22,10 +22,12 @@ describe('Create Group component test', () => {
       {id: '3', name: 'Brian'},
       {id: '4', name: 'Stewie'}
     ];
+    const tags = {toJS: () => []};
     const propsObj = {
       chatStore: {
         username: 'Peter',
-        groupDisplayContacts: contacts
+        groupDisplayContacts: contacts,
+        groupTags: tags
       }
     };
     const wrapper = render(propsObj);
@@ -41,11 +43,13 @@ describe('Create Group component test', () => {
       {id: '3', name: 'Brian'},
       {id: '4', name: 'Stewie'}
     ];
+    const tags = {toJS: () => []};
     const propsObj = {
       chatStore: {
         username: 'Peter',
         groupDisplayContacts: contacts,
-        handleAddContact: spy
+        handleAddContact: spy,
+        groupTags: tags
       }
     };
     const wrapper = render(propsObj);
@@ -79,20 +83,45 @@ describe('Create Group component test', () => {
     const contacts = [
       {id: '1', name: 'Peter'},
       {id: '2', name: 'Lois'},
-      {id: '3', name: 'Brian'}
     ];
-    const tags = [{id: '4', label: 'Stewie'}];
+    const tags = {toJS: () => [{id: '4', label: 'Stewie'}, {id: '3', name: 'Brian'}]};
     const propsObj = {
       chatStore: {
         username: 'Peter',
         groupDisplayContacts: contacts,
         createGroup: spy,
-        groupTags: tags
+        groupTags: tags,
+        groupMembers: ['4', '3']
       }
     };
     const wrapper = render(propsObj);
     inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText('');
     buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
+    expect(spy).to.not.have.been.called;
+  });
+
+  it('should not call create group when there is less then 2 members and clicking on create button', async () => {
+    const spy = sinon.spy();
+    const displayName = 'Family';
+    const contacts = [
+      {id: '1', name: 'Peter'},
+      {id: '2', name: 'Lois'},
+      {id: '3', name: 'Brian'}
+    ];
+    const tags = {toJS: () => [{id: '4', label: 'Stewie'}]};
+    const propsObj = {
+      chatStore: {
+        username: 'Peter',
+        groupDisplayContacts: contacts,
+        createGroup: spy,
+        groupTags: tags,
+        groupMembers: ['4']
+      }
+    };
+    const wrapper = render(propsObj);
+    inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
+    buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
+    expect(notificationTestkitFactory({wrapper, dataHook: 'members-error-notification'}).exists()).to.equal(true);
     expect(spy).to.not.have.been.called;
   });
 
@@ -102,20 +131,21 @@ describe('Create Group component test', () => {
     const contacts = [
       {id: '1', name: 'Peter'},
       {id: '2', name: 'Lois'},
-      {id: '3', name: 'Brian'}
     ];
-    const tags = [{id: '4', label: 'Stewie'}];
+    const tags = {toJS: () => [{id: '4', label: 'Stewie'}, {id: '3', name: 'Brian'}]};
     const propsObj = {
       chatStore: {
         username: 'Peter',
         groupDisplayContacts: contacts,
         createGroup: spy,
-        groupTags: tags
+        groupTags: tags,
+        groupMembers: ['4', '3']
       }
     };
     const wrapper = render(propsObj);
     inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
     buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
+    expect(notificationTestkitFactory({wrapper, dataHook: 'members-error-notification'}).exists()).to.equal(false);
     expect(spy).to.have.been.calledWith(displayName);
   });
 });

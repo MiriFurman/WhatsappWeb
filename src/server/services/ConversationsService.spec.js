@@ -84,7 +84,8 @@ describe('Conversations Service', () => {
   it('should create group conversation including display name', () => {
     const displayName = 'The wall';
     const members = ['1', '2', '3'];
-    const conversationId = conversationsService.createGroup({members, displayName});
+    const imgUrl = 'https://placeimg.com/60/60/nature';
+    const conversationId = conversationsService.createGroup({members, displayName, imgUrl});
     const conversationsList = conversationsService.listConversationsByContactId('1');
     expect(conversationsList[0].id).to.equal(conversationId);
     expect(conversationsList[0].displayName).to.equal(displayName);
@@ -95,7 +96,8 @@ describe('Conversations Service', () => {
     const members = ['1', '2', '3'];
     const messageBody1 = 'Winter is coming!';
     const messageBody2 = 'oh no!';
-    const conversationIdCreate = conversationsService.createGroup({members, displayName});
+    const imgUrl = 'https://placeimg.com/60/60/nature';
+    const conversationIdCreate = conversationsService.createGroup({members, displayName, imgUrl});
     const conversationIdMsg1 = conversationsService.addMessage({from: members[0], messageBody: messageBody1, members});
     const conversationIdMsg2 = conversationsService.addMessage({from: members[1], messageBody: messageBody2, members});
     expect(conversationIdCreate).to.equal(conversationIdMsg1);

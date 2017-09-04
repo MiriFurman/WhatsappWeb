@@ -23,9 +23,9 @@ class App extends Component {
     }
   }
 
-  async onSignupClick(username, password) {
+  async onSignupClick(username, password, imgUrl = '') {
     const {chatStore} = this.props;
-    await chatStore.signup({username, password});
+    await chatStore.signup({username, password, imgUrl});
     this.props.history.push('/login');
   }
 

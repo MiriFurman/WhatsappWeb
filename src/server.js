@@ -65,13 +65,13 @@ module.exports = (app, context) => {
 
   app.post(SIGNUP, wrapAsync(async (req, res) => {
     const {user} = req.body;
-    await contactsService.create({name: user.username, password: user.password});
+    await contactsService.create({name: user.username, password: user.password, imgUrl: user.imgUrl});
     res.end();
   }));
 
   app.post(CREATE_GROUP, wrapAsync(async (req, res) => {
-    const {members, displayName} = req.body;
-    const conversationId = conversationsService.createGroup({members, displayName});
+    const {members, displayName, imgUrl} = req.body;
+    const conversationId = conversationsService.createGroup({members, displayName, imgUrl});
     res.json(conversationId);
   }));
 
