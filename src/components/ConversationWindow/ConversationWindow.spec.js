@@ -44,11 +44,13 @@ describe('Conversation window component test', () => {
           messages: [
             {
               id: '111',
-              body: msg1
+              body: msg1,
+              created: '2017-08-29T13:47:37.295Z'
             },
             {
               id: '222',
-              body: msg2
+              body: msg2,
+              created: '2017-08-29T14:47:37.295Z'
             }
           ]
         }
@@ -87,7 +89,7 @@ describe('Conversation Window', () => {
   const testChatStore = new ChatStore(restClient);
 
   const render = props => {
-    wrapper = mount(<ConversationWindow chatStore={testChatStore} {...props}/>);
+    wrapper = mount(<ConversationWindow onSendMessage={() => {}} chatStore={testChatStore} {...props}/>);
   };
 
   it('should render', () => {
