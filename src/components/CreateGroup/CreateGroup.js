@@ -21,12 +21,12 @@ class CreateGroup extends React.Component {
     return (
       <div>
         <div>
-          <Button dataHook="create-group" height="medium" theme="icon-standard" onClick={() => this.props.chatStore.hideCreateGroup()}><BackArrow/></Button>
+          <Button dataHook="create-group-go-back-btn" height="medium" theme="icon-standard" onClick={() => this.props.chatStore.hideCreateGroup()}><BackArrow/></Button>
           <div>Create Group</div>
         </div>
         <TextField>
           <Label appearance="T1.1" for="groupName">Group Name</Label>
-          <Input id="groupName" dataHook="input-display-name" value={this.state.displayName} onChange={evt => this.setState({displayName: evt.target.value})}/>
+          <Input id="groupName" dataHook="input-group-name" value={this.state.displayName} onChange={evt => this.setState({displayName: evt.target.value})}/>
         </TextField>
         <TextField>
           <Label appearance="T1.1" for="groupIcon">Group Icon</Label>
@@ -49,7 +49,7 @@ class CreateGroup extends React.Component {
           />
         <div>
           <Button
-            dataHook="create-btn"
+            dataHook="create-group-btn"
             onClick={() => this.props.chatStore.createGroup(this.state.displayName)}
             >Create</Button>
         </div>

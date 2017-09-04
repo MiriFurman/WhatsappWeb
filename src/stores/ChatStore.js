@@ -132,13 +132,15 @@ class ChatStore {
 
   @action
   async createGroup(displayName) {
-    const members = [...this.groupMembers, this.currentUser.id];
-    const conversationId = await this.restClient.createGroup(members, displayName);
-    await this.getConversationById(conversationId);
-    this.activeRelationId = conversationId;
-    this.relationState = RELATION_STATE.CONVERSATION;
-    this.groupMembers = [];
-    this.groupTags = [];
+    if (displayName !== '') {
+      const members = [...this.groupMembers, this.currentUser.id];
+      const conversationId = await this.restClient.createGroup(members, displayName);
+      await this.getConversationById(conversationId);
+      this.activeRelationId = conversationId;
+      this.relationState = RELATION_STATE.CONVERSATION;
+      this.groupMembers = [];
+      this.groupTags = [];
+    }
   }
 
   @action

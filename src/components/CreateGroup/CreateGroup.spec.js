@@ -92,8 +92,8 @@ describe('Create Group component test', () => {
       }
     };
     const wrapper = render(propsObj);
-    inputTestkitFactory({wrapper, dataHook: 'input-display-name'}).enterText(displayName);
-    buttonTestkitFactory({wrapper, dataHook: 'create-btn'}).click();
+    inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
+    buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
     expect(spy).to.have.been.calledWith(displayName);
 
   });
