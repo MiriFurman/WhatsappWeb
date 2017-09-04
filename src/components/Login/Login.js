@@ -59,7 +59,8 @@ class Login extends Component {
           </div>
           {chatStore.authenticationProblem &&
           <div className="authenticationError">
-            <Text appearance="T4" dataHook="authentication-problem">Wrong credentials, please try again</Text>
+            <Text appearance="T4" dataHook="authentication-problem">Wrong credentials, please try
+              again</Text>
           </div>}
           <div className={s.buttomRight}>
             <Button
@@ -81,6 +82,9 @@ class Login extends Component {
 Login.propTypes = {
   onLoginClick: PropTypes.func.isRequired,
   chatStore: PropTypes.object.isRequired
+};
+Login.defaultProps = {
+  onLoginClick: () => {}
 };
 
 

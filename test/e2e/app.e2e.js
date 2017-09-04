@@ -155,7 +155,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.navigate();
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should show login screen at the beginning').to.equal(true);
     await firstWindowDriver.clickSignup();
-    await firstWindowDriver.isSignupScreenPresent();
+    await firstWindowDriver.waitForSignupToBePresent();
     await firstWindowDriver.signup(signupObject);
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
   });

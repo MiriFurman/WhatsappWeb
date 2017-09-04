@@ -16,6 +16,7 @@ describe('ContactItem component tests', () => {
     const propObject = {
       name: 'Shilo Mangam',
       imageUrl: 'https://placebear.com/40/40',
+      id: '1',
       onContactClick: () => {}
     };
     const wrapper = render(propObject);
@@ -26,6 +27,7 @@ describe('ContactItem component tests', () => {
     const propObject = {
       name: 'Shilo Mangam',
       imageUrl: '',
+      id: '1',
       onContactClick: () => {}
     };
     const wrapper = render(propObject);

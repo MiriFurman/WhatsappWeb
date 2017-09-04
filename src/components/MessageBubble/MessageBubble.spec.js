@@ -40,7 +40,7 @@ describe('Message Bubble Component', () => {
 
   it('should take a message as a prop', () => {
     const msgBody = 'When I inquired in the past, you indicated that all your products are under the supervision of badatz beit yosef, and it would soon be appearing on all the packages. I see it only on one package of one type of burger. Could you please update me as to what is happening.';
-    render(modifyExample({body: msgBody}));
+    render(modifyExample({body: msgBody, created: exampleTime}));
     const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Body});
     expect(textTestkit.getText()).to.contain(msgBody);
   });

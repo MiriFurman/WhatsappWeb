@@ -10,7 +10,9 @@ import Signup from '../Signup';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
-export class App extends Component {
+@inject('chatStore')
+@observer
+class App extends Component {
   async onLoginClick(user) {
     const {chatStore} = this.props;
     const authenUser = await chatStore.login(user);
@@ -75,4 +77,4 @@ App.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(inject('chatStore')(observer(App)));
+export default withRouter(App);
