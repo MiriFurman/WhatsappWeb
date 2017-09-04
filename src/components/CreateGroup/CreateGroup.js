@@ -51,7 +51,7 @@ class CreateGroup extends React.Component {
             <div className={s.iconInput}>
               <TextField>
                 <Label appearance="T1.1" for="groupIcon">Group Icon</Label>
-                <Input id="groupIcon" dataHook="input-icon" value={this.state.icon} onBlur={e => this.setState({imgUrl: e.target.value})}/>
+                <Input id="groupIcon" dataHook="input-icon" value={this.state.imgUrl} onBlur={e => this.setState({imgUrl: e.target.value})}/>
               </TextField>
             </div>
             <div className={s.imgHolder}>
