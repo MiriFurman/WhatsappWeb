@@ -29,16 +29,17 @@ describe('Wazzap E2E tests', () => {
   const user2 = {username: 'Ivanka', password: '222'};
   const msg = 'lets make America great again!';
   const msg2 = 'Winning!!!';
-  let firstWindowDriver, secondWindowDriver;
+  let firstWindowDriver, secondWindowDriver, thirdWindowDriver;
 
   before(async () => {
     await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
   });
 
   beforeEach(async () => {
-    const [firstWindow, secondWindow] = await browser.getAllWindowHandles();
+    const [firstWindow, secondWindow, thirdWindow] = await browser.getAllWindowHandles();
     firstWindowDriver = createWindowDriver(firstWindow);
     secondWindowDriver = createWindowDriver(secondWindow);
+    thirdWindowDriver = createWindowDriver(thirdWindow);
     await firstWindowDriver.navigate();
     await secondWindowDriver.navigate();
     await axios.post(app.getUrl(FLUSH));
@@ -144,6 +145,7 @@ describe('Wazzap E2E tests', () => {
     await secondWindowDriver.clickContactAtIndex(0);
     expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
+
   it('should sign up and redirected to login page', async () => {
     const signupObject = {
       username: 'Eden Ben Zaken',
@@ -155,6 +157,33 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.isSignupScreenPresent();
     await firstWindowDriver.signup(signupObject);
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
+  });
+
+  it('should create group conversation', async () => {
+    const user3 = {username: 'Melania', password: '12345'};
+    const groupName = 'The Mighty Trumps';
+    await axios.post(app.getUrl(SIGNUP), {user: user1});
+    await axios.post(app.getUrl(SIGNUP), {user: user2});
+    await axios.post(app.getUrl(SIGNUP), {user: user3});
+    await firstWindowDriver.navigate();
+    await firstWindowDriver.login(user1);
+    await secondWindowDriver.navigate();
+    await secondWindowDriver.login(user2);
+    await thirdWindowDriver.navigate();
+    await thirdWindowDriver.login(user3);
+    await firstWindowDriver.clickButtonByDataHook('create-group');
+    await firstWindowDriver.waitForElement('input-group-name');
+    await firstWindowDriver.enterInputTextByDataHook('input-group-name', groupName);
+    await firstWindowDriver.clickContactAtIndex(0);
+    await firstWindowDriver.clickContactAtIndex(0);
+    await firstWindowDriver.clickButtonByDataHook('create-group-btn');
+    await firstWindowDriver.clickButtonByDataHook('create-group-go-back-btn');
+    await firstWindowDriver.waitForElement('conversation-display-name');
+    await secondWindowDriver.waitForElement('conversation-display-name');
+    await thirdWindowDriver.waitForElement('conversation-display-name');
+    expect(await firstWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
+    expect(await secondWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
+    expect(await thirdWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
   });
 
 });

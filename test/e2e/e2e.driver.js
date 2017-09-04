@@ -133,4 +133,14 @@ export default class AppDriver {
     return verifyInput.enterText(password);
   }
 
+  async clickButtonByDataHook(dataHook) {
+    const button = await this.getButton(dataHook);
+    return button.click();
+  }
+
+  async enterInputTextByDataHook(dataHook, text) {
+    const input = await this.getInput(dataHook);
+    return input.enterText(text);
+  }
+
 }
