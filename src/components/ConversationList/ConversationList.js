@@ -13,6 +13,7 @@ const ConversationList = props => (
             id={conversation.id}
             onConversationClick={conversationId => props.startConversation(conversationId, false)}
             displayName={conversation.displayName}
+            lastMessage={conversation.lastMessage}
             />
         </li>))}
     </ul>

@@ -54,7 +54,6 @@ describe('Chat App Server', () => {
     const exampleMessage = 'Bend the knee';
     const conversationId = await restClient
       .sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
-
     const relations = await restClient.getRelations(user1Obj.id);
     expect(relations.conversations[0].id).to.equal(conversationId);
     expect(relations.contacts.length).to.equal(2);
@@ -123,5 +122,15 @@ describe('Chat App Server', () => {
     const receivedConversation = await restClient.getConversationById(conversationId1);
     expect(receivedConversation.displayName).to.equal(displayName);
   });
+  it('should get last message on conversation object', async ()=>{
+    const user1Obj = await restClient.login(user1);
+    const user2Obj = await restClient.login(user2);
+    const exampleMessage = 'Bend the knee';
+    await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
+    const relations = await restClient.getRelations(user1Obj.id);
+    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage');
+    expect(relations.conversations[0].lastMessage).to.equal(exampleMessage);
 
+
+  });
 });

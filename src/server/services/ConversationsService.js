@@ -69,7 +69,8 @@ const listConversationsByContactId = contactId => {
     .map(conversation => ({
       id: conversation.id,
       members: conversation.members,
-      displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name
+      displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name,
+      lastMessage: (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || ''
     }));
 };
 

@@ -187,5 +187,4 @@ describe('Wazzap E2E tests', () => {
     expect(await secondWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
     expect(await thirdWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
   });
-
 });
