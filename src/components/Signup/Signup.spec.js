@@ -11,7 +11,6 @@ import {StaticRouter as Router} from 'react-router';
 import sinon from 'sinon';
 
 describe('Signup component test', () => {
-  const credentialsError = 'Wrong credentials, please try again';
   const render = (props = {}) => (
     mount(
       <Router>

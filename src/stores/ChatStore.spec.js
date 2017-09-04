@@ -113,10 +113,10 @@ describe('Chat Store unit tests', () => {
       id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7',
       members: [currentUserId, contactsWithConversation[0]]
     },
-      {
-        id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
-        members: [contactsWithConversation[1], currentUserId]
-      }
+    {
+      id: 'c568a24a-6678-4c8e-9db7-3e305ebf4e71',
+      members: [contactsWithConversation[1], currentUserId]
+    }
     ];
     const contacts = [{id: contactWithoutConversation}, {id: contactsWithConversation[0]}, {id: contactsWithConversation[1]}];
     const relations = {conversations, contacts};

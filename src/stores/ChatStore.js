@@ -161,7 +161,7 @@ class ChatStore {
   handleAddContact(contactId, contactName) {
     this.groupTags = [...this.groupTags, {id: contactId, label: contactName}];
     this.groupMembers = [...this.groupMembers, contactId];
-  };
+  }
 
   signup(user) {
     this.authenticationProblem = false;

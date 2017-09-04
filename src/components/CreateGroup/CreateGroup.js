@@ -1,7 +1,6 @@
 import React from 'react';
 import {Input, Button, TextField, Label, MultiSelect} from 'wix-style-react';
 import PropTypes from 'prop-types';
-import * as s from './CreateGroup.scss';
 import {inject, observer} from 'mobx-react';
 import ContactList from '../ContactList/ContactList';
 import {BackArrow} from 'wix-style-react/dist/src/Icons';
