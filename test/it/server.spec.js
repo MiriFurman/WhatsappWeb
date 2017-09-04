@@ -24,7 +24,7 @@ describe('Chat App Server', () => {
   beforeEach(async () => {
     await axiosInstance.post(app.getUrl(FLUSH));
     await restClient.signup(user1);
-    return restClient.signup(user2);
+    await restClient.signup(user2);
   });
 
   it('should login', async () => {
@@ -107,6 +107,7 @@ describe('Chat App Server', () => {
   });
 
   it('should create group conversation with display name', async () => {
+    await restClient.signup(user3);
     const user1Obj = await restClient.login(user1);
     const user2Obj = await restClient.login(user2);
     const user3Obj = await restClient.login(user3);
