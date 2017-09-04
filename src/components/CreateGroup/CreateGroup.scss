@@ -1,0 +1,78 @@
+.create-group-panel {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  height: 100%;
+
+  .create-group-heading {
+    width: 100%;
+    height: 120px;
+    background-color: #7fccf7;
+    border-top-left-radius: 10px;
+    position: relative;
+
+    .heading {
+      color: white;
+      font-family: "HelveticaNeueW01-45Ligh", "HelveticaNeueW02-45Ligh", "HelveticaNeueW10-45Ligh",
+      "Helvetica Neue", "Helvetica", "Arial", "\30E1\30A4\30EA\30AA, meiryo",
+      "\30D2\30E9\30AE\30CE\89D2\30B4   pro w3", "hiragino kaku gothic pro", "sans-serif";
+      font-size: 25px;
+      text-align: center;
+      line-height: 120px;
+    }
+
+    .top-left {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+  }
+
+  .group-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    .name-section {
+      margin-bottom: 10px;
+    }
+
+    .icon-section {
+      border-bottom: 1px solid #f0f4f7;
+      display: flex;
+      justify-content: space-between;
+
+      .icon-input {
+        flex: 1;
+      }
+
+      .img-holder {
+        padding: 10px;
+        box-sizing: border-box;
+
+        img {
+          border-radius: 50% 50%;
+          width: 60px;
+          height: 60px;
+        }
+      }
+    }
+
+    .member-section {
+
+    }
+  }
+
+  .contacts-section {
+    flex: 1;
+    border-bottom: 1px solid #f0f4f7;
+  }
+
+  .create-btn-section {
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+  }
+}

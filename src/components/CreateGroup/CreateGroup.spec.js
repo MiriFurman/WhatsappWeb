@@ -74,7 +74,29 @@ describe('Create Group component test', () => {
     expect(spy).to.have.been.calledWith(tags[0].id);
   });
 
-  it('should call create group when clicking on create button', () => {
+  it('should not call create group when there is no display name and clicking on create button', () => {
+    const spy = sinon.spy();
+    const contacts = [
+      {id: '1', name: 'Peter'},
+      {id: '2', name: 'Lois'},
+      {id: '3', name: 'Brian'}
+    ];
+    const tags = [{id: '4', label: 'Stewie'}];
+    const propsObj = {
+      chatStore: {
+        username: 'Peter',
+        groupDisplayContacts: contacts,
+        createGroup: spy,
+        groupTags: tags
+      }
+    };
+    const wrapper = render(propsObj);
+    inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText('');
+    buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
+    expect(spy).to.not.have.been.called;
+  });
+
+  it('should call create group when there is display name, at least 2 members and clicking on create button', () => {
     const spy = sinon.spy();
     const displayName = 'Family';
     const contacts = [
@@ -95,7 +117,6 @@ describe('Create Group component test', () => {
     inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
     buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
     expect(spy).to.have.been.calledWith(displayName);
-
   });
 });
 

@@ -34,7 +34,8 @@ class ChatStore {
 
   @computed
   get displayContacts() {
-    const conversationsMembers = this.conversations.map(({members}) => members.toJS());
+    const regularConversations = this.conversations.filter(({members}) => members.length < 3);
+    const conversationsMembers = regularConversations.map(({members}) => members.toJS());
     const flattenMembers = flatten(conversationsMembers);
     const conversationUsers = flattenMembers.filter(userId => userId !== this.currentUser.id);
     const jsContacts = this.contacts.map(({id}) => id);
