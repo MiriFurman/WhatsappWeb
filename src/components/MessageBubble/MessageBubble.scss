@@ -41,6 +41,9 @@ $alignThem: flex-end;
     @extend .time;
     align-self: $alignThem;
   }
+  .groupMessage {
+    @extend .timeThem;
+  }
   .msgBody {
     margin: 0;
   }

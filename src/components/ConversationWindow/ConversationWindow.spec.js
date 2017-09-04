@@ -14,7 +14,6 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 
-
 describe('Conversation window component test', () => {
   const render = (props = {}) => (
     mount(
@@ -40,7 +39,9 @@ describe('Conversation window component test', () => {
     const propsObj = {
       chatStore: {
         currentUser: {id: 4},
+        getUsernameByUserId: () => 'a',
         activeRelationConversation: {
+          members: ['111', '222'],
           messages: [
             {
               id: '111',
@@ -79,6 +80,76 @@ describe('Conversation window component test', () => {
     expect(spy).to.have.been.calledWith(msg);
   });
 
+  it('should render as a group chat', () => {
+    const userGenerator = (name, uindx) => ({id: uindx, name});
+    const users = ['alice', 'bob', 'charles'].map((username, uindx) => userGenerator(username, uindx.toString()));
+    const getUsernameByUserId = id => users.find(user => user.id === id);
+    const propsObj2 = {
+      chatStore: {
+        restClient: {},
+        getUsernameByUserId,
+        intervalId: 96,
+        username: 'bob',
+        currentUser: {
+          name: 'bob',
+          password: 'b',
+          id: '1'
+        },
+        isLoggedIn: true,
+        contacts: [{
+          id: '0',
+          name: 'alice'
+        }, {
+          id: '1',
+          name: 'bob'
+        }, {
+          id: '2',
+          name: 'charles'
+        }],
+        conversations: [{
+          id: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+          members: ['0', '1', '2'],
+          displayName: 'abc'
+        }],
+        activeRelationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+        activeRelationConversation: {
+          id: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+          members: ['0', '1', '2'],
+          messages: [{
+            id: '451fed53-788f-4c97-9cd2-7cd64f59a825',
+            body: 'hi its c',
+            conversationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+            created: '2017-09-04T14:09:58.688Z',
+            createdBy: '2'
+          }, {
+            id: 'f5b17647-a06b-41a9-b427-859bb6a35f99',
+            body: 'hi, it\'s alice',
+            conversationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+            created: '2017-09-04T14:10:15.831Z',
+            createdBy: '0'
+          }, {
+            id: 'e2203a6e-a0e1-4fc3-b60e-0fdc831b9a9b',
+            body: 'hi, it\'s bob and i\'m current user',
+            conversationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+            created: '2017-09-04T14:10:32.978Z',
+            createdBy: '1'
+          }],
+          displayName: 'abc'
+        },
+        relationState: 'conversation',
+        authenticationProblem: false,
+        filteredValue: '',
+        createGroupMode: false,
+        groupMembers: [],
+        groupTags: []
+      }
+    };
+    const wrapper = render(propsObj2);
+    expect(wrapper.find('[data-hook="msg-item"]').length).to.have.at.least(3, `missing group messages`);
+    expect(wrapper.find(`[data-hook="${dh.Time}"]`).at(0).text()).to.include(users[2].name);
+    expect(wrapper.find(`[data-hook="${dh.Time}"]`).at(1).text()).to.include(users[0].name);
+    expect(wrapper.find(`[data-hook="${dh.Time}"]`).at(2).text()).to.include(users[1].name);
+  });
 });
 
 
@@ -168,7 +239,9 @@ describe('Conversation Window', () => {
 
     const chatStore = {
       currentUser,
+      getUsernameByUserId: () => 'a',
       activeRelationConversation: {
+        members: [currentUser, otherUser],
         messages: [
           message1,
           message2
@@ -189,6 +262,7 @@ describe('Conversation Window', () => {
         restClient: {},
         intervalId: 82,
         username: 'alice',
+        getUsernameByUserId: () => 'a',
         currentUser: {
           name: 'alice',
           id: '228d35f8-482b-40c5-939b-773258f6c5e3'

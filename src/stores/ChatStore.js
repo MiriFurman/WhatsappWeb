@@ -114,6 +114,13 @@ class ChatStore {
   }
 
   @action
+  getUsernameByUserId(id) {
+    //todo figure out why this returns an object and not a string
+    const result = this.contacts.find(contact => contact.id === id);
+    return result;
+  }
+
+  @action
   async dataPolling() {
     this.intervalId = setInterval(() => {
       if (this.currentUser) {

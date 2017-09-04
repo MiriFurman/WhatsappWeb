@@ -5,7 +5,7 @@ import Text from 'wix-style-react/dist/src/Text';
 import MessageBubble from '../MessageBubble';
 import {observer, inject} from 'mobx-react';
 import * as s from './ConversationWindow.scss';
-
+import map from 'lodash/map';
 
 @inject('chatStore')
 @observer
@@ -20,6 +20,13 @@ class ConversationWindow extends React.Component {
       this.props.onSendMessage(this.state.newMessage);
       this.setState({newMessage: ''});
     }
+  }
+
+  isGroupMessage() {
+    const {chatStore} = this.props;
+    // console.log('json chatStore: ', JSON.stringify(chatStore));
+    const result = chatStore.activeRelationConversation.members.length > 2;
+    return result;
   }
 
   messageFromCurrentUser(message) {
@@ -40,13 +47,18 @@ class ConversationWindow extends React.Component {
           </div>
         </div>
         <ul className={s.messagesContainer}>
-          {chatStore.activeRelationConversation.messages && chatStore.activeRelationConversation.messages.map(message => {
-            if (this.messageFromCurrentUser(message)) {
-              return <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id} currentUser/>;
-            } else {
-              return <MessageBubble body={message.body} created={message.created} id={message.id} key={message.id}/>;
-            }
-          })}
+          {map(chatStore.activeRelationConversation.messages, message =>
+            (<MessageBubble
+              body={message.body}
+              created={message.created}
+              id={message.id}
+              key={message.id}
+              currentUser={this.messageFromCurrentUser(message)}
+              groupMessage={this.isGroupMessage()}
+              createdBy={message.createdBy}
+              createdByName={chatStore.getUsernameByUserId(message.createdBy)}
+              />)
+          )}
         </ul>
         <Input
           dataHook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => this.onMessageSend()} unit="send"

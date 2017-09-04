@@ -5,6 +5,8 @@ import {
 } from 'wix-style-react/dist/testkit/protractor';
 import {ExpectedConditions as EC} from 'protractor';
 
+import * as dh from '../../src/components/MessageBubble/MessageBubbleDataHooks';
+
 export default class AppDriver {
 
   getInput(dataHook) {
@@ -101,6 +103,10 @@ export default class AppDriver {
 
   getMessageFromSelectedConversation(index) {
     return $$('[data-hook="msg-item"]').get(index).getText();
+  }
+
+  getDisplayedMessageTime(index) {
+    return $$(`[data-hook="${dh.Time}"]`).get(index).getText();
   }
 
   async sendMessage(msg) {

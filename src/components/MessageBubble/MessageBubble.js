@@ -7,7 +7,7 @@ import * as dh from './MessageBubbleDataHooks';
 import * as s from './MessageBubble.scss';
 
 export const MessageBubble = props => {
-  const {id, body, created} = props; // can add ...props destruct if needed
+  const {id, body, created, groupMessage, createdByName} = props; // can add ...props destruct if needed
   return (
     <div className={s.messageBubbleWrapper} data-message-id={id} data-hook={dh.Wrapper}>
       <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
@@ -15,7 +15,7 @@ export const MessageBubble = props => {
       </div>
       <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>
         <Text appearance="T3.4">
-          {messageBubbleTimeFormatter(created)}
+          {`${groupMessage ? createdByName.name : ''} ${messageBubbleTimeFormatter(created)}`}
         </Text>
       </div>
     </div>
@@ -26,7 +26,10 @@ MessageBubble.propTypes = {
   id: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
-  currentUser: PropTypes.bool
+  currentUser: PropTypes.bool,
+  groupMessage: PropTypes.bool,
+  createdBy: PropTypes.string.isRequired,
+  createdByName: PropTypes.object
 };
 
 export default MessageBubble;

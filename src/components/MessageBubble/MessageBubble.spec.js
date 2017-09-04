@@ -61,12 +61,19 @@ describe('Message Bubble Component', () => {
     const timeTestMessage = modifyExample({created});
     render(timeTestMessage);
     const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Time});
-    expect(textTestkit.getText()).to.equal(expectedDateFormat);
+    expect(textTestkit.getText().trim()).to.equal(expectedDateFormat);
   });
 
   it('should put time and message on the same side', () => {
     render(exampleMessage);
     expect(dhFinder(dh.Item).html()).to.contain('fromOthers');
     expect(dhFinder(dh.Time).html()).to.contain('timeThem');
+  });
+
+  it('should display as group message', () => {
+    const groupMessageSender = {id: '03c293b1-6a8e-466f-bfa3-eff133ba63d7', name: 'alice'};
+    render(modifyExample({groupMessage: true, createdBy: groupMessageSender.id, createdByName: groupMessageSender}));
+    const textTestkit = textTestkitFactory({wrapper, dataHook: dh.Time});
+    expect(textTestkit.getText()).to.contain(groupMessageSender.name);
   });
 });

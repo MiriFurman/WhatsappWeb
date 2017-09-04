@@ -182,9 +182,17 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.waitForElement('conversation-display-name');
     await secondWindowDriver.waitForElement('conversation-display-name');
     await thirdWindowDriver.waitForElement('conversation-display-name');
-    expect(await firstWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
-    expect(await secondWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
-    expect(await thirdWindowDriver.getConversationListItemSenderAtIndex(0)).to.equal(groupName);
+
+    await firstWindowDriver.clickConversationAtIndex(0);
+    await firstWindowDriver.sendMessage('I donal d');
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await secondWindowDriver.sendMessage('me ivank a');
+    await thirdWindowDriver.clickConversationAtIndex(0);
+    await thirdWindowDriver.sendMessage('i is daughte r');
+
+    expect(await secondWindowDriver.getDisplayedMessageTime(0)).to.contain('Donald');
+    // todo replace this test with a component test
+    // expect(await firstWindowDriver.getDisplayedMessageTime(0)).to.not.contain('Donald');
   });
 
 });
