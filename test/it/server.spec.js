@@ -20,6 +20,7 @@ describe('Chat App Server', () => {
   const user1 = {username: 'Danny', password: '123'};
   const user2 = {username: 'Jon', password: 'xcv'};
   const user3 = {username: 'Cersei', password: '113'};
+  const gravatarUser = {username: 'michaels@wix.com', password: 'a'};
 
   beforeEach(async () => {
     await axiosInstance.post(app.getUrl(FLUSH));
@@ -131,8 +132,14 @@ describe('Chat App Server', () => {
     const exampleMessage = 'Bend the knee';
     await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
     const relations = await restClient.getRelations(user1Obj.id);
-    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage', 'unreadMessageCount');
+    console.log(relations.conversations[0]);
+    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage', 'unreadMessageCount', 'imgUrl');
     expect(relations.conversations[0].lastMessage).to.have.all.keys('created', 'body');
+  });
+  it('should return gravatar imageUrl', async () => {
+    await restClient.signup(gravatarUser);
+    const gravatarUserObj = await restClient.login(gravatarUser);
+    expect(gravatarUserObj.imageUrl).to.equal('//www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17');
   });
   it('should ack conversation', async () => {
     const user1Obj = await restClient.login(user1);

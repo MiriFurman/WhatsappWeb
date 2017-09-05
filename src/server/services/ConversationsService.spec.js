@@ -10,8 +10,8 @@ describe('Conversations Service', () => {
     conversationsService.reset();
     contactsService.reset();
 
-    user1 = contactsService.create({name: 'Bob'});
-    user2 = contactsService.create({name: 'Marley'});
+    user1 = contactsService.create({name: 'alice'});
+    user2 = contactsService.create({name: 'michaels@wix.com'});
     messageBody = 'Hello world!';
     members = [user1.id, user2.id];
   });
@@ -211,5 +211,21 @@ describe('Conversations Service', () => {
     expect(conversationsService.listConversationsByContactId(contact1.id)[0].unreadMessageCount).to.equal(0);
     expect(conversationsService.listConversationsByContactId(contact2.id)[0].unreadMessageCount).to.equal(0);
     expect(conversationsService.listConversationsByContactId(contact3.id)[0].unreadMessageCount).to.equal(1);
+  });
+  it('should include gravatar image when applicable', () => {
+    const messageBody2 = 'Hello Kickstart!';
+    conversationsService.addMessage({from: members[0], messageBody, members});
+    const conversationId = conversationsService.addMessage({
+      from: members[1],
+      messageBody: messageBody2,
+      members
+    });
+
+    const conversation = conversationsService.getMessagesById(conversationId);
+    const conversationList1 = conversationsService.listConversationsByContactId(conversation.messages[0].createdBy);
+    const conversationList2 = conversationsService.listConversationsByContactId(conversation.messages[1].createdBy);
+
+    expect(conversationList1[0].imgUrl).to.equal('//www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17');
+    expect(conversationList2[0].imgUrl).to.equal('https://placeimg.com/60/60/animals');
   });
 });

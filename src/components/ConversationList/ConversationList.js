@@ -19,6 +19,7 @@ const ConversationList = props => (
             displayName={conversation.displayName}
             lastMessage={conversation.lastMessage}
             unreadMessageCount={conversation.unreadMessageCount}
+            imageUrl={conversation.imgUrl}
             />
         </li>))}
     </ul>

@@ -74,7 +74,7 @@ const listConversationsByContactId = contactId => {
       id: conversation.id,
       members: conversation.members,
       displayName: conversation.displayName ? conversation.displayName : contactById(otherMember(conversation, contactId)).name,
-      imgUrl: conversation.imgUrl ? conversation.imgUrl : contactById(otherMember(conversation, contactId)).imgUrl,
+      imgUrl: conversation.imgUrl ? conversation.imgUrl : contactById(otherMember(conversation, contactId)).imageUrl,
       lastMessage: {
         body: getLastMessageBodyFromConversation(conversation),
         created: getLastMessageDateFromConversation(conversation)
