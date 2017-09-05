@@ -99,6 +99,7 @@ describe('Chat Store unit tests', () => {
 
   it('should store relation state to conversation state', async () => {
     const relationId = 'd0cca645-d462-477e-8c1b-9a39226cf408';
+    nock(baseURL).post(`${endpoints.ACK_CONVERSATION}`, {conversationId: relationId}).reply(200);
     nock(baseURL).get(`${endpoints.GET_CONVERSATION_BY_ID}?conversationId=${relationId}`)
       .reply(200, {});
     store.startConversation(relationId, false);

@@ -85,6 +85,7 @@ class ChatStore {
   async startConversation(relation, newConversation = true) {
     this.activeRelationId = relation;
     if (!newConversation) {
+      this.ackConversation({conversationId: this.activeRelationId, contactId: this.currentUser.id});
       this.relationState = RELATION_STATE.CONVERSATION;
       await this.getConversationById(relation);
     } else {
@@ -176,6 +177,10 @@ class ChatStore {
   signup(user) {
     this.authenticationProblem = false;
     return this.restClient.signup(user);
+  }
+
+  ackConversation({conversationId, contactId}) {
+    return this.restClient.ackConversation({conversationId, contactId});
   }
 }
 

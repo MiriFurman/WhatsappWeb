@@ -25,7 +25,6 @@ class ConversationWindow extends React.Component {
 
   isGroupMessage() {
     const {chatStore} = this.props;
-    // console.log('json chatStore: ', JSON.stringify(chatStore));
     const result = chatStore.activeRelationConversation.members.length > 2;
     return result;
   }

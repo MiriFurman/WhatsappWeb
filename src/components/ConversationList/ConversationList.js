@@ -18,6 +18,7 @@ const ConversationList = props => (
             onConversationClick={conversationId => props.startConversation(conversationId, false)}
             displayName={conversation.displayName}
             lastMessage={conversation.lastMessage}
+            unreadMessageCount={conversation.unreadMessageCount}
             />
         </li>))}
     </ul>
@@ -28,7 +29,8 @@ const ConversationList = props => (
 ConversationList.propTypes = {
   conversations: PropTypes.array,
   startConversation: PropTypes.func.isRequired,
-  chatStore: PropTypes.object.isRequired
+  chatStore: PropTypes.object.isRequired,
+  unreadMessageCount: PropTypes.string
 };
 
 ConversationList.defaultProps = {
