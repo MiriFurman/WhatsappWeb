@@ -72,17 +72,6 @@ describe('User Toolbar component test', () => {
       },
       username: 'alice'
     };
-    const propsObj = {
-      chatStore: {
-        contacts: [{
-          id: '1a2b',
-          name: 'michaels@wix.com',
-          imageUrl: fakeImgUrl
-        }]
-      },
-      username: 'michaels@wix.com',
-      currentUser: {id: '1a2b'}
-    };
     const wrapper = render(realProps);
     expect(wrapper.find('[data-hook="toolbar-gravatar"]').html()).to.contain(fakeImgUrl);
   });
