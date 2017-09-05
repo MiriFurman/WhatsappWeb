@@ -36,6 +36,24 @@
     margin: 0;
     padding: 0;
   }
+
+  .msg-input-container {
+    height: 65px;
+    width: 100%;
+    display: flex;
+    background: white;
+
+    textarea {
+      resize: none;
+      overflow: auto;
+      outline: none;
+
+      ::placeholder {
+        color: #3899ec;
+      }
+
+    }
+  }
 }
 
 

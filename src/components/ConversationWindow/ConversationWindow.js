@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Input from 'wix-style-react/dist/src/Input';
 import Text from 'wix-style-react/dist/src/Text';
 import MessageBubble from '../MessageBubble';
 import {observer, inject} from 'mobx-react';
 import * as s from './ConversationWindow.scss';
 import map from 'lodash/map';
+
+const emojis = ['😀', '😃'];
 
 @inject('chatStore')
 @observer
@@ -16,7 +17,7 @@ class ConversationWindow extends React.Component {
   }
 
   onMessageSend() {
-    if (this.state.newMessage !== '') {
+    if (!(/^(?:\s|\n|\n\r)*$/.test(this.state.newMessage))) {
       this.props.onSendMessage(this.state.newMessage);
       this.setState({newMessage: ''});
     }
@@ -32,6 +33,16 @@ class ConversationWindow extends React.Component {
   messageFromCurrentUser(message) {
     const {chatStore} = this.props;
     return chatStore.currentUser.id === message.createdBy;
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      this.onMessageSend();
+    }
+  }
+
+  addEmoji(emoji) {
+    this.setState({newMessage: this.state.newMessage + emoji});
   }
 
   render() {
@@ -60,10 +71,16 @@ class ConversationWindow extends React.Component {
               />)
           )}
         </ul>
-        <Input
-          dataHook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onEnterPressed={() => this.onMessageSend()} unit="send"
-          placeholder="Write Message..."
-          />
+        <div className={s.msgInputContainer}>
+          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="Write Message..."/>
+          <div>
+            <button data-hook="send-msg-btn"/>
+            <button data-hook="emoji-btn"/>
+            <div data-hook="emoji-container">
+              {emojis.map(emoji => <span key={emoji} onClick={() => this.addEmoji(emoji)}>{emoji}</span>)}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

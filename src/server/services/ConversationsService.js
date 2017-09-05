@@ -67,7 +67,6 @@ const contactById = contactId => contactsService.getById(contactId);
 const getLastMessageBodyFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].body) || '';
 const getLastMessageDateFromConversation = conversation => (conversation.messages[conversation.messages.length - 1] && conversation.messages[conversation.messages.length - 1].created) || new Date();
 
-
 const listConversationsByContactId = contactId => {
   return Object.values(conversations)
     .filter(conversation => conversation.members.includes(contactId))

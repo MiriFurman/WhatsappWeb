@@ -83,17 +83,13 @@ export default class AppDriver {
     await this.navigate();
     await this.login(user2);
     await this.clickContactAtIndex(0);
-    const inputMsg = await this.getInput('input-msg');
-    await inputMsg.enterText(msg);
-    await inputMsg.element().$('input').sendKeys(protractor.Key.ENTER);
+    return this.sendMessage(msg);
   }
 
   async clickAtContactAndSendMsgAt(contactIdx, msg) {
     await this.waitForElement('contact-item');
     await this.clickContactAtIndex(contactIdx);
-    const inputMsg = await this.getInput('input-msg');
-    await inputMsg.enterText(msg);
-    await inputMsg.element().$('input').sendKeys(protractor.Key.ENTER);
+    return this.sendMessage(msg);
   }
 
 
@@ -110,9 +106,10 @@ export default class AppDriver {
   }
 
   async sendMessage(msg) {
-    const msgInput = await this.getInput('input-msg');
-    await msgInput.enterText(msg);
-    await msgInput.element().$('input').sendKeys(protractor.Key.ENTER);
+    await browser.wait(EC.presenceOf($('[data-hook="input-msg"]')));
+    const inputMsg = $('[data-hook="input-msg"]');
+    await inputMsg.sendKeys(msg);
+    return inputMsg.sendKeys(protractor.Key.ENTER);
   }
 
   waitForSignupToBePresent() {

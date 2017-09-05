@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 import ConversationWindow from './ConversationWindow';
-import {textTestkitFactory, inputTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+import {textTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
 import ChatStore from '../../stores/ChatStore';
 import RestClient from '../../common/restClient';
 import {baseURL} from '../../../test/test-common';
@@ -79,10 +79,9 @@ describe('Conversation window component test', () => {
       }
     };
     const wrapper = render(propsObj);
-    const dataHook = 'input-msg';
-    const testkit = inputTestkitFactory({wrapper, dataHook});
-    testkit.enterText(msg);
-    testkit.trigger('keyDown', {keyCode: 13});
+    const msgInput = wrapper.find('[data-hook="input-msg"]');
+    msgInput.simulate('change', {target: {value: msg}});
+    msgInput.simulate('keyPress', {keyCode: 13, key: 'Enter'});
     expect(spy).to.have.been.calledWith(msg);
   });
 
