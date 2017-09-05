@@ -6,20 +6,20 @@ import {observer, inject} from 'mobx-react';
 import * as s from './ConversationWindow.scss';
 import map from 'lodash/map';
 
-const emojis = ['😀', '😃'];
+const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '😘', '😗', '😙', '😚', '😋', '😜', '😝', '😛', '🤑', '🤗', '🤓', '😎', '🤡', '🤠', '😏', '😒', '😞', '😔', '😟', '😕', '🙁','😣', '😖', '😫', '😩', '😤', '😠', '😡', '😶', '😐', '😑', '😯', '😦', '😧', '😮', '😲', '😵', '😳', '😱', '😨', '😰', '😢', '😥', '🤤', '😭', '😓', '😪', '😴', '🙄', '🤔', '🤥', '😬', '🤐', '🤢', '🤧', '😷', '🤒', '🤕', '😈', '👿', '👹', '👺', '💩', '👻', '💀', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '👐', '🙌', '👏', '🙏', '🤝', '👍', '👎', '👊', '✊', '🤛', '🤜', '🤞'];
 
 @inject('chatStore')
 @observer
 class ConversationWindow extends React.Component {
   constructor() {
     super();
-    this.state = {newMessage: ''};
+    this.state = {newMessage: '', showEmoji: false};
   }
 
   onMessageSend() {
     if (!(/^(?:\s|\n|\n\r)*$/.test(this.state.newMessage))) {
       this.props.onSendMessage(this.state.newMessage);
-      this.setState({newMessage: ''});
+      this.setState({newMessage: '', showEmoji: false});
     }
   }
 
@@ -37,12 +37,13 @@ class ConversationWindow extends React.Component {
 
   handleKeyPress(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       this.onMessageSend();
     }
   }
 
   addEmoji(emoji) {
-    this.setState({newMessage: this.state.newMessage + emoji});
+    this.setState({newMessage: `${this.state.newMessage} ${emoji}`});
   }
 
   render() {
@@ -72,14 +73,14 @@ class ConversationWindow extends React.Component {
           )}
         </ul>
         <div className={s.msgInputContainer}>
-          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="Write Message..."/>
-          <div>
-            <button data-hook="send-msg-btn"/>
-            <button data-hook="emoji-btn"/>
-            <div data-hook="emoji-container">
-              {emojis.map(emoji => <span key={emoji} onClick={() => this.addEmoji(emoji)}>{emoji}</span>)}
-            </div>
+          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="    Write Message..."/>
+          <div className={s.buttonsContainer}>
+            <button data-hook="emoji-btn" onClick={() => this.setState({showEmoji: !this.state.showEmoji})}>💩</button>
+            <button data-hook="send-msg-btn" className={s.sendBtn} onClick={() => this.onMessageSend()}>send</button>
           </div>
+          {this.state.showEmoji && <div data-hook="emoji-container" className={s.emojiContainer}>
+              {emojis.map(emoji => <span key={emoji} onClick={() => this.addEmoji(emoji)}>{emoji}</span>)}
+            </div>}
         </div>
       </div>
     );

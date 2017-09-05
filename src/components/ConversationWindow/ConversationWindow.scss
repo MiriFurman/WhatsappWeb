@@ -35,6 +35,7 @@
     background: #F6FAFC url("../../assets/subpattern.png") repeat;
     margin: 0;
     padding: 0;
+    overflow: auto;
   }
 
   .msg-input-container {
@@ -42,16 +43,69 @@
     width: 100%;
     display: flex;
     background: white;
+    position: relative;
 
     textarea {
       resize: none;
       overflow: auto;
       outline: none;
+      width: 100%;
+      border: none;
+      font-size: 16px;
+      height: 65px;
+      line-height: 55px;
+    }
 
-      ::placeholder {
-        color: #3899ec;
+    textarea::placeholder {
+      color: #3899ec;
+    }
+
+    .buttons-container {
+      position: absolute;
+      right: 20px;
+      bottom: 25px;
+
+      button {
+        outline: none;
+        border: none;
+        background: white;
+        color: #b6c1cd;
+        font-size: 15px;
+        text-align: center;
+        font-family: "HelveticaNeueW01-45Ligh", "HelveticaNeueW02-45Ligh", "HelveticaNeueW10-45Ligh",
+        "Helvetica Neue", "Helvetica", "Arial", "\30E1\30A4\30EA\30AA, meiryo",
+        "\30D2\30E9\30AE\30CE\89D2\30B4   pro w3", "hiragino kaku gothic pro", "sans-serif";
+        cursor: pointer;
       }
 
+      .send-btn {
+        border-left: 1px solid #b6c1cd;
+        margin-left: 5px;
+      }
+    }
+
+    .emoji-container {
+      width: 345px;
+      background: #EBEDEF;
+      border-radius: 10px;
+      position: absolute;
+      top: -195px;
+      right: 5px;
+
+      span {
+        padding: 3px;
+        cursor: pointer;
+      }
+    }
+
+    .emoji-container::after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 72%;
+      border-width: 20px;
+      border-style: solid;
+      border-color: #EBEDEF transparent transparent transparent;
     }
   }
 }
