@@ -34,6 +34,11 @@ export default class AppDriver {
     return $('[data-hook="username"]').getText();
   }
 
+  getUserToolbarImage() {
+    const actualImgSrc = $('[data-hook="toolbar-gravatar"]').getAttribute('src');
+    return actualImgSrc;
+  }
+
   isUserNameElementPresent() {
     return $('[data-hook="username"]').isPresent();
   }

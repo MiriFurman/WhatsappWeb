@@ -106,13 +106,16 @@ describe('Conversation window component test', () => {
         isLoggedIn: true,
         contacts: [{
           id: '0',
-          name: 'alice'
+          name: 'alice',
+          imageUrl: 'imgur.com/a'
         }, {
           id: '1',
-          name: 'bob'
+          name: 'bob',
+          imageUrl: 'imgur.com/b'
         }, {
           id: '2',
-          name: 'charles'
+          name: 'charles',
+          imageUrl: 'imgur.com/c'
         }],
         conversations: [{
           id: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
@@ -158,6 +161,67 @@ describe('Conversation window component test', () => {
     expect(wrapper.find(`[data-hook="${dh.Time}"]`).at(1).text()).to.include(users[0].name);
     expect(wrapper.find(`[data-hook="${dh.Time}"]`).at(2).text()).to.include(users[1].name);
   });
+
+  it('should render as a group chat', () => {
+    const userGenerator = (name, uindx) => ({id: uindx, name});
+    const users = ['alice', 'bob', 'charles'].map((username, uindx) => userGenerator(username, uindx.toString()));
+    const getUsernameByUserId = id => users.find(user => user.id === id);
+    const propsObj2 = {
+      chatStore: {
+        restClient: {},
+        getUsernameByUserId,
+        intervalId: 96,
+        username: 'bob',
+        currentUser: {
+          name: 'bob',
+          password: 'b',
+          id: '1'
+        },
+        isLoggedIn: true,
+        contacts: [{
+          id: '0',
+          name: 'alice',
+          imageUrl: 'imgur.com/a'
+        }, {
+          id: '1',
+          name: 'bob',
+          imageUrl: 'imgur.com/b'
+        }],
+        conversations: [{
+          id: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+          members: ['0', '1'],
+          displayName: 'abc'
+        }],
+        activeRelationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+        activeRelationConversation: {
+          id: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+          members: ['0', '1'],
+          messages: [{
+            id: 'f5b17647-a06b-41a9-b427-859bb6a35f99',
+            body: 'hi, it\'s alice',
+            conversationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+            created: '2017-09-04T14:10:15.831Z',
+            createdBy: '0'
+          }, {
+            id: 'e2203a6e-a0e1-4fc3-b60e-0fdc831b9a9b',
+            body: 'hi, it\'s bob and i\'m current user',
+            conversationId: '05a9e0ae-f8b4-4e96-8e42-638a73d246e3',
+            created: '2017-09-04T14:10:32.978Z',
+            createdBy: '1'
+          }],
+          displayName: 'abc'
+        },
+        relationState: 'conversation',
+        authenticationProblem: false,
+        filteredValue: '',
+        createGroupMode: false,
+        groupMembers: [],
+        groupTags: []
+      }
+    };
+    const wrapper = render(propsObj2);
+    expect(wrapper.find('[data-hook="gravatar-image"]').html()).to.contain('src="imgur.com/b"');
+  });
 });
 
 
@@ -173,11 +237,6 @@ describe('Conversation Window', () => {
       }} chatStore={testChatStore} {...props}
                                    />);
   };
-
-  it('should render', () => {
-    render();
-    expect(wrapper.exists()).to.be.true;
-  });
 
   it('should render one chat message', async () => {
     render();
@@ -281,10 +340,12 @@ describe('Conversation Window', () => {
         isLoggedIn: true,
         contacts: [{
           id: '228d35f8-482b-40c5-939b-773258f6c5e3',
-          name: 'alice'
+          name: 'alice',
+          imageUrl: 'imgur.com/a'
         }, {
           id: '31f01487-8a7c-47b1-bfae-8d3596612a17',
-          name: 'bob'
+          name: 'bob',
+          imageUrl: 'imgur.com/b'
         }],
         conversations: [{
           id: 'cd146d47-4fce-4b76-9ae5-7ac90463af74',

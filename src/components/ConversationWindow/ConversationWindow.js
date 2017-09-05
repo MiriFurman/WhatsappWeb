@@ -62,11 +62,12 @@ class ConversationWindow extends React.Component {
 
   render() {
     const {chatStore} = this.props;
+    // console.log(chatStore.contacts.toJS());
     return (
       <div data-hook="conversation-window" className={s.conversationWindow}>
         <div className={s.conversationInfo}>
           <div className={s.imgHolder}>
-            <img src="https://placeimg.com/60/60/animals" alt="Conversation Picture"/>
+            <img data-hook="gravatar-image" src={chatStore.contacts && chatStore.contacts.length > 0 && chatStore.contacts.find(contact => contact.id === chatStore.currentUser.id).imageUrl} alt="Conversation Picture"/>
           </div>
           <div className={s.textContainer}>
             <Text appearance="T2" dataHook="conversation-window-display-name">{chatStore.conversationDisplayName && chatStore.conversationDisplayName}</Text>

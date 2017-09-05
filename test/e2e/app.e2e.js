@@ -148,7 +148,7 @@ describe('Wazzap E2E tests', () => {
     expect(await secondWindowDriver.getMessagesFromSelectedConversation()).to.eql([]);
   });
 
-  it('should sign up and redirected to login page', async () => {
+  it('should sign up w/o email and be redirected to login page', async () => {
     const signupObject = {
       username: 'Eden Ben Zaken',
       password: 'queenOfRoses'
@@ -161,8 +161,28 @@ describe('Wazzap E2E tests', () => {
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
   });
 
+  it('should sign up with email as username and login with correct gravatar', async () => {
+    const michaelswixGravatar = 'http://www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17';
+    const signupObject = {
+      username: 'michaels@wix.com',
+      password: 'mjs'
+    };
+    const loginObject = {
+      username: signupObject.username,
+      password: signupObject.password
+    };
+    await firstWindowDriver.navigate();
+    expect(await firstWindowDriver.isLoginScreenPresent(), 'should show login screen at the beginning').to.equal(true);
+    await firstWindowDriver.clickSignup();
+    await firstWindowDriver.waitForSignupToBePresent();
+    await firstWindowDriver.signup(signupObject);
+    await firstWindowDriver.login(loginObject);
+    await firstWindowDriver.isContactListCntDisplayed();
+    expect(await firstWindowDriver.getUserToolbarImage()).to.equal(michaelswixGravatar);
+  });
+
   it('should create group conversation', async () => {
-    const user3 = {username: 'Melania', password: '12345'};
+    const user3 = {username: 'tomster@emberjs.com', password: '12345'};
     const groupName = 'The Mighty Trumps';
     await axios.post(app.getUrl(SIGNUP), {user: user1});
     await axios.post(app.getUrl(SIGNUP), {user: user2});

@@ -99,6 +99,14 @@ describe('Contacts Service', () => {
 
   it('should get contact by id', () => {
     const contact = contactsService.create({name: 'Bob'});
-    expect(contactsService.getById(contact.id)).to.eql({name: 'Bob', id: contact.id});
+    expect(contactsService.getById(contact.id)).to.eql({name: 'Bob', imageUrl: 'https://placeimg.com/60/60/animals', id: contact.id});
+  });
+
+  it('should generate an imgURL based on email field', () => {
+    const michaelsGravatar = '//www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17';
+    const michaelsContact = {name: 'michaels@wix.com'};
+    const contact = contactsService.create(michaelsContact);
+
+    expect(contactsService.getById(contact.id).imageUrl).to.equal(michaelsGravatar);
   });
 });

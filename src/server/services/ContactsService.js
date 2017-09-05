@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import gravatar from 'gravatar';
 
 let contacts = {};
 
@@ -15,9 +16,16 @@ const create = ({name, ...rest}) => {
     return existingContact;
   }
 
+  let imageUrl = 'https://placeimg.com/60/60/animals';
+
+  if (name.includes('@')) {
+    imageUrl = gravatar.url(name);
+  }
+
   const newContact = {
     name,
     ...rest,
+    imageUrl,
     id: uuid.v4()
   };
 

@@ -9,7 +9,7 @@ export const UserToolbar = ({username, chatStore}) => (
   <div className={s.toolbarContainer}>
     <div className={s.userMgmt}>
       <div className={s.imgHolder}>
-        <img src="https://placeimg.com/60/60/animals" alt="Conversation Picture"/>
+        <img data-hook="toolbar-gravatar" src={chatStore.contacts && chatStore.contacts.length > 0 && chatStore.contacts.find(contact => contact.id === chatStore.currentUser.id).imageUrl} alt="Conversation Picture"/>
       </div>
       <div className={s.textContainer}>
         <div className={s.userDetails}>
