@@ -28,8 +28,7 @@ MessageBubble.propTypes = {
   created: PropTypes.string.isRequired,
   currentUser: PropTypes.bool,
   groupMessage: PropTypes.bool,
-  createdBy: PropTypes.string.isRequired,
-  createdByName: PropTypes.object
+  createdBy: PropTypes.string
 };
 
 export default MessageBubble;

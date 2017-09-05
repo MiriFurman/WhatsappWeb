@@ -32,7 +32,7 @@ describe('Wazzap E2E tests', () => {
   let firstWindowDriver, secondWindowDriver, thirdWindowDriver;
 
   before(async () => {
-    await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
+    await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=1280,height=800")`);
     await browser.executeScript(`window.otherWindow = window.open("${app.getUrl('/')}", "_blank", "width=400,height=400")`);
   });
 
@@ -187,11 +187,12 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.clickConversationAtIndex(0);
     await firstWindowDriver.sendMessage('I donal d');
     await secondWindowDriver.clickConversationAtIndex(0);
-    await secondWindowDriver.sendMessage('me ivank a');
+    await secondWindowDriver.sendMessage(`Good evening. Thank you. One year ago, I introduced my father when he declared his candidacy. In his own way, and through his own sheer force of will, he sacrificed greatly to enter the political arena as an outsider. And he prevailed against a field of 16 very talented competitors. (APPLAUSE) For more than a year, Donald Trump has been the people's champion, and tonight he's the people's nominee.
+    (APPLAUSE)
+    Like many of my fellow millenials, I do not consider myself categorically Republican or Democrat. More than party affiliation, I vote on based on what I believe is right, for my family and for my country. Sometimes it's a tough choice. That is not the case this time. As the proud daughter of your nominee, I am here to tell you that this is the moment and Donald Trump is the person to make America great again.`);
     await thirdWindowDriver.clickConversationAtIndex(0);
-    await thirdWindowDriver.sendMessage('i is daughte r');
 
-    expect(await secondWindowDriver.getDisplayedMessageTime(0)).to.contain('Donald');
+    expect(await thirdWindowDriver.getDisplayedMessageTime(0)).to.contain('Donald');
     // todo replace this test with a component test
     // expect(await firstWindowDriver.getDisplayedMessageTime(0)).to.not.contain('Donald');
   });
