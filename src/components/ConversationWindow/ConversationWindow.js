@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Text from 'wix-style-react/dist/src/Text';
 import MessageBubble from '../MessageBubble';
@@ -14,6 +15,12 @@ class ConversationWindow extends React.Component {
   constructor() {
     super();
     this.state = {newMessage: '', showEmoji: false};
+    this.messageContainer = null;
+  }
+
+  componentDidUpdate() {
+    const messageContainer = ReactDOM.findDOMNode(this.messageContainer);//eslint-disable-line
+    messageContainer.scrollTop = messageContainer.scrollHeight;
   }
 
   onMessageSend() {
@@ -57,7 +64,7 @@ class ConversationWindow extends React.Component {
             <Text appearance="T2" dataHook="conversation-window-display-name">{chatStore.conversationDisplayName && chatStore.conversationDisplayName}</Text>
           </div>
         </div>
-        <ul className={s.messagesContainer}>
+        <ul className={s.messagesContainer} ref={ref => this.messageContainer = ref}>
           {map(chatStore.activeRelationConversation.messages, message =>
             (<MessageBubble
               body={message.body}
