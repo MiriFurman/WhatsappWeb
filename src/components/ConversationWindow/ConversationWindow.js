@@ -88,7 +88,7 @@ class ConversationWindow extends React.Component {
           )}
         </ul>
         <div className={s.msgInputContainer}>
-          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="    Write Message..."/>
+          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="Write a Message..."/>
           <div className={s.buttonsContainer}>
             <button data-hook="emoji-btn" onClick={() => this.setState({showEmoji: !this.state.showEmoji})}>💩</button>
             <button data-hook="send-msg-btn" className={s.sendBtn} onClick={() => this.onMessageSend()}>send</button>

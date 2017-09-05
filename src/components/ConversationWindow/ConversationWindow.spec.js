@@ -64,7 +64,10 @@ describe('Conversation window component test', () => {
       }
     };
     const wrapper = render(propsObj);
-    expect(wrapper.find('[data-hook="msg-item"]').map(item => item.text())).to.eql([msg1, msg2]);
+    let textTestkit = textTestkitFactory({wrapper: wrapper.find('[data-hook="msg-item"]').at(0), dataHook: dh.Body});
+    expect(textTestkit.getText()).to.equal(msg1);
+    textTestkit = textTestkitFactory({wrapper: wrapper.find('[data-hook="msg-item"]').at(1), dataHook: dh.Body});
+    expect(textTestkit.getText()).to.equal(msg2);
   });
 
   it('should call onSendMessage function when message is not empty and enter pressed', () => {

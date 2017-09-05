@@ -90,7 +90,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.login(user2);
     await firstWindowDriver.waitForElement('conversation-item');
     await firstWindowDriver.clickConversationAtIndex(0);
-    expect(await firstWindowDriver.getMessageFromSelectedConversation(0)).to.equal(msg);
+    expect((await firstWindowDriver.getMessageFromSelectedConversation(0)).slice(0, -2)).to.equal(msg);
   });
 
   it('should send message to existing conversation', async () => {
@@ -105,7 +105,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.navigate();
     await firstWindowDriver.login(user1);
     await firstWindowDriver.clickConversationAtIndex(0);
-    expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
+    expect((await firstWindowDriver.getMessageFromSelectedConversation(1)).slice(0, -2)).to.equal(msg2);
   });
 
   it('should send a message and show it on both screen without refreshing', async () => {
@@ -122,7 +122,7 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.waitForElement('conversation-item');
     await firstWindowDriver.clickConversationAtIndex(0);
     await firstWindowDriver.waitForElement('msg-item');
-    expect(await firstWindowDriver.getMessageFromSelectedConversation(1)).to.equal(msg2);
+    expect((await firstWindowDriver.getMessageFromSelectedConversation(1)).slice(0, -2)).to.equal(msg2);
   });
 
   it('should remove current conversation when click on new contact', async () => {

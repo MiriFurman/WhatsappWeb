@@ -2,6 +2,7 @@ import {app} from './../environment';
 import {
   inputTestkitFactory,
   buttonTestkitFactory,
+  textTestkitFactory
 } from 'wix-style-react/dist/testkit/protractor';
 import {ExpectedConditions as EC} from 'protractor';
 
@@ -15,6 +16,10 @@ export default class AppDriver {
 
   getButton(dataHook) {
     return buttonTestkitFactory({dataHook});
+  }
+
+  getText(dataHook) {
+    return textTestkitFactory({dataHook});
   }
 
   isLoginScreenPresent() {
@@ -43,10 +48,6 @@ export default class AppDriver {
 
   getAllContactsNames() {
     return $$('[data-hook="contact-item"]').map(contact => contact.getText());
-  }
-
-  getConversationListItemTextAtIndex(index) {
-    return $$('[data-hook="conversation-item"]').get(index).getText();
   }
 
   getConversationListItemSenderAtIndex(index) {
@@ -98,6 +99,10 @@ export default class AppDriver {
   }
 
   getMessageFromSelectedConversation(index) {
+    return $$('[data-hook="msg-item"]').get(index).getText();
+  }
+
+  getMessageFromSelectedConversationAt(index) {
     return $$('[data-hook="msg-item"]').get(index).getText();
   }
 

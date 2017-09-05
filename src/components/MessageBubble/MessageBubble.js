@@ -10,10 +10,8 @@ export const MessageBubble = props => {
   const {id, body, created, groupMessage, createdByName, msgSpeak} = props; // can add ...props destruct if needed
   return (
     <div className={s.messageBubbleWrapper} data-message-id={id} data-hook={dh.Wrapper}>
-      <div className={`${s.msgWrap} ${props.currentUser ? s.alignMe : s.alignThem}`}>
-        <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
-          <Text appearance={props.currentUser ? 'T1.2' : 'T1'} dataHook={dh.Body} className={s.msgBody}>{body}</Text>
-        </div>
+      <div data-hook={dh.Item} className={props.currentUser ? s.fromMe : s.fromOthers}>
+        <Text appearance={props.currentUser ? 'T1.2' : 'T1'} dataHook={dh.Body} className={s.msgBody}>{body}</Text>
         <button className={s.speakerBtn} onClick={() => msgSpeak(body)}>🔈</button>
       </div>
       <div data-hook={dh.Time} className={props.currentUser ? s.timeMe : s.timeThem}>
@@ -32,6 +30,7 @@ MessageBubble.propTypes = {
   currentUser: PropTypes.bool,
   groupMessage: PropTypes.bool,
   createdBy: PropTypes.string,
+  createdByName: PropTypes.string,
   msgSpeak: PropTypes.func
 };
 

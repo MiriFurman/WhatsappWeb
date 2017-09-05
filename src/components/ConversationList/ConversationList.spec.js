@@ -7,8 +7,8 @@ describe('Conversation List Component tests', () => {
   const render = props => mount(
     <ConversationList
       {...props} startConversation={() => {
-    }} chatStore={{filteredVal: ''}}
-    />, {attachTo: document.createElement('div')});
+      }} chatStore={{filteredVal: ''}}
+         />, {attachTo: document.createElement('div')});
   it('should render conversation on conversation list', () => {
     const conversations = [
       {
