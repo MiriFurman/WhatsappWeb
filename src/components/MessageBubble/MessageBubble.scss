@@ -19,14 +19,12 @@ $alignThem: flex-end;
   .fromMe {
     @extend .bubble;
     align-items: $alignMe;
-    align-self: $alignMe;
     background-color: #3899ec;
     color: white;
   }
   .fromOthers {
     @extend .bubble;
     align-items: $alignThem;
-    align-self: $alignThem;
     background-color: white;
     color: #20455e;
   }
@@ -46,5 +44,27 @@ $alignThem: flex-end;
   }
   .msgBody {
     margin: 0;
+  }
+
+  .msg-wrap {
+    width: 100%;
+    display: flex;
+  }
+
+  .align-me {
+    align-self: $alignMe;
+  }
+
+  .align-them {
+    align-self: $alignThem;
+  }
+
+  .speaker-btn {
+    background: none;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    align-self: flex-end;
+    cursor: pointer;
   }
 }

@@ -52,6 +52,14 @@ class ConversationWindow extends React.Component {
     this.setState({newMessage: `${this.state.newMessage} ${emoji}`});
   }
 
+  msgSpeak(msg) {
+    const text = new SpeechSynthesisUtterance(msg);
+    if (/[\u0590-\u05FF]/.test(msg)) {
+      text.lang = 'he';
+    }
+    window.speechSynthesis.speak(text);
+  }
+
   render() {
     const {chatStore} = this.props;
     return (
@@ -75,6 +83,7 @@ class ConversationWindow extends React.Component {
               groupMessage={this.isGroupMessage()}
               createdBy={message.createdBy}
               createdByName={chatStore.getUsernameByUserId(message.createdBy)}
+              msgSpeak={this.msgSpeak}
               />)
           )}
         </ul>
