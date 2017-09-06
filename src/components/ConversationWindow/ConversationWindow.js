@@ -90,7 +90,14 @@ class ConversationWindow extends Component {
       <div data-hook="conversation-window" className={s.conversationWindow}>
         <div className={s.conversationInfo}>
           <div className={s.imgHolder}>
-            <img data-hook="gravatar-image" src={chatStore.contacts && chatStore.contacts.length > 0 && chatStore.contacts.find(contact => contact.id === chatStore.currentUser.id).imageUrl} alt="Conversation Picture"/>
+            <img
+              data-hook="gravatar-image"
+              src={
+              chatStore.contacts &&
+              chatStore.contacts.length > 0 &&
+              chatStore.contacts.find(contact => contact.id === chatStore.currentUser.id).imageUrl}
+              alt="Conversation Picture"
+              />
           </div>
           <div className={s.textContainer}>
             <Text

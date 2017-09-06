@@ -30,7 +30,7 @@ MessageBubble.propTypes = {
   currentUser: PropTypes.bool,
   groupMessage: PropTypes.bool,
   createdBy: PropTypes.string,
-  createdByName: PropTypes.string,
+  createdByName: PropTypes.object,
   msgSpeak: PropTypes.func
 };
 

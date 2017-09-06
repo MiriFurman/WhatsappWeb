@@ -35,7 +35,7 @@ describe('Conversation window component test', () => {
   it('should render the correct conversation display name', () => {
     const propsObj = {
       chatStore: {
-        activeRelationConversation: {},
+        activeRelationConversation: {members: ['111', '222']},
         conversationDisplayName: 'Miri'
       }
     };
