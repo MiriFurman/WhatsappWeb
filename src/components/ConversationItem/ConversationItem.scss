@@ -23,6 +23,8 @@
     align-content: center;
     align-items: flex-start;
     justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     .unread-badge {
       position: absolute ;
