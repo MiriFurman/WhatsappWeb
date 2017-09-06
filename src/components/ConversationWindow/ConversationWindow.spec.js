@@ -227,7 +227,7 @@ describe('Conversation window component test', () => {
       }
     };
     const wrapper = render(propsObj2);
-    expect(wrapper.find('[data-hook="gravatar-image"]').html()).to.contain('src="imgur.com/b"');
+    expect(wrapper.find('[data-hook="conversation-window-gravatar-image"]').html()).to.contain('src="imgur.com/a"');
   });
 });
 

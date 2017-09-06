@@ -161,7 +161,7 @@ describe('Wazzap E2E tests', () => {
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should  show login screen after signing up').to.equal(true);
   });
 
-  it('should sign up with email as username and login with correct gravatar', async () => {
+  it('should sign up with email as username and display correct gravatar', async () => {
     const michaelswixGravatar = 'http://www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17';
     const signupObject = {
       username: 'michaels@wix.com',
@@ -171,6 +171,8 @@ describe('Wazzap E2E tests', () => {
       username: signupObject.username,
       password: signupObject.password
     };
+    await axios.post(app.getUrl(SIGNUP), {user: user2});
+
     await firstWindowDriver.navigate();
     expect(await firstWindowDriver.isLoginScreenPresent(), 'should show login screen at the beginning').to.equal(true);
     await firstWindowDriver.clickSignup();
@@ -178,7 +180,29 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.signup(signupObject);
     await firstWindowDriver.login(loginObject);
     await firstWindowDriver.isContactListCntDisplayed();
+
+    await secondWindowDriver.startNewConversation(loginObject, user2, msg);
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    await firstWindowDriver.clickConversationAtIndex(0);
+    await secondWindowDriver.clickConversationAtIndex(0);
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    //check that gravatar user is seeing their own image, and the other user image
+    await firstWindowDriver.clickConversationAtIndex(0);
+    // await new Promise(resolve => setTimeout(resolve, 200000000));
+
     expect(await firstWindowDriver.getUserToolbarImage()).to.equal(michaelswixGravatar);
+    expect(await firstWindowDriver.getConversationWindowImage()).to.equal('https://placeimg.com/60/60/animals');
+    await firstWindowDriver.isConversationWindowDisplayNamePresent();
+    expect(await firstWindowDriver.getConversationWindowDisplayName()).to.equal(user2.username);
+
+    //check that non-gravatar user sees the generic image and the gravatar user's image
+    await secondWindowDriver.clickConversationAtIndex(0);
+    expect(await secondWindowDriver.getUserToolbarImage()).to.equal('https://placeimg.com/60/60/animals');
+    expect(await secondWindowDriver.getConversationWindowImage()).to.equal(michaelswixGravatar);
+    await secondWindowDriver.isConversationWindowDisplayNamePresent();
+    expect(await secondWindowDriver.getConversationWindowDisplayName()).to.equal(loginObject.username);
   });
 
   it('should create group conversation', async () => {

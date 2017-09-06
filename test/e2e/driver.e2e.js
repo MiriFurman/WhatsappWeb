@@ -39,6 +39,20 @@ export default class AppDriver {
     return actualImgSrc;
   }
 
+  getConversationWindowImage() {
+    const actualImgSrc = $('[data-hook="conversation-window-gravatar-image"]').getAttribute('src');
+    return actualImgSrc;
+  }
+
+  isConversationWindowDisplayNamePresent() {
+    return $('[data-hook="conversation-window-display-name"]').isPresent();
+  }
+
+  getConversationWindowDisplayName() {
+    const name = $('[data-hook="conversation-window-display-name"]').getText();
+    return name;
+  }
+
   isUserNameElementPresent() {
     return $('[data-hook="username"]').isPresent();
   }
