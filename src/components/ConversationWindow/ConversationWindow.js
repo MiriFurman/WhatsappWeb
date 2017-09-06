@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Text from 'wix-style-react/dist/src/Text';
@@ -11,13 +11,16 @@ const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', 
 
 @inject('chatStore')
 @observer
-class ConversationWindow extends React.Component {
+class ConversationWindow extends Component {
   constructor() {
     super();
-    this.state = {newMessage: '', showEmoji: false};
+    this.state = {newMessage: '', showEmoji: false, speechRecognition: false};
+    this.recognition = new window.webkitSpeechRecognition(); // eslint-disable-line
+    this.recognition.onresult = ({results}) => {
+      return this.setState({newMessage: results[0][0].transcript});
+    };
     this.messageContainer = null;
   }
-
   componentDidUpdate() {
     const messageContainer = ReactDOM.findDOMNode(this.messageContainer);//eslint-disable-line
     messageContainer.scrollTop = messageContainer.scrollHeight;
@@ -48,6 +51,13 @@ class ConversationWindow extends React.Component {
     }
   }
 
+  onMicClicked() {
+    const {speechRecognition} = this.state;
+    speechRecognition ? this.recognition.stop() : this.recognition.start();
+    this.setState({speechRecognition: !this.state.speechRecognition});
+  }
+
+
   addEmoji(emoji) {
     this.setState({newMessage: `${this.state.newMessage} ${emoji}`});
   }
@@ -62,7 +72,7 @@ class ConversationWindow extends React.Component {
 
   render() {
     const {chatStore} = this.props;
-    // console.log(chatStore.contacts.toJS());
+    const {speechRecognition} = this.state;
     return (
       <div data-hook="conversation-window" className={s.conversationWindow}>
         <div className={s.conversationInfo}>
@@ -70,7 +80,10 @@ class ConversationWindow extends React.Component {
             <img data-hook="gravatar-image" src={chatStore.contacts && chatStore.contacts.length > 0 && chatStore.contacts.find(contact => contact.id === chatStore.currentUser.id).imageUrl} alt="Conversation Picture"/>
           </div>
           <div className={s.textContainer}>
-            <Text appearance="T2" dataHook="conversation-window-display-name">{chatStore.conversationDisplayName && chatStore.conversationDisplayName}</Text>
+            <Text
+              appearance="T2"
+              dataHook="conversation-window-display-name"
+              >{chatStore.conversationDisplayName && chatStore.conversationDisplayName}</Text>
           </div>
         </div>
         <ul className={s.messagesContainer} ref={ref => this.messageContainer = ref}>
@@ -89,14 +102,36 @@ class ConversationWindow extends React.Component {
           )}
         </ul>
         <div className={s.msgInputContainer}>
-          <textarea data-hook="input-msg" value={this.state.newMessage} onChange={evt => this.setState({newMessage: evt.target.value})} onKeyPress={e => this.handleKeyPress(e)} placeholder="Write a Message..."/>
+          <textarea
+            disabled={speechRecognition}
+            data-hook="input-msg" value={this.state.newMessage}
+            onChange={evt => this.setState({newMessage: evt.target.value})}
+            onKeyPress={e => this.handleKeyPress(e)} placeholder="Write a Message..."
+                                                     />
+          {speechRecognition && <div className={s.speechIndicator}/>}
           <div className={s.buttonsContainer}>
-            <button data-hook="emoji-btn" onClick={() => this.setState({showEmoji: !this.state.showEmoji})}>💩</button>
-            <button data-hook="send-msg-btn" className={s.sendBtn} onClick={() => this.onMessageSend()}>send</button>
+            <button
+              data-hook="emoji-btn"
+              onClick={() => this.setState({showEmoji: !this.state.showEmoji})}
+              >💩
+            </button>
+            <button
+              data-hook="mic-btn" onClick={() => this.onMicClicked()}
+                                  >🎤
+            </button>
+            <button
+              data-hook="send-msg-btn" className={s.sendBtn}
+              onClick={() => this.onMessageSend()}
+              >send
+            </button>
           </div>
           {this.state.showEmoji && <div data-hook="emoji-container" className={s.emojiContainer}>
-              {emojis.map(emoji => <span key={emoji} onClick={() => this.addEmoji(emoji)}>{emoji}</span>)}
-            </div>}
+            {emojis.map(emoji => <span
+              key={emoji}
+              onClick={() => this.addEmoji(emoji)}
+              >{emoji}</span>)}
+          </div>
+          }
         </div>
       </div>
     );

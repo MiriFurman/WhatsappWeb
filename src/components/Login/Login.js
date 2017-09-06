@@ -44,7 +44,7 @@ class Login extends Component {
             <TextField>
               <Label appearance="T1.1" for="password">Password</Label>
               <Input
-                id="password" size="normal" maxLength={524288} textOverflow="clip"
+                id="password" size="normal" maxLength={524288} textOverflow="clip" type="password"
                 theme="normal" width="initial" dataHook="login-password"
                 onChange={evt => this.setState({password: evt.target.value})}
                 />

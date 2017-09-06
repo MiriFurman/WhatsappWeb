@@ -35,7 +35,7 @@ class Signup extends Component {
             <TextField>
               <Label appearance="T1.1" for="password">Password</Label>
               <Input
-                id="password" size="normal" maxLength={524288} textOverflow="clip"
+                id="password" size="normal" maxLength={524288} textOverflow="clip" type="password"
                 theme="normal" width="initial" dataHook="signup-password"
                 onChange={evt => this.setState({password: evt.target.value})}
                 />
@@ -45,7 +45,7 @@ class Signup extends Component {
             <TextField>
               <Label appearance="T1.1" for="password">Verify Password</Label>
               <Input
-                id="verify-password" size="normal" maxLength={524288} textOverflow="clip"
+                id="verify-password" size="normal" maxLength={524288} textOverflow="clip" type="password"
                 theme="normal" width="initial" dataHook="signup-verify-password"
                 onChange={evt => this.setState({verifyPassword: evt.target.value})}
                 />

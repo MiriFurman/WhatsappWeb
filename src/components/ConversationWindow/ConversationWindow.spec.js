@@ -12,8 +12,15 @@ import * as endpoints from '../../common/endpoints';
 import * as dh from '../MessageBubble/MessageBubbleDataHooks';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+
 chai.use(sinonChai);
 
+window.webkitSpeechRecognition = () => ({
+  start: () => {
+  },
+  stop: () => {
+  }
+});
 describe('Conversation window component test', () => {
   const render = (props = {}) => (
     mount(
@@ -319,7 +326,10 @@ describe('Conversation Window', () => {
       }
     }
     ;
-    wrapper = mount(<ConversationWindow onSendMessage={() => {}} chatStore={chatStore}/>);
+    wrapper = mount(<ConversationWindow
+      onSendMessage={() => {
+      }} chatStore={chatStore}
+         />);
 
     expect(wrapper.find(`.messageBubbleWrapper`).length).to.equal(2);
     expect(wrapper.find(`.messageBubbleWrapper`).first().html()).to.contain('fromMe');
@@ -373,7 +383,10 @@ describe('Conversation Window', () => {
         relationState: 'conversation'
       }
     };
-    wrapper = mount(<ConversationWindow onSendMessage={() => {}} {...realProps}/>);
+    wrapper = mount(<ConversationWindow
+      onSendMessage={() => {
+      }} {...realProps}
+         />);
 
     expect(wrapper.find(`.messageBubbleWrapper`).last().html()).to.contain('fromMe');
     expect(wrapper.find(`.messageBubbleWrapper`).first().html()).to.contain('fromOthers');

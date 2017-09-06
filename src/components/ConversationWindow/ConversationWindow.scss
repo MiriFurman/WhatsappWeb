@@ -56,6 +56,12 @@
       line-height: 55px;
       padding: 10px;
     }
+    .speech-indicator{
+      height: 100%;
+      width: 90%;
+      position: absolute;
+      background: url(../../assets/record-indication.gif) no-repeat 50% 46%;
+    }
 
     textarea::placeholder {
       color: #3899ec;
