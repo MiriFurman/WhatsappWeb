@@ -14,22 +14,35 @@ const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', 
 class ConversationWindow extends Component {
   constructor() {
     super();
-    this.state = {newMessage: '', showEmoji: false, speechRecognition: false};
+    this.state = {newMessage: '', showEmoji: false, speechRecognition: false, isScrolled: false};
     this.recognition = new window.webkitSpeechRecognition(); // eslint-disable-line
     this.recognition.onresult = ({results}) => {
       return this.setState({newMessage: results[0][0].transcript});
     };
     this.messageContainer = null;
   }
-  componentDidUpdate() {
+
+  componentDidMount() {
     const messageContainer = ReactDOM.findDOMNode(this.messageContainer);//eslint-disable-line
-    messageContainer.scrollTop = messageContainer.scrollHeight;
+    messageContainer.addEventListener('scroll', () => this.setState({isScrolled: true}));
+  }
+
+  componentWillUnmount() {
+    const messageContainer = ReactDOM.findDOMNode(this.messageContainer);//eslint-disable-line
+    messageContainer.removeEventListener('scroll', () => this.setState({isScrolled: false}));
+  }
+
+  componentDidUpdate() {
+    if (!this.state.isScrolled) {
+      const messageContainer = ReactDOM.findDOMNode(this.messageContainer);//eslint-disable-line
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
   }
 
   onMessageSend() {
     if (!(/^(?:\s|\n|\n\r)*$/.test(this.state.newMessage))) {
       this.props.onSendMessage(this.state.newMessage);
-      this.setState({newMessage: '', showEmoji: false});
+      this.setState({newMessage: '', showEmoji: false, isScrolled: false});
     }
   }
 
