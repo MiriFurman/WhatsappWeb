@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Button, TextField, Label, MultiSelect, Notification} from 'wix-style-react';
+import {Input, Button, TextField, Label, MultiSelect} from 'wix-style-react';
 import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
 import ContactList from '../ContactList/ContactList';
@@ -60,14 +60,24 @@ class CreateGroup extends React.Component {
           </div>
           <div className={s.memberSection}>
             <Label appearance="T1.1" for="members">Members</Label>
-            <MultiSelect
+            {!this.state.membersError && <MultiSelect
               id="members"
               tags={this.props.chatStore.groupTags.toJS()}
               onRemoveTag={tagId => this.props.chatStore.handleOnRemoveTag(tagId)}
-              />
+              />}
+            {this.state.membersError && <div>
+              <MultiSelect
+                error
+                id="members"
+                tags={this.props.chatStore.groupTags.toJS()}
+                onRemoveTag={tagId => this.props.chatStore.handleOnRemoveTag(tagId)}
+                />
+              <div className={s.warning}>Please select at least 2 contacts!</div>
+            </div>
+            }
           </div>
         </div>
-        {this.state.membersError && <Notification show theme="error" type="global" dataHook="members-error-notification"><Notification.TextLabel>Please select at least 2 members!</Notification.TextLabel></Notification>}
+        {/*{this.state.membersError && <Notification show theme="error" type="global" dataHook="members-error-notification"><Notification.TextLabel>Please select at least 2 members!</Notification.TextLabel></Notification>}*/}
         <div className={s.contactsSection}>
           <ContactList
             username={this.props.chatStore.username} contacts={this.props.chatStore.groupDisplayContacts}

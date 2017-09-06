@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 import CreateGroup from './CreateGroup';
-import {buttonTestkitFactory, inputTestkitFactory, notificationTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
+import {buttonTestkitFactory, inputTestkitFactory} from 'wix-style-react/dist/testkit/enzyme';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
@@ -121,7 +121,6 @@ describe('Create Group component test', () => {
     const wrapper = render(propsObj);
     inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
     buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
-    expect(notificationTestkitFactory({wrapper, dataHook: 'members-error-notification'}).exists()).to.equal(true);
     expect(spy).to.not.have.been.called;
   });
 
@@ -145,7 +144,6 @@ describe('Create Group component test', () => {
     const wrapper = render(propsObj);
     inputTestkitFactory({wrapper, dataHook: 'input-group-name'}).enterText(displayName);
     buttonTestkitFactory({wrapper, dataHook: 'create-group-btn'}).click();
-    expect(notificationTestkitFactory({wrapper, dataHook: 'members-error-notification'}).exists()).to.equal(false);
     expect(spy).to.have.been.calledWith(displayName);
   });
 });
