@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import {expect} from 'chai';
 import {beforeAndAfter, app} from './../environment';
-import AppDriver from './e2e.driver';
+import AppDriver from './driver.e2e';
 import wrap from 'lodash/wrap';
 import {FLUSH, SIGNUP} from '../../src/common/endpoints';
 import axios from 'axios';
