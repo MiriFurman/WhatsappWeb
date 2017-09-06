@@ -79,7 +79,8 @@ const listConversationsByContactId = contactId => {
         body: getLastMessageBodyFromConversation(conversation),
         created: getLastMessageDateFromConversation(conversation)
       },
-      unreadMessageCount: conversation.messages.filter(message => message.ack.indexOf(contactId) === -1).length
+      unreadMessageCount: conversation.messages.filter(message => message.ack.indexOf(contactId) === -1).length,
+      unreadMessages: conversation.messages.filter(message => message.ack.indexOf(contactId) === -1).map(message => message.body)
     }));
 };
 

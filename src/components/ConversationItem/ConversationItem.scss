@@ -24,10 +24,20 @@
     align-items: flex-start;
     justify-content: center;
 
-    .unread-badge{
+    .unread-badge {
       position: absolute ;
       top: 10px;
       right: 10px;
+    }
+
+    .unread-speech {
+      position: absolute;
+      bottom: 2px;
+      right: 10px;
+      border: none;
+      background: none;
+      font-size: 16px;
+      cursor: pointer;
     }
   }
 }

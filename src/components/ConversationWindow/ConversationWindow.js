@@ -117,7 +117,7 @@ class ConversationWindow extends Component {
               groupMessage={this.isGroupMessage()}
               createdBy={message.createdBy}
               createdByName={chatStore.getUsernameByUserId(message.createdBy)}
-              msgSpeak={this.msgSpeak}
+              playMsg={chatStore.playMessages}
               />)
           )}
         </ul>

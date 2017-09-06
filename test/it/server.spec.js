@@ -132,7 +132,8 @@ describe('Chat App Server', () => {
     const exampleMessage = 'Bend the knee';
     await restClient.sendMessage(user1Obj.id, [user1Obj.id, user2Obj.id], exampleMessage);
     const relations = await restClient.getRelations(user1Obj.id);
-    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage', 'unreadMessageCount', 'imgUrl');
+    console.log(relations.conversations[0]);
+    expect(relations.conversations[0]).to.have.all.keys('id', 'displayName', 'members', 'lastMessage', 'unreadMessageCount', 'imgUrl', 'unreadMessages');
     expect(relations.conversations[0].lastMessage).to.have.all.keys('created', 'body');
   });
   it('should return gravatar imageUrl', async () => {

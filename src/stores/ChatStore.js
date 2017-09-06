@@ -182,6 +182,16 @@ class ChatStore {
   ackConversation({conversationId, contactId}) {
     return this.restClient.ackConversation({conversationId, contactId});
   }
+
+  playMessages(msgArr) {
+    msgArr.forEach(msg => {
+      const text = new SpeechSynthesisUtterance(msg);
+      if (/[\u0590-\u05FF]/.test(msg)) {
+        text.lang = 'he';
+      }
+      window.speechSynthesis.speak(text);
+    });
+  }
 }
 
 export default ChatStore;

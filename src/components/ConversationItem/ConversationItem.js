@@ -5,7 +5,7 @@ import * as s from './ConversationItem.scss';
 
 const dummyImg = 'https://placeimg.com/60/60/animals';
 
-const ConversationItem = ({id, onConversationClick, displayName, imageUrl, lastMessage, unreadMessageCount}) => (
+const ConversationItem = ({id, onConversationClick, displayName, imageUrl, lastMessage, unreadMessageCount, unreadMessages, playUnreadMessages}) => (
   <div
     className={s.conversationItem} data-hook="conversation-item"
     onClick={() => onConversationClick(id)}
@@ -17,6 +17,7 @@ const ConversationItem = ({id, onConversationClick, displayName, imageUrl, lastM
       <div className={s.unreadBadge}>
         {unreadMessageCount > 0 && <Badge type="primary" dataHook="unread-message-count">{unreadMessageCount}</Badge>}
       </div>
+      {unreadMessages.length > 0 && <button className={s.unreadSpeech} onClick={() => playUnreadMessages(unreadMessages)}>🔈</button>}
       <Text appearance="T2" dataHook="conversation-display-name">{displayName}</Text>
       <Text appearance="T3.1" dataHook="conversation-last-message">{lastMessage.body}</Text>
     </div>
@@ -29,9 +30,12 @@ ConversationItem.propTypes = {
   displayName: PropTypes.string.isRequired,
   imageUrl: PropTypes.string,
   lastMessage: PropTypes.object,
-  unreadMessageCount: PropTypes.number
+  unreadMessageCount: PropTypes.number,
+  unreadMessages: PropTypes.array,
+  playUnreadMessages: PropTypes.func
 };
 ConversationItem.defaultProps = {
-  lastMessage: {}
+  lastMessage: {},
+  unreadMessages: []
 };
 export default ConversationItem;

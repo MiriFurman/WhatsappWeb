@@ -19,7 +19,9 @@ const ConversationList = props => (
             displayName={conversation.displayName}
             lastMessage={conversation.lastMessage}
             unreadMessageCount={conversation.unreadMessageCount}
+            unreadMessages={conversation.unreadMessages ? conversation.unreadMessages.toJS() : []}
             imageUrl={conversation.imgUrl}
+            playUnreadMessages={props.chatStore.playMessages}
             />
         </li>))}
     </ul>

@@ -136,6 +136,7 @@ describe('Conversations Service', () => {
     expect(messages[0].body).to.equal(messageBody1);
     expect(messages[0].createdBy).to.equal(members[0]);
   });
+
   it('should create new message with ack as empty array', () => {
     const contact1 = contactsService.create({name: 'shilo'});
     const contact2 = contactsService.create({name: 'maor'});
@@ -148,6 +149,7 @@ describe('Conversations Service', () => {
     const conversationId = conversationsService.listConversationsByContactId(contact1.id)[0].id;
     expect(conversationsService.getMessagesById(conversationId).messages[0].ack).to.eql([contact1.id]);
   });
+
   it('should store userId upon acknowledgment', () => {
     const contact1 = contactsService.create({name: 'shilo'});
     const contact2 = contactsService.create({name: 'maor'});
@@ -161,6 +163,7 @@ describe('Conversations Service', () => {
     conversationsService.ack({conversationId, contactId: contact2.id});
     expect(conversationsService.getMessagesById(conversationId).messages[0].ack).to.eql([contact1.id, contact2.id]);
   });
+
   it('should prevent double acknowledgments', () => {
     const contact1 = contactsService.create({name: 'shilo'});
     const contact2 = contactsService.create({name: 'maor'});
@@ -175,6 +178,7 @@ describe('Conversations Service', () => {
     conversationsService.ack({conversationId, contactId: contact2.id});
     expect(conversationsService.getMessagesById(conversationId).messages[0].ack).to.eql([contact1.id, contact2.id]);
   });
+
   it('should get number of unread messaged on converstionDTO', () => {
     const contact1 = contactsService.create({name: 'shilo'});
     const contact2 = contactsService.create({name: 'maor'});
@@ -191,6 +195,7 @@ describe('Conversations Service', () => {
     const updatedConversation = conversationsService.listConversationsByContactId(contact2.id)[0];
     expect(updatedConversation.unreadMessageCount).to.equal(0);
   });
+
   it('should get number of unread messaged on converstionDTO - group scenraio', () => {
     const contact1 = contactsService.create({name: 'shilo'});
     const contact2 = contactsService.create({name: 'maor'});
@@ -212,6 +217,7 @@ describe('Conversations Service', () => {
     expect(conversationsService.listConversationsByContactId(contact2.id)[0].unreadMessageCount).to.equal(0);
     expect(conversationsService.listConversationsByContactId(contact3.id)[0].unreadMessageCount).to.equal(1);
   });
+
   it('should include gravatar image when applicable', () => {
     const messageBody2 = 'Hello Kickstart!';
     conversationsService.addMessage({from: members[0], messageBody, members});
@@ -227,5 +233,50 @@ describe('Conversations Service', () => {
 
     expect(conversationList1[0].imgUrl).to.equal('//www.gravatar.com/avatar/2dd3b8058e68863cf9d1aff3f581eb17');
     expect(conversationList2[0].imgUrl).to.equal('https://placeimg.com/60/60/animals');
+  });
+
+  it('should get unread messages on converstionDTO', () => {
+    const contact1 = contactsService.create({name: 'shilo'});
+    const contact2 = contactsService.create({name: 'maor'});
+    const message1 = {
+      from: contact1.id,
+      members: [contact2.id, contact1.id],
+      messageBody: 'Hi!'
+    };
+    const message2 = {
+      from: contact1.id,
+      members: [contact2.id, contact1.id],
+      messageBody: 'How are you?!'
+    };
+    conversationsService.addMessage(message1);
+    conversationsService.addMessage(message2);
+    const conversation = conversationsService.listConversationsByContactId(contact2.id)[0];
+    expect(conversation.unreadMessages).to.eql([message1.messageBody, message2.messageBody]);
+    const conversationId = conversation.id;
+    conversationsService.ack({conversationId, contactId: contact2.id});
+    const updatedConversation = conversationsService.listConversationsByContactId(contact2.id)[0];
+    expect(updatedConversation.unreadMessages).to.eql([]);
+  });
+
+  it('should get unread messages on converstionDTO - group scenraio', () => {
+    const contact1 = contactsService.create({name: 'shilo'});
+    const contact2 = contactsService.create({name: 'maor'});
+    const contact3 = contactsService.create({name: 'david'});
+    const message = {
+      from: contact1.id,
+      members: [contact2.id, contact1.id, contact3.id],
+      messageBody: 'Hi!'
+    };
+    conversationsService.createGroup({
+      members: [contact1.id, contact2.id, contact3.id],
+      displayName: 'The Feebadges'
+    });
+    conversationsService.addMessage(message);
+    const conversation = conversationsService.listConversationsByContactId(contact1.id)[0];
+    const conversationId = conversation.id;
+    conversationsService.ack({conversationId, contactId: contact2.id});
+    expect(conversationsService.listConversationsByContactId(contact1.id)[0].unreadMessages).to.eql([]);
+    expect(conversationsService.listConversationsByContactId(contact2.id)[0].unreadMessages).to.eql([]);
+    expect(conversationsService.listConversationsByContactId(contact3.id)[0].unreadMessages).to.eql([message.messageBody]);
   });
 });
