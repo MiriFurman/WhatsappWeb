@@ -30,8 +30,8 @@ MessageBubble.propTypes = {
   currentUser: PropTypes.bool,
   groupMessage: PropTypes.bool,
   createdBy: PropTypes.string,
-  createdByName: PropTypes.object,
-  playMsg: PropTypes.func
+  playMsg: PropTypes.func,
+  createdByName: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default MessageBubble;
