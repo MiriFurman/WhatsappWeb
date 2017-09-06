@@ -1,3 +1,15 @@
+@keyframes pulse{
+  0%{
+    box-shadow: 0px 0px 2px 0px #d3edff;
+  }
+  65%{
+    box-shadow: 0px 0px 2px 6px #d3edff;
+  }
+  90%{
+    box-shadow: 0px 0px 2px 6px #d3edff;
+  }
+}
+
 .conversation-window {
   display: flex;
   flex-direction: column;
@@ -53,36 +65,50 @@
       border: none;
       font-size: 16px;
       height: 65px;
-      line-height: 55px;
+      line-height: 45px;
       padding: 10px;
-    }
-    .speech-indicator{
-      height: 100%;
-      width: 90%;
-      position: absolute;
-      background: url(../../assets/record-indication.gif) no-repeat 50% 46%;
     }
 
     textarea::placeholder {
       color: #3899ec;
     }
 
+    textarea:disabled {
+      color: lightgray;
+    }
+
     .buttons-container {
       position: absolute;
       right: 20px;
-      bottom: 25px;
+      bottom: 20px;
+      display: flex;
 
       button {
         outline: none;
         border: none;
         background: white;
         color: #b6c1cd;
-        font-size: 15px;
+        font-size: 16px;
         text-align: center;
         font-family: "HelveticaNeueW01-45Ligh", "HelveticaNeueW02-45Ligh", "HelveticaNeueW10-45Ligh",
         "Helvetica Neue", "Helvetica", "Arial", "\30E1\30A4\30EA\30AA, meiryo",
         "\30D2\30E9\30AE\30CE\89D2\30B4   pro w3", "hiragino kaku gothic pro", "sans-serif";
         cursor: pointer;
+      }
+
+      .recording {
+        background-color: #3899ec;
+        width: 12px;
+        height: 12px;
+        border-radius: 12px;
+        animation-name: pulse;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        cursor: pointer;
+        align-self: center;
+        margin: 0 7px;
+
       }
 
       .send-btn {
@@ -109,7 +135,7 @@
       content: " ";
       position: absolute;
       top: 100%;
-      left: 72%;
+      left: 63%;
       border-width: 20px;
       border-style: solid;
       border-color: #EBEDEF transparent transparent transparent;

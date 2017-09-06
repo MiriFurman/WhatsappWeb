@@ -128,17 +128,10 @@ class ConversationWindow extends Component {
             onChange={evt => this.setState({newMessage: evt.target.value})}
             onKeyPress={e => this.handleKeyPress(e)} placeholder="Write a Message..."
                                                      />
-          {speechRecognition && <div className={s.speechIndicator}/>}
           <div className={s.buttonsContainer}>
-            <button
-              data-hook="emoji-btn"
-              onClick={() => this.setState({showEmoji: !this.state.showEmoji})}
-              >💩
-            </button>
-            <button
-              data-hook="mic-btn" onClick={() => this.onMicClicked()}
-                                  >🎤
-            </button>
+            <button data-hook="emoji-btn" onClick={() => this.setState({showEmoji: !this.state.showEmoji})}>💩</button>
+            {speechRecognition && <div className={s.recording} onClick={() => this.onMicClicked()}/>}
+            {!speechRecognition && <button data-hook="mic-btn" onClick={() => this.onMicClicked()}>🎤</button>}
             <button
               data-hook="send-msg-btn" className={s.sendBtn}
               onClick={() => this.onMessageSend()}
