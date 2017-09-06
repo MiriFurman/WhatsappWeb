@@ -91,7 +91,8 @@ describe('Create Group component test', () => {
         groupDisplayContacts: contacts,
         createGroup: spy,
         groupTags: tags,
-        groupMembers: ['4', '3']
+        groupMembers: ['4', '3'],
+        hideCreateGroup: () => {}
       }
     };
     const wrapper = render(propsObj);
@@ -115,7 +116,8 @@ describe('Create Group component test', () => {
         groupDisplayContacts: contacts,
         createGroup: spy,
         groupTags: tags,
-        groupMembers: ['4']
+        groupMembers: ['4'],
+        hideCreateGroup: () => {}
       }
     };
     const wrapper = render(propsObj);
@@ -138,7 +140,8 @@ describe('Create Group component test', () => {
         groupDisplayContacts: contacts,
         createGroup: spy,
         groupTags: tags,
-        groupMembers: ['4', '3']
+        groupMembers: ['4', '3'],
+        hideCreateGroup: () => {}
       }
     };
     const wrapper = render(propsObj);

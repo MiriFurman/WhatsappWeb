@@ -27,6 +27,7 @@ class CreateGroup extends React.Component {
     if (!displayNameError && !membersError) {
       this.props.chatStore.createGroup(this.state.displayName, this.state.imgUrl);
       this.setState({displayName: '', imgUrl: ''});
+      this.props.chatStore.hideCreateGroup();
     }
   }
 

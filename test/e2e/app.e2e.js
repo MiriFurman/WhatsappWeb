@@ -223,7 +223,6 @@ describe('Wazzap E2E tests', () => {
     await firstWindowDriver.clickContactAtIndex(0);
     await firstWindowDriver.clickContactAtIndex(0);
     await firstWindowDriver.clickButtonByDataHook('create-group-btn');
-    await firstWindowDriver.clickButtonByDataHook('create-group-go-back-btn');
     await firstWindowDriver.waitForElement('conversation-display-name');
     await secondWindowDriver.waitForElement('conversation-display-name');
     await thirdWindowDriver.waitForElement('conversation-display-name');
