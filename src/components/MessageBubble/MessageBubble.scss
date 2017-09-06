@@ -4,18 +4,25 @@ $alignThem: flex-end;
 .messageBubbleWrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 15px;
 
   .bubble {
     max-width: 75%;
     border-radius: 12px;
     box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.05);
-
-    padding: 20px;
+    padding: 10px;
     word-wrap: break-word;
-
     text-align: left;
+
+    button {
+      display: none;
+    }
   }
+
+  .bubble:hover > button, button:hover {
+    display: inline-block;
+  }
+
   .fromMe {
     @extend .bubble;
     align-items: $alignMe;
@@ -68,6 +75,7 @@ $alignThem: flex-end;
     font-size: 16px;
     align-self: flex-end;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 7px;
+    padding: 0;
   }
 }
